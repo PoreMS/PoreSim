@@ -1,0 +1,95 @@
+cluster:
+  address: user_name@server_address
+  directory: /home/pores/simulation/
+  queuing:
+    add_np: false
+    mpi: $DO_PARALLEL
+    shell: forhlr.sh
+    submit: sbatch --partition multinode
+
+job:
+  min:
+    file: data/forhlr.sh
+    nodes: 1
+    np: 28
+    wall: 00:24:00:00
+  nvt:
+    file: data/forhlr.sh
+    nodes: 1
+    np: 28
+    wall: 00:24:00:00
+  run:
+    file: data/forhlr.sh
+    maxh: 24
+    nodes: 1
+    np: 28
+    runs: 15
+    wall: 00:24:00:00
+
+param:
+  min:
+    file: data/pore_min.mdp
+  nvt:
+    file: data/pore_nvt.mdp
+    param:
+      NUMBEROFSTEPS: 2000000
+      TEMPERATURE_VAL: 298
+  run:
+    file: data/pore_run.mdp
+    param:
+      NUMBEROFSTEPS: 20000000
+      TEMPERATURE_VAL: 298
+
+box:
+  0:
+    name:
+      - name1
+      - label1
+    mols:
+      EDC: 40
+      PRD: 40
+      BEN: fill
+    struct:
+      BOX: box.gro
+      EDC: educt.gro
+      PRD: product.gro
+      BEN: benzene.gro
+      Pore: pore.obj
+    topol:
+      - topol.top
+      - benzene.itp
+      - educt.top
+      - product.top
+      - grid.itp
+      - catag.itp
+      - cata.top
+      - epoxig.itp
+      - epoxi.top
+      - silylg.itp
+      - silyl.top
+
+  1:
+    name:
+      - name2
+      - label2
+    mols:
+      EDC: 80
+      PRD: 80
+      BEN: fill
+    struct:
+      BOX: box.gro
+      EDC: educt.gro
+      PRD: product.gro
+      BEN: benzene.gro
+    topol:
+      - topol.top
+      - benzene.itp
+      - educt.top
+      - product.top
+      - grid.itp
+      - catag.itp
+      - cata.top
+      - epoxig.itp
+      - epoxi.top
+      - silylg.itp
+      - silyl.top
