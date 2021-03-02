@@ -169,9 +169,11 @@
                     <g>
                         <g>
                             <g>
-                                <text x="0px" y="0px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:11.887px;fill:rgb(236,208,120);">A</text>
-                                <g transform="matrix(1,0,0,1,8.143,0)">
-                                    <text x="0px" y="0px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:11.887px;fill:rgb(236,208,120);">T<tspan x="6.379px 13.64px " y="0px 0px ">oo</tspan>l for Generating</text>
+                                <g>
+                                    <text x="0px" y="0px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:11.887px;fill:rgb(236,208,120);">A</text>
+                                    <g transform="matrix(1,0,0,1,8.143,0)">
+                                        <text x="3.303px" y="0px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:11.887px;fill:rgb(236,208,120);">T<tspan x="9.681px 16.942px " y="0px 0px ">oo</tspan>l for Generating</text>
+                                    </g>
                                 </g>
                             </g>
                             <g transform="matrix(1,0,0,1,124.152,0)">
