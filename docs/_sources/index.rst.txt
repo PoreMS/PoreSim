@@ -1,4 +1,12 @@
-Pore system simulation generator
+.. raw:: html
+
+  <br>
+
+.. figure::  /pics/logo_text.svg
+  :align: center
+  :width: 40%
+
+Pore System Simulation Generator
 ================================
 
 .. raw:: html
@@ -7,9 +15,8 @@ Pore system simulation generator
      <div class="row">
        <div class="col-md-8">
 
-
-
-To see the code or report a bug, please visit the `Github repository
+This python package generates pore simulations folders and scripts for Gromacs.
+To see the code or report a bug, please visit the `Github  repository
 <https://github.com/Ajax23/PoreSim>`_.
 
 
