@@ -27,9 +27,9 @@ Installation requires [pyyaml](https://pypi.org/project/PyYAML/) and [porems](ht
 
 You may instead want to use the development version from GitHub:
 
-    pip install git+https://github.com/ajax23/PoreSim.git#egg=porems
+    pip install git+https://github.com/ajax23/PoreSim.git#egg=poresim
 
-    pip install git+https://github.com/ajax23/PoreSim.git@develop#egg=porems
+    pip install git+https://github.com/ajax23/PoreSim.git@develop#egg=poresim
 
 Or download the repository and install in the top directory via:
 
