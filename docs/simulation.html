@@ -135,7 +135,7 @@
 </div>
 <div class="section" id="create-box-objects">
 <h2>Create box objects<a class="headerlink" href="#create-box-objects" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">box1</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="s2">&quot;box1&quot;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">box1</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="s2">&quot;box1&quot;</span><span class="p">)</span>
 <span class="n">box1</span><span class="o">.</span><span class="n">add_box</span><span class="p">(</span><span class="s2">&quot;data/simulation/pore.gro&quot;</span><span class="p">)</span>
 <span class="n">box1</span><span class="o">.</span><span class="n">add_pore</span><span class="p">(</span><span class="s2">&quot;data/simulation/pore.obj&quot;</span><span class="p">)</span>
 <span class="n">box1</span><span class="o">.</span><span class="n">add_mol</span><span class="p">(</span><span class="s2">&quot;EDC&quot;</span><span class="p">,</span> <span class="s2">&quot;data/simulation/educt.gro&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -149,7 +149,7 @@
 <span class="n">box1</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
 <span class="n">box1</span><span class="o">.</span><span class="n">add_charge_si</span><span class="p">(</span><span class="mf">1.314730</span><span class="p">)</span>
 
-<span class="n">box2</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="s2">&quot;box2&quot;</span><span class="p">,</span> <span class="s2">&quot;bxx&quot;</span><span class="p">)</span>
+<span class="n">box2</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="s2">&quot;box2&quot;</span><span class="p">,</span> <span class="s2">&quot;bxx&quot;</span><span class="p">)</span>
 <span class="n">box2</span><span class="o">.</span><span class="n">add_box</span><span class="p">(</span><span class="s2">&quot;data/simulation/pore.gro&quot;</span><span class="p">)</span>
 <span class="n">box2</span><span class="o">.</span><span class="n">add_pore</span><span class="p">(</span><span class="s2">&quot;data/simulation/pore.obj&quot;</span><span class="p">)</span>
 <span class="n">box2</span><span class="o">.</span><span class="n">add_mol</span><span class="p">(</span><span class="s2">&quot;EDC&quot;</span><span class="p">,</span> <span class="s2">&quot;data/simulation/educt.gro&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
@@ -165,8 +165,8 @@
 </div>
 <div class="section" id="create-simulation-objects">
 <h2>Create simulation objects<a class="headerlink" href="#create-simulation-objects" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">sim1</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="s2">&quot;output/series&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">])</span>  <span class="c1"># Series</span>
-<span class="n">sim2</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="s2">&quot;output/single&quot;</span><span class="p">,</span> <span class="n">box1</span><span class="p">)</span>  <span class="c1"># Single</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">sim1</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="s2">&quot;output/series&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">])</span>  <span class="c1"># Series</span>
+<span class="n">sim2</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="s2">&quot;output/single&quot;</span><span class="p">,</span> <span class="n">box1</span><span class="p">)</span>  <span class="c1"># Single</span>
 </pre></div>
 </div>
 </div>
@@ -179,7 +179,7 @@
 </div>
 <div class="section" id="create-benchmark">
 <h2>Create Benchmark<a class="headerlink" href="#create-benchmark" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">bench</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">Benchmark</span><span class="p">(</span><span class="n">box1</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span><span class="s2">&quot;output/bench&quot;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">bench</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Benchmark</span><span class="p">(</span><span class="n">box1</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span><span class="s2">&quot;output/bench&quot;</span><span class="p">)</span>
 <span class="n">bench</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
 </pre></div>
 </div>

@@ -34,7 +34,7 @@ Create box objects
 
 .. code-block:: python
 
-  box1 = md.sim.Box("box1")
+  box1 = ps.Box("box1")
   box1.add_box("data/simulation/pore.gro")
   box1.add_pore("data/simulation/pore.obj")
   box1.add_mol("EDC", "data/simulation/educt.gro", 10)
@@ -48,7 +48,7 @@ Create box objects
   box1.set_param(param)
   box1.add_charge_si(1.314730)
 
-  box2 = md.sim.Box("box2", "bxx")
+  box2 = ps.Box("box2", "bxx")
   box2.add_box("data/simulation/pore.gro")
   box2.add_pore("data/simulation/pore.obj")
   box2.add_mol("EDC", "data/simulation/educt.gro", 15)
@@ -66,8 +66,8 @@ Create simulation objects
 
 .. code-block:: python
 
-  sim1 = md.sim.Simulate("output/series", [box1, box2])  # Series
-  sim2 = md.sim.Simulate("output/single", box1)  # Single
+  sim1 = ps.Simulate("output/series", [box1, box2])  # Series
+  sim2 = ps.Simulate("output/single", box1)  # Single
 
 
 Generate folder structure
@@ -84,7 +84,7 @@ Create Benchmark
 
 .. code-block:: python
 
-  bench = md.sim.Benchmark(box1,20,list(range(1,20+1)),"output/bench")
+  bench = ps.Benchmark(box1,20,list(range(1,20+1)),"output/bench")
   bench.generate()
 
 
