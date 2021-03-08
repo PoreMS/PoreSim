@@ -4,7 +4,7 @@
 
 [![PyPI Version](https://img.shields.io/badge/PyPI-0.1.0-orange)](https://pypi.org/project/PoreSim/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Ajax23/PoreSim/blob/master/LICENSE)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4525195.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/343372462.svg)](https://zenodo.org/badge/latestdoi/343372462)
 [![Build Status](https://travis-ci.com/Ajax23/PoreSim.svg?branch=master)](https://travis-ci.com/Ajax23/PoreSim)
 [![codecov](https://codecov.io/gh/Ajax23/PoreSim/branch/master/graph/badge.svg)](https://codecov.io/gh/Ajax23/PoreSim)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Ajax23/PoreSim.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ajax23/PoreSim/context:python)
