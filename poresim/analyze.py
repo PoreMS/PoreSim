@@ -63,22 +63,11 @@ class Analyze:
 
             file_out.write("for key in \"${!mols[@]}\"; do\n")
 
-            # PDB
             out_string = "gmx_mpi trjconv "
             out_string += "-f "+folder_step+file_trr+" "
             out_string += "-s "+folder_step+file_tpr+" "
-            out_string += "-o traj${mols[$key]}.pdb "
-            out_string += "-e 0 "
-            out_string += "<<EOF\n"
-            out_string += "$key\n"
-            out_string += "EOF\n\n"
-            file_out.write(out_string)
-
-            # TRR
-            out_string = "gmx_mpi trjconv "
-            out_string += "-f "+folder_step+file_trr+" "
-            out_string += "-s "+folder_step+file_tpr+" "
-            out_string += "-o traj${mols[$key]}.trr "
+            out_string += "-o traj${mols[$key]}.xtc "
+            out_string += "-pbc nojump "
             out_string += "<<EOF\n"
             out_string += "$key\n"
             out_string += "EOF\n\n"
