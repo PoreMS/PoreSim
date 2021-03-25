@@ -34,7 +34,7 @@ if __name__ == "__main__":
     # dens_out = dens["out"][3]
     # num_diff = dens["diff"]
     # if num_diff > 10:
-    #     psa.utils.copy("../_fill/fillBackup.sh", "../_fill/fill.sh")
-    #     psa.utils.replace("../_fill/fill.sh", "FILLDENS", str(int(num_diff)))
+    #     pa.utils.copy("../_fill/fillBackup.sh", "../_fill/fill.sh")
+    #     pa.utils.replace("../_fill/fill.sh", "FILLDENS", str(int(num_diff)))
     #
     #     os.system("cd ../_fill;sh fill.sh;cd ../min;SUBMITCOMMAND")
