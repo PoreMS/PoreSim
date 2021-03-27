@@ -17,13 +17,21 @@ if __name__ == "__main__":
     # Load molecule
     mol = pms.Molecule("molecule", "MOLSHORT", inp="MOLLINK")
 
-    # Sample density
-    sample = pa.Sample("../_gro/pore_system.obj", "traj.xtc", mol, is_nojump=True)
-    sample.init_density("dens.obj")
-    sample.sample(is_parallel=True)
+    # Set analysis
+    ana_list = {}
+    ana_list["MOLSHORT"]  = {"traj": "traj.xtc",  "dens": True, "diff": False, "mol": mol, "atoms": []}
+
+    # Run analysis
+    for ana_name, ana_props in ana_list.items():
+        sample = pa.Sample("../_gro/pore_system.obj", ana_props["traj"], ana_props["mol"], ana_props["atoms"], is_nojump=True)
+        if ana_props["dens"]:
+            sample.init_density("dens_"+ana_name+".obj")
+        if ana_props["diff"]:
+            sample.init_diffusion_bin("diff_"+ana_name+".obj", bin_num=35)
+        sample.sample(is_parallel=True)
 
     # Calculate density
-    dens = pa.density.calculate("dens.obj", target_dens=TARGETDENS)
+    dens = pa.density.calculate("dens_MOLSHORT.obj", target_dens=TARGETDENS)
 
     # Create plot
     pa.density.plot(dens)
