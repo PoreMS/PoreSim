@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     # Create plot
     pa.density.plot(dens)
-    plt.gcf().suptitle(r"In: $\rho=$"+"%7.3f"%dens["in"][3]+r" kg m$^{-3}$, Out: $\rho=$"+"%7.3f"%dens["ex"][3]+r" kg m$^{-3}$")
+    plt.gcf().suptitle(r"In: $\rho=$"+"%7.3f"%dens["dens"]["in"]+r" kg m$^{-3}$, Out: $\rho=$"+"%7.3f"%dens["dens"]["ex"]+r" kg m$^{-3}$")
     plt.savefig("density.pdf", format="pdf", dpi=1000)
 
     # Fill and rerun
