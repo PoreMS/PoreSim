@@ -39,7 +39,6 @@ if __name__ == "__main__":
     plt.savefig("density.pdf", format="pdf", dpi=1000)
 
     # Fill and rerun
-    dens_ex = dens["ex"][3]
     num_diff = dens["diff"]
     if num_diff > 10:
         ps.utils.copy("../_fill/fillBackup.sh", "../_fill/fill.sh")
