@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     # Run analysis
     for ana_name, ana_props in ana_list.items():
-        sample = pa.Sample("../_gro/pore_system.obj", ana_props["traj"], ana_props["mol"], ana_props["atoms"], is_nojump=True)
+        sample = pa.Sample("../_gro/pore_system.obj", ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
         if ana_props["dens"]:
             sample.init_density("dens_"+ana_name+".obj")
         if ana_props["diff"]:
@@ -31,10 +31,10 @@ if __name__ == "__main__":
         sample.sample(is_parallel=True)
 
     # Calculate density
-    dens = pa.density.calculate("dens_MOLSHORT.obj", target_dens=TARGETDENS)
+    dens = pa.density.bins("dens_MOLSHORT.obj", target_dens=TARGETDENS)
 
     # Create plot
-    pa.density.plot(dens)
+    pa.density.bins_plot(dens)
     plt.gcf().suptitle(r"In: $\rho=$"+"%7.3f"%dens["dens"]["in"]+r" kg m$^{-3}$, Out: $\rho=$"+"%7.3f"%dens["dens"]["ex"]+r" kg m$^{-3}$")
     plt.savefig("density.pdf", format="pdf", dpi=1000)
 
