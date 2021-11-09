@@ -65,9 +65,11 @@ class Topology:
                         is_new = False
 
                 elif len(dat) > 0 and dat[0] == "[":
-                    is_new = True
                     block = dat[1]
-                    data[block] = []
+
+                    if not dat[1] in data.keys():
+                        is_new = True
+                        data[block] = []
 
         return data
 
