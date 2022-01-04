@@ -19,11 +19,11 @@ if __name__ == "__main__":
 
     # Set analysis
     ana_list = {}
-    ana_list["MOLSHORT"]  = {"traj": "traj.xtc",  "dens": True, "diff": False, "mol": mol, "atoms": []}
+    ana_list["MOLSHORT"]  = {"traj": "traj.xtc", "dens": True, "diff": False, "mol": mol, "atoms": []}
 
     # Run analysis
     for ana_name, ana_props in ana_list.items():
-        sample = pa.Sample("../_gro/pore_system.obj", ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
+        sample = pa.Sample("../_gro/pore.yml", ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
         if ana_props["dens"]:
             sample.init_density("dens_"+ana_name+".obj")
         if ana_props["diff"]:

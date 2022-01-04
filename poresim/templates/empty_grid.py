@@ -1,4 +1,5 @@
 import sys
+import yaml
 import porems as pms
 
 
@@ -10,11 +11,12 @@ if __name__ == "__main__":
     mol_len = int(sys.argv[3])
 
     # Load pores object
-    pore = pms.utils.load(link+"pore_system.obj")
+    with open(link+"pore.yml", "r") as stream:
+        pore = yaml.load(stream, Loader=yaml.FullLoader)
 
     # Get Diameter
-    diam = pore.diameter()
-    focal = pore.centroid()
+    diam = pore["diameter"]
+    focal = pore["centroid"]
 
     # Calculate pore position
     block = pms.utils.load(link+"pore.obj")
