@@ -201,6 +201,7 @@ class Construct:
                     out_string += "-ci "+folder_gro+self._struct[mol].split("/")[-1]+" "
                     out_string += "-nmol "
                     out_string += str(10000) if self._mols[mol][2] is None else "FILLDENS"
+                    out_string += " -try 10000"
                     out_string += " >> logging.log 2>&1\n"
                     out_string += "python empty_grid.py "+folder_gro+" "+mol+" "+str(self._mols[mol][1])+"\n"
                     file_out.write(out_string)
