@@ -36,10 +36,6 @@ if __name__ == "__main__":
     # Calculate density
     dens = pa.density.bins("dens_MOLSHORT.obj", target_dens=TARGETDENS, box_res = res)
 
-    # Create plot
-    # pa.density.bins_plot(dens)
-    # plt.gcf().suptitle(r"In: $\rho=$"+"%7.3f"%dens["dens"]["in"]+r" kg m$^{-3}$, Out: $\rho=$"+"%7.3f"%dens["dens"]["ex"]+r" kg m$^{-3}$")
-    # plt.savefig("density.pdf", format="pdf", dpi=1000)
 
     # Fill and rerun
     num_diff = dens["diff"]
@@ -48,3 +44,8 @@ if __name__ == "__main__":
         ps.utils.replace("../_fill/fill.sh", "FILLDENS", str(int(num_diff)))
 
         os.system("cd ../_fill;sh fill.sh;cd ../min;SUBMITCOMMAND")
+    else:
+        ps.utils.copy("../_fill/fillBackup.sh", "../_fill/fill.sh")
+        ps.utils.replace("../_fill/fill.sh", "FILLDENS", str(int(0)))
+
+        os.system("cd ../_fill;sh fill.sh")

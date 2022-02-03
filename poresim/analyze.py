@@ -19,16 +19,18 @@ class Analyze:
     box_link : string
         Simulation box folder link
     """
+
     def __init__(self, sim_link, box_link):
         # Initialize
         self._sim_link = sim_link
         self._box_path = box_link
-        self._box_link = "./" if sim_link == box_link else "./"+box_link.split("/")[-2]+"/"
-
+        self._box_link = "./" if sim_link == box_link else "./" + \
+            box_link.split("/")[-2]+"/"
 
     ##################
     # Public Methods #
     ##################
+
     def extract_mol(self, step):
         """This function extracts molecules of a type from a trajectory for
         further analysis using MolDyn.
@@ -54,7 +56,6 @@ class Analyze:
             file_out.write("echo \"Set MOLECULEINDEX ...\"; exit;\n")
             file_out.write("\n")
 
-
             # Extract molecule
             file_out.write("# Extract molecules from trajectory\n")
             file_out.write("declare -A mols\n\n")
@@ -73,6 +74,8 @@ class Analyze:
             out_string += "EOF\n\n"
             file_out.write(out_string)
 
-            file_out.write("\npython ana.py\n\n")
+            file_out.write("echo \"System "+self._box_link
+                           + " - Finished Extraction ...\"\n\n")
 
-            file_out.write("echo \"System "+self._box_link+" - Finished Extraction ...\"\n\n")
+            file_out.write("\npython ana.py\n\n")
+            file_out.write("\ndone")
