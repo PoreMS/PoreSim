@@ -15,18 +15,22 @@ Create a simulation box
   import poresim as ps
 
 
-Set individual job and parameter dictionaries
----------------------------------------------
+Set job, parameter, and cluster dictionaries
+--------------------------------------------
 
 .. code-block:: python
 
-  job = {"min": {"file": "data/simulation/forhlr.sh", "nodes": 2, "np": 20, "wall": "24:00:00"},
-         "nvt": {"file": "data/simulation/forhlr.sh", "nodes": 4, "np": 20, "wall": "24:00:00"},
-         "run": {"file": "data/simulation/forhlr.sh", "maxh": 24, "nodes": 11, "np": 20, "runs": 15, "wall": "24:00:00"}}
+  job = {"min": {"file": "data/horeka.sh", "nodes": 1, "np":  1, "wall": "00:30:00"},
+         "nvt": {"file": "data/horeka.sh", "nodes": 2, "np": 75, "wall": "72:00:00"},
+         "run": {"file": "data/horeka.sh", "maxh": 72, "nodes": 4, "np": 75, "runs": 5, "wall": "72:00:00"}}
 
-  param = {"min": {"file": "data/simulation/pore_min.mdp"},
-           "nvt": {"file": "data/simulation/pore_nvt.mdp", "param": {"NUMBEROFSTEPS": 2000000, "TEMPERATURE_VAL": 298}},
-           "run": {"file": "data/simulation/pore_run.mdp", "param": {"NUMBEROFSTEPS": 20000000, "TEMPERATURE_VAL": 298}}}
+  param = {"min": {"file": "data/mdp/pore_min.mdp"},
+           "nvt": {"file": "data/mdp/pore_nvt.mdp", "param": {"NUMBEROFSTEPS":     20000, "TEMPERATURE_VAL": 295}},
+           "run": {"file": "data/mdp/pore_run.mdp", "param": {"NUMBEROFSTEPS": 200000000, "TEMPERATURE_VAL": 295}}}
+
+  cluster = {"address": "xx_xxxxxxxx@horeka.scc.kit.edu",
+             "directory": "/link/to/simulation/folder/",
+             "queuing": {"add_np": False, "mpi": "$DO_PARALLEL", "shell": "horeka.sh", "submit": "sbatch --partition cpuonly"}}
 
 
 Create box objects
@@ -34,31 +38,33 @@ Create box objects
 
 .. code-block:: python
 
-  box1 = ps.Box("box1")
-  box1.add_box("data/simulation/pore.gro")
-  box1.add_pore("data/simulation/pore.obj")
-  box1.add_mol("EDC", "data/simulation/educt.gro", 10)
-  box1.add_mol("PRD", "data/simulation/productmc.gro", 12)
-  box1.add_mol("BEN", "data/simulation/benzene.gro", "fill", auto_dens=500)
-  box1.add_topol("data/simulation/pore.top", "master")
-  box1.add_topol("data/simulation/grid.itp", "top")
-  box1.add_topol(["data/simulation/educt.top", "data/simulation/productmc.top", "data/simulation/benzene.top"])
-  box1.add_topol(["data/simulation/tms.top", "data/simulation/tmsg.itp"])
-  box1.set_job(job)
-  box1.set_param(param)
-  box1.add_charge_si(1.314730)
+  # Define molecules
+  mols = {"methanol": "1OL", "ethanol": "2OL"}
 
-  box2 = ps.Box("box2", "bxx")
-  box2.add_box("data/simulation/pore.gro")
-  box2.add_pore("data/simulation/pore.obj")
-  box2.add_mol("EDC", "data/simulation/educt.gro", 15)
-  box2.add_mol("PRD", "data/simulation/productmc.gro", 12)
-  box2.add_mol("BEN", "data/simulation/benzene.gro", "fill", auto_dens=500)
-  box2.add_topol("data/simulation/pore.top", "master")
-  box2.add_topol("data/simulation/grid.itp", "top")
-  box2.add_topol(["data/simulation/educt.top", "data/simulation/productmc.top", "data/simulation/benzene.top"])
-  box2.add_topol(["data/simulation/tms.top", "data/simulation/tmsg.itp"])
-  box2.add_charge_si(1.314730)
+  # Define target density
+  dens = {}  # kg/m^3
+  dens["1OL"] = 788.009
+  dens["2OL"] = 792.485
+
+  # Generate simulation boxes
+  boxes = {}
+  pore_link = "pore/"
+  for mol, short in mols.items():
+      sim_name = mol
+      sim_label = short
+      boxes[sim_label] = ps.Box(sim_name)
+      boxes[sim_label].set_label(sim_label)
+      boxes[sim_label].add_box(pore_link+"pore.gro")
+      boxes[sim_label].add_pore(pore_link+"pore.yml")
+      boxes[sim_label].add_struct("mol_list", pore_link+"pore.obj")
+      boxes[sim_label].add_struct("SURFACE", "data/surface/tms/tms.gro")
+      boxes[sim_label].add_mol(short, "data/mols/"+mol+"/"+mol+".gro", "fill", auto_dens=dens[short])
+      boxes[sim_label].add_topol(pore_link+"pore.top", "master")
+      boxes[sim_label].add_topol(pore_link+"grid.itp", "top")
+      boxes[sim_label].add_topol(["data/surface/tms/tms.top", "data/surface/tms/tmsg.itp", "data/mols/"+mol+"/"+mol+".top"])
+      boxes[sim_label].set_job(job)
+      boxes[sim_label].set_param(param)
+      boxes[sim_label].add_charge_si(1.28)
 
 
 Create simulation objects
@@ -66,8 +72,13 @@ Create simulation objects
 
 .. code-block:: python
 
-  sim1 = ps.Simulate("output/series", [box1, box2])  # Series
-  sim2 = ps.Simulate("output/single", box1)  # Single
+  # Simulation series
+  sim_series = ps.Simulate("sim/amorph_paper_res", [box for name, box in boxes.items()])
+  sim_series.set_cluster(cluster)
+
+  # Single simulation
+  sim_single = ps.Simulate("output/single", box["1OL"])
+  sim_single.set_cluster(cluster)
 
 
 Generate folder structure
@@ -75,16 +86,16 @@ Generate folder structure
 
 .. code-block:: python
 
-  sim1.generate()
-  sim2.generate()
+  sim_series.generate()
+  sim_single.generate()
 
 
-Create Benchmark
+Create benchmark
 ----------------
 
 .. code-block:: python
 
-  bench = ps.Benchmark(box1,20,list(range(1,20+1)),"output/bench")
+  bench = ps.Benchmark(box["1OL"], 75, list(range(1,20+1)), "output/bench")
   bench.generate()
 
 

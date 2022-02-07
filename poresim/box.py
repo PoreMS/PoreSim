@@ -50,17 +50,6 @@ class Box:
         """
         self._sim_dict["struct"]["PORE"] = link
 
-    def add_pore_yml(self, link):
-        """Add pore object to structure folder.
-
-        Parameters
-        ----------
-        link : string
-            Pore object link
-        """
-        self._sim_dict["struct"]["PORE YML"] = link
-
-
     def add_mol(self, short, link, inp, num_atoms="gro", auto_dens=None):
         """Add a molecule to the simulation box. A unique short name and a
         structure-file link have to be given.
