@@ -4,7 +4,7 @@
 
 [![PyPI Version](https://img.shields.io/badge/PyPI-0.1.1-orange)](https://pypi.org/project/PoreSim/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Ajax23/PoreSim/blob/master/LICENSE)
-[![DOI](https://zenodo.org/badge/343372462.svg)](https://zenodo.org/badge/latestdoi/343372462)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5993763.svg)](https://doi.org/10.5281/zenodo.5993763)
 [![Build Status](https://github.com/Ajax23/PoreSim/actions/workflows/workflow.yml/badge.svg)](https://github.com/Ajax23/PoreSim/actions/workflows/workflow.yml)
 [![codecov](https://codecov.io/gh/Ajax23/PoreSim/branch/master/graph/badge.svg)](https://codecov.io/gh/Ajax23/PoreSim)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Ajax23/PoreSim.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ajax23/PoreSim/context:python)
@@ -20,7 +20,7 @@ The docs include an example for creating [simulation boxes](http://ajax23.github
 
 PoreSim supports Python 3.5+.
 
-Installation requires [pyyaml](https://pypi.org/project/PyYAML/) and [porems](https://pypi.org/project/porems/).
+Installation requires [pyyaml](https://pypi.org/project/PyYAML/).
 
 
 ## Installation
