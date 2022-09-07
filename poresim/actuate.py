@@ -5,6 +5,7 @@
 ################################################################################
 
 
+from re import A
 import poresim.utils as utils
 
 
@@ -259,6 +260,30 @@ class Actuate:
             file_out.write("cd "+back+"../\n")
             file_out.write("\n")
 
+    def _analyze(self):
+        """Create analyse job files.
+
+        """
+        # Get simulation properties
+        np = str(int(20))
+        nodes = str(int(1))
+        wall = "30:00:00"
+
+        # Create shell
+        utils.mkdirp(self._link+"ana")
+        link_shell = self._link+"ana/ana.job"
+        utils.copy(self._job["run"]["file"], link_shell)
+
+        # Change variables
+        utils.replace(link_shell, "SIMULATIONNODES", nodes)
+        utils.replace(link_shell, "SIMULATIONPROCS", np)
+        utils.replace(link_shell, "SIMULATIONTIME", wall)
+        utils.replace(link_shell, "SIMULATIONLABEL",self._label+"_"+str("ana"))
+        utils.replace(link_shell, "COMMANDCHANGEDIR", "cd "+self._clr_link+str("ana"))
+
+        # Insert into file
+        utils.replace(link_shell, "COMMANDGROMACS", "python ana.py")
+
 
     ##################
     # Public Methods #
@@ -272,3 +297,5 @@ class Actuate:
         # Create simulation files for the production cycle
         if "run" in self._job:
             self._simulation()
+
+        self._analyze()

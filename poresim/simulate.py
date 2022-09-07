@@ -8,6 +8,7 @@
 import os
 import yaml
 import shutil
+from jinja2 import Template
 
 import poresim.utils as utils
 
@@ -125,20 +126,26 @@ class Simulate:
             # Create simulation shells
             job = self._sim_dict["job"] if box.get_job() is None else box.get_job()
             actuate = Actuate(self._link, box_link, self._sim_dict["cluster"], job, box.get_label(), box.get_struct())
-            actuate.generate_files()
+            actuate.generate_files()        
+
+            # Create list for automated filling template
+            jinja2_dict = []
+            for mol in box.get_mols():
+                jinja2_dict.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "submit":  self._sim_dict["cluster"]["queuing"]["submit"]+" min.job"})
 
             # Create analysis shell file for automated filling
-            for mol in box.get_mols():
-                if box.get_mols()[mol][0]=="fill":
-                    analyze = Analyze(self._link, box_link)
-                    analyze.extract_mol("nvt")
-                    # Copy automated filling
-                    if box.get_mols()[mol][2] is not None:
-                        utils.copy(os.path.split(__file__)[0]+"/templates/auto_dens.py", box_link+"ana/ana.py")
-                        utils.replace(box_link+"ana/ana.py", "MOLSHORT", mol)
-                        utils.replace(box_link+"ana/ana.py", "MOLLINK", "../_gro/"+box.get_struct()[mol].split("/")[-1])
-                        utils.replace(box_link+"ana/ana.py", "TARGETDENS", str(box.get_mols()[mol][2]))
-                        utils.replace(box_link+"ana/ana.py", "SUBMITCOMMAND", self._sim_dict["cluster"]["queuing"]["submit"]+" min.job")
+            if box.get_mols()[mol][0]=="fill":
+                analyze = Analyze(self._link, box_link)
+                analyze.extract_mol("nvt")
+                if box.get_mols()[mol][2] is not None:
+                    # Open template with jinja2
+                    with open(os.path.split(__file__)[0]+"/templates/auto_dens.py") as file_:
+                        template = Template(file_.read())
+                    # Adjust template 
+                    output = template.render(mols=jinja2_dict)
+                    #Save adjusted template
+                    with open(box_link+"ana/ana.py", "w") as file_:
+                        file_.write(output)
 
             # End message
             print("Finished simulation folder - "+box.get_label()+" ...")

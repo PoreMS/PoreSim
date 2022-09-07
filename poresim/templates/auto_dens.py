@@ -14,7 +14,11 @@ if __name__ == "__main__":
     # python ana.py
 
     # Load molecule
-    mol = pms.Molecule("molecule", "MOLSHORT", inp="MOLLINK")
+    mol_dict = {}
+    {% for mol in mols -%}
+    mol_dict["{{mol.name }}"] = pms.Molecule("molecule", "{{mol.name }}", inp="{{mol.link }}")
+    {% endfor %}
+
 
     ## Silanol
     sioh = pms.Molecule("sioh", "SL")
@@ -27,7 +31,10 @@ if __name__ == "__main__":
 
     # Set analysis
     ana_list = {}
-    ana_list["MOLSHORT"] = {"traj": "traj.xtc", "dens": True, "dens_box": True, "diff": False, "mc_trans": False, "mc": False, "mol": mol, "atoms": []}
+    {% for mol in mols -%}
+    ana_list["{{mol.name }}"] = {"traj": "traj_{{mol.name }}.xtc", "dens": True, "dens_box": True, "diff": False, "mc_trans": False, "mc": False, "mol": mol_dict["{{mol.name }}"], "atoms": []}
+    {% endfor %}
+
     # ana_list["sioh"] = {"traj": "traj_sioh.xtc", "dens": True, "dens_box": True, "diff": False, "mc_trans": False, "mc": False, "mol": sioh, "atoms": ["O1"]}
 
     # Run analysis
@@ -58,12 +65,21 @@ if __name__ == "__main__":
     is_auto = True
     if is_auto:
         # Calculate density - area is given in bins
-        dens = pa.density.bins("dens_MOLSHORT.obj", target_dens=TARGETDENS, area=[[10, 90], [10, 50]])
-
+        dens = {}
+        {% for mol in mols -%}
+        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}.obj", target_dens={{mol.target_dens }}, area=[[10, 90], [10, 50]])
+        {% endfor %}
         # Fill and rerun
-        num_diff = dens["diff"]
-        if num_diff > 10:
+        num_diff = {}
+        {% for mol in mols -%}
+        num_diff["{{mol.name }}"] = dens["{{mol.name }}"]["diff"]
+        {% endfor %}
+        if all(i<10 for i in num_diff.values()):
             ps.utils.copy("../_fill/fillBackup.sh", "../_fill/fill.sh")
-            ps.utils.replace("../_fill/fill.sh", "FILLDENS", str(int(num_diff)))
-
-            os.system("cd ../_fill;sh fill.sh;cd ../min;SUBMITCOMMAND")
+            {% for mol in mols -%}
+            if num_diff["{{mol.name }}"] > 10:
+                ps.utils.replace("../_fill/fill.sh", "FILLDENS_{{mol.name }}", str(int(num_diff["{{mol.name }}"])))
+            else:
+                ps.utils.replace("../_fill/fill.sh", "FILLDENS_{{mol.name }}", str(int(0)))
+            {% endfor %}
+                os.system("cd ../_fill;sh fill.sh;cd ../min;{{mols.submit }}")
