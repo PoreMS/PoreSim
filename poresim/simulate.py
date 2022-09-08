@@ -131,7 +131,7 @@ class Simulate:
             # Create list for automated filling template
             jinja2_dict = []
             for mol in box.get_mols():
-                jinja2_dict.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "submit":  self._sim_dict["cluster"]["queuing"]["submit"]+" min.job"})
+                jinja2_dict.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2])})
 
             # Create analysis shell file for automated filling
             if box.get_mols()[mol][0]=="fill":
@@ -142,7 +142,7 @@ class Simulate:
                     with open(os.path.split(__file__)[0]+"/templates/auto_dens.py") as file_:
                         template = Template(file_.read())
                     # Adjust template 
-                    output = template.render(mols=jinja2_dict)
+                    output = template.render(mols=jinja2_dict, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job")
                     #Save adjusted template
                     with open(box_link+"ana/ana.py", "w") as file_:
                         file_.write(output)

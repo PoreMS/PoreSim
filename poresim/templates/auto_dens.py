@@ -82,4 +82,5 @@ if __name__ == "__main__":
             else:
                 ps.utils.replace("../_fill/fill.sh", "FILLDENS_{{mol.name }}", str(int(0)))
             {% endfor %}
-                os.system("cd ../_fill;sh fill.sh;cd ../min;{{mols.submit }}")
+
+                os.system("cd ../_fill;sh fill.sh;cd ../min;{{submit }}")
