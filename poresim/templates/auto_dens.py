@@ -74,7 +74,7 @@ if __name__ == "__main__":
         {% for mol in mols -%}
         num_diff["{{mol.name }}"] = dens["{{mol.name }}"]["diff"]
         {% endfor %}
-        if all(i<10 for i in num_diff.values()):
+        if (all(i<10 for i in num_diff.values()))==False:
             ps.utils.copy("../_fill/fillBackup.sh", "../_fill/fill.sh")
             {% for mol in mols -%}
             if num_diff["{{mol.name }}"] > 10:
@@ -82,5 +82,4 @@ if __name__ == "__main__":
             else:
                 ps.utils.replace("../_fill/fill.sh", "FILLDENS_{{mol.name }}", str(int(0)))
             {% endfor %}
-
                 os.system("cd ../_fill;sh fill.sh;cd ../min;{{submit }}")
