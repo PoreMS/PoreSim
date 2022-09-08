@@ -73,7 +73,7 @@ class Analyze:
             out_string += "EOF\n\n"
             file_out.write(out_string)
             
-            file_out.write("done")
+            file_out.write("done\n\n")
 
 
             file_out.write("echo \"System "+self._box_link+ " - Finished Extraction ...\"\n\n")
