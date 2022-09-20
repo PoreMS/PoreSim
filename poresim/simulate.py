@@ -123,7 +123,7 @@ class Simulate:
             construct = Construct(self._link, box_link, box.get_mols(), box.get_struct())
             construct.generate_files()
 
-            # Create simulation shells
+            # Create simulation shellsboxes[sim_name].add_struct("GENERATE", "data/generate.sh")
             job = self._sim_dict["job"] if box.get_job() is None else box.get_job()
             actuate = Actuate(self._link, box_link, self._sim_dict["cluster"], job, box.get_label(), box.get_struct())
             actuate.generate_files()        
@@ -138,9 +138,15 @@ class Simulate:
                 analyze = Analyze(self._link, box_link)
                 analyze.extract_mol("nvt")
                 if box.get_mols()[mol][2] is not None:
-                    # Open template with jinja2
-                    with open(os.path.split(__file__)[0]+"/templates/auto_dens.py") as file_:
-                        template = Template(file_.read())
+                    if "PORE" in box.get_struct():
+                        # Open template with jinja2
+                        with open(os.path.split(__file__)[0]+"/templates/auto_dens.py") as file_:
+                            template = Template(file_.read())
+                    else:
+                        # Open template with jinja2
+                        with open(os.path.split(__file__)[0]+"/templates/auto_dens_box.py") as file_:
+                            template = Template(file_.read())
+
                     # Adjust template 
                     output = template.render(mols=jinja2_dict, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job")
                     #Save adjusted template
