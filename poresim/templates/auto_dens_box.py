@@ -50,7 +50,7 @@ if __name__ == "__main__":
         # Calculate density - area is given in bins
         dens = {}
         {% for mol in mols -%}
-        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}.obj", target_dens={{mol.target_dens }}, area=[[], [0,150]])
+        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}_box.obj", target_dens={{mol.target_dens }}, area=[[0,1], [0,150]])
         {% endfor %}
         # Fill and rerun
         num_diff = {}
