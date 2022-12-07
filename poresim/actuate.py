@@ -96,10 +96,7 @@ class Actuate:
                 utils.copy(self._job[step]["file"], link_shell)
 
                 # Simulation options
-                utils.replace(link_shell, "SIMULATIONNODES", nodes[step])
-                utils.replace(link_shell, "SIMULATIONPROCS", np[step])
-                utils.replace(link_shell, "SIMULATIONGPU", ":gpus=1:exclusive_process" if gpu[step] else "")
-                utils.replace(link_shell, "SIMULATIONTIME", wall[step])
+                utils.replace(link_shell, "SIMULAself._is_poreTIONTIME", wall[step])
                 utils.replace(link_shell, "SIMULATIONLABEL", self._label+"_"+step)
                 utils.replace(link_shell, "COMMANDCHANGEDIR", "cd "+self._clr_link+step)
 
@@ -261,7 +258,7 @@ class Actuate:
             file_out.write("\n")
 
     def _analyze(self):
-        """Create analyse job files.
+        """Create analyse job files for poreana.
 
         """
         # Get simulation properties
@@ -284,6 +281,34 @@ class Actuate:
         # Insert into file
         utils.replace(link_shell, "COMMANDGROMACS", "python ana.py")
 
+    def _analyze_gro(self):
+        """Create analyse job files for gromacs.
+
+        """
+        # Get simulation properties
+        np = str(int(20))
+        nodes = str(int(1))
+        wall = "30:00:00"
+
+        # Create shell
+        utils.mkdirp(self._link+"ana")
+        link_shell = self._link+"ana/ana_msd.job"
+        utils.copy(self._job["run"]["file"], link_shell)
+
+        # Change variables
+        utils.replace(link_shell, "SIMULATIONNODES", nodes)
+        utils.replace(link_shell, "SIMULATIONPROCS", np)
+        utils.replace(link_shell, "SIMULATIONTIME", wall)
+        utils.replace(link_shell, "SIMULATIONLABEL",self._label+"_"+str("ana"))
+        utils.replace(link_shell, "COMMANDCHANGEDIR", "cd "+self._clr_link+str("ana"))
+
+        # Insert into file
+        # Check if backup folder is given
+       
+
+        out_string = "\necho \"Set MOLECULEINDEX ...\"; exit;\n\n# Extract molecules from trajectory\ndeclare -A mols\n\nmols[]=""\n\nfor key in \"${!mols[@]}\"; do\ngmx_mpi msd -f ../run/run -s run/run -o msd_${mols[$key]}.xvg<<EOF\n$key\n0\nEOF"
+        utils.replace(link_shell, "COMMANDGROMACS", out_string)
+
 
     ##################
     # Public Methods #
@@ -299,3 +324,5 @@ class Actuate:
             self._simulation()
         
         self._analyze()
+        if not self._is_pore:
+            self._analyze_gro()

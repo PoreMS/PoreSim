@@ -132,7 +132,7 @@ class Simulate:
             jinja2_dict = []
             for mol in box.get_mols():
                 jinja2_dict.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "fill": box.get_mols()[mol][0]=="fill"})
-            print(box.get_mols()[mol][2])
+            print(jinja2_dict)
             # Create analysis shell file for automated filling
             if (any(mol["fill"] for mol in jinja2_dict))==True:
                 analyze = Analyze(self._link, box_link)
@@ -141,17 +141,33 @@ class Simulate:
                     # Open template with jinja2
                     with open(os.path.split(__file__)[0]+"/templates/auto_dens.py") as file_:
                         template = Template(file_.read())
-                else:
-                    # Open template with jinja2
-                    with open(os.path.split(__file__)[0]+"/templates/auto_dens_box.py") as file_:
-                        template = Template(file_.read())
 
                     # Adjust template 
                     output = template.render(mols=jinja2_dict, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job")
                     #Save adjusted template
                     with open(box_link+"ana/ana.py", "w") as file_:
                         file_.write(output)
+                        
+                else:
+                    print("hi")
+                    # Open template with jinja2
+                    with open(os.path.split(__file__)[0]+"/templates/auto_dens_box.py") as file_:
+                        template = Template(file_.read())
 
+                    # Adjust template 
+                    output = template.render(mols=jinja2_dict, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job", fill = True)
+                    #Save adjusted template
+                    with open(box_link+"ana/ana.py", "w") as file_:
+                        file_.write(output)
+            else:
+                print("hi2")
+                analyze = Analyze(self._link, box_link)
+                analyze.extract_mol("run")
+                with open(os.path.split(__file__)[0]+"/templates/auto_dens_box.py") as file_:
+                        template = Template(file_.read())
+                output = template.render(mols=jinja2_dict, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job", fill = False)
+                with open(box_link+"ana/ana.py", "w") as file_:
+                        file_.write(output)
             # End message
             print("Finished simulation folder - "+box.get_label()+" ...")
 

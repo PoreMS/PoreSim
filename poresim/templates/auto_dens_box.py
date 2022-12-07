@@ -44,6 +44,8 @@ if __name__ == "__main__":
             model = pa.CosineModel("diff_"+ana_name+"_trans.obj", 6, 10)
             pa.MC().run(model, "diff_"+ana_name+"_mc_cos.obj", nmc_eq=1000000, nmc=1000000)
 
+    
+    {% if fill %}
     # Automation
     is_auto = True
     if is_auto:
@@ -65,4 +67,8 @@ if __name__ == "__main__":
             else:
                 ps.utils.replace("../_fill/fill.sh", "FILLDENS_{{mol.name }}", str(int(0)))
             {% endfor %}
-            os.system("cd ../_fill;sh fill.sh;cd ../min;{{submit }}")
+            os.system("cd ../_fill;sh fill.sh;cd ../min;{{submit }}") 
+    
+    {% else %}
+    # Nothing to fill up
+    {% endif %}    
