@@ -47,7 +47,6 @@ class Actuate:
     ###################
     def _equilibration(self):
         """Create equilibration simulation shells for
-
         * **min** for energy minimization
         * **nvt** for temperature equilibration
         * **npt** for pressure equilibration
@@ -80,8 +79,8 @@ class Actuate:
                 "nvt": "../"+sim_min+"/"+sim_min+".gro",
                 "npt": "../"+sim_nvt+"/"+sim_nvt+".gro"}
         check = {"min": "",
-                 "nvt": "",
-                 "npt": "-t ../"+sim_nvt+"/"+sim_nvt+".cpt "}
+                    "nvt": "",
+                    "npt": "-t ../"+sim_nvt+"/"+sim_nvt+".cpt "}
         forward = {"min": sim_nvt, "nvt": sim_npt, "npt": ""}
 
         if "npt" not in self._job:
@@ -96,7 +95,10 @@ class Actuate:
                 utils.copy(self._job[step]["file"], link_shell)
 
                 # Simulation options
-                utils.replace(link_shell, "SIMULAself._is_poreTIONTIME", wall[step])
+                utils.replace(link_shell, "SIMULATIONNODES", nodes[step])
+                utils.replace(link_shell, "SIMULATIONPROCS", np[step])
+                utils.replace(link_shell, "SIMULATIONGPU", ":gpus=1:exclusive_process" if gpu[step] else "")
+                utils.replace(link_shell, "SIMULATIONTIME", wall[step])
                 utils.replace(link_shell, "SIMULATIONLABEL", self._label+"_"+step)
                 utils.replace(link_shell, "COMMANDCHANGEDIR", "cd "+self._clr_link+step)
 
