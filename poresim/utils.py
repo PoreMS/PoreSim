@@ -7,10 +7,14 @@
 
 import os
 import fileinput
-
+import yaml
 from shutil import copyfile
 
 
+def load(link):
+    with open(link, "r") as file_in:
+        return yaml.load(file_in, Loader=yaml.UnsafeLoader)
+    
 def mkdirp(directory):
     """Create directory if it does not exist.
 
