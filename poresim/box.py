@@ -50,7 +50,7 @@ class Box:
         """
         self._sim_dict["struct"]["PORE"] = link
 
-    def add_mol(self, short, link, inp, num_atoms="gro", auto_dens=None, mass = None, in_pore=False):
+    def add_mol(self, short, link, inp, num_atoms="gro", auto_dens=None, mass = None,  section="both",area= [], box = [], kwargs_gmx = {}):
         """Add a molecule to the simulation box. A unique short name and a
         structure-file link have to be given.
 
@@ -101,7 +101,7 @@ class Box:
 
         # Add to global list
         self._sim_dict["struct"][short] = link
-        self._sim_dict["mols"][short] = [inp, num_atoms, auto_dens, mass, in_pore]
+        self._sim_dict["mols"][short] = [inp, num_atoms, auto_dens, mass,  section,area, box, kwargs_gmx]
 
     def add_struct(self, ident, link):
         """Add file link to the structure dictionary.

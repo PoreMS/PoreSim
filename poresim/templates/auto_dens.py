@@ -40,7 +40,7 @@ if __name__ == "__main__":
     # Run analysis
     for ana_name, ana_props in ana_list.items():
         if ana_props["dens_box"]:
-            sample = pa.Sample(pore["dimensions"], ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
+            sample = pa.Sample(pore["system"]["dimensions"], ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
             sample.init_density("dens_"+ana_name+"_box.obj", remove_pore_from_res=True)
             sample.sample(is_parallel=True)
 
@@ -76,14 +76,14 @@ if __name__ == "__main__":
         num_diff["{{mol.name }}"] = dens["{{mol.name }}"]["diff"]       
         with open("../_gro/" + "position_{}.dat".format("{{mol.name }}"), "w") as file_out:
             for i in range(int(num_diff["{{mol.name }}"]/2)):
-                out_string = str(pore["dimensions"][0]/2) + " "
-                out_string += str(pore["dimensions"][1]/2) + " "
-                out_string += str(pore["reservoir"]/2) + "\n"
+                out_string = str(pore["system"]["dimensions"][0]/2) + " "
+                out_string += str(pore["system"]["dimensions"][1]/2) + " "
+                out_string += str(pore["system"]["reservoir"]/2) + "\n"
                 file_out.write(out_string)
             for i in range(int(num_diff["{{mol.name }}"]/2)):
-                out_string = str(pore["dimensions"][0]/2) + " "
-                out_string += str(pore["dimensions"][1]/2) + " "
-                out_string += str(pore["dimensions"][2] -pore["reservoir"]/2) + "\n"
+                out_string = str(pore["system"]["dimensions"][0]/2) + " "
+                out_string += str(pore["system"]["dimensions"][1]/2) + " "
+                out_string += str(pore["system"]["dimensions"][2] -pore["system"]["reservoir"]/2) + "\n"
                 file_out.write(out_string)
             file_out.close()
         {% endfor %}
