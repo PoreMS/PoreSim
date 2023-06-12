@@ -1,5 +1,5 @@
 # v0.1.2 (Upcoming)
-* -
+* Possibility to fill up system to a target density with more than one molecule
 
 # v0.1.1
 * Update for PoreMS 0.2.5 and PoreAna 0.2.2

@@ -281,6 +281,7 @@ class Actuate:
         utils.replace(link_shell, "COMMANDCHANGEDIR", "cd "+self._clr_link+str("ana"))
 
         # Insert into file
+        utils.replace(link_shell, "COMMANDGROMACS", "sh ana.sh")
         utils.replace(link_shell, "COMMANDGROMACS", "python ana.py")
 
     def _analyze_gro(self):
@@ -306,8 +307,6 @@ class Actuate:
 
         # Insert into file
         # Check if backup folder is given
-       
-
         out_string = "\necho \"Set MOLECULEINDEX ...\"; exit;\n\n# Extract molecules from trajectory\ndeclare -A mols\n\nmols[]=""\n\nfor key in \"${!mols[@]}\"; do\ngmx_mpi msd -f ../run/run -s run/run -o msd_${mols[$key]}.xvg<<EOF\n$key\n0\nEOF"
         utils.replace(link_shell, "COMMANDGROMACS", out_string)
 
@@ -325,6 +324,9 @@ class Actuate:
         if "run" in self._job:
             self._simulation()
         
-        self._analyze()
-        if not self._is_pore:
-            self._analyze_gro()
+            # Set ana.job file
+            self._analyze()
+
+            # Set a msd diffusion file is not a pore system is considered
+            if not self._is_pore:
+                self._analyze_gro()
