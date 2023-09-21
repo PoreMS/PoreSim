@@ -120,6 +120,7 @@ class Simulate:
             topol.generate_files()
 
             # Create structure files and shells
+            print(self._link, box_link)
             construct = Construct(self._link, box_link, box.get_mols(), box.get_struct())
             construct.generate_files()
 

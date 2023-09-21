@@ -82,10 +82,14 @@ class Construct:
     def _pos_dat(self):
         
         for mol in self._mols:
+            print(self._mols[mol])
+            print(self._box_link)
+            print(self._sim_link)
+            print(self._box_path)
             # Position file for reservoir
             if (self._mols[mol][0]=="fill" and not self._mols[mol][6] and self._mols[mol][4] in ["res", "both"]):
                 num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["reservoir"]*2*0.5)
-                with open(self._sim_link+"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
+                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
                     for i in range(int(num/2)):
                         out_string = str(self._pore_props["system"]["dimensions"][0]/2) + " "
                         out_string += str(self._pore_props["system"]["dimensions"][1]/2) + " "
@@ -102,7 +106,7 @@ class Construct:
                     if pore_id[:5]=="shape":
                         if (self._pore_props[pore_id]["parameter"]["central"]==[0,0,1]) and (self._mols[mol][4] in ["pore", "both"]): 
                             num_pore = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*np.pi*self._pore_props[pore_id]["diameter"]**2/4*(self._pore_props[pore_id]["parameter"]["length"])*0.5)
-                            with open(self._sim_link+"_gro/" + "position_{}_{}.dat".format(pore_id,mol), "w") as file_out:
+                            with open(self._box_path +"_gro/" + "position_{}_{}.dat".format(pore_id,mol), "w") as file_out:
                                 for i in range(num_pore):
                                     out_string = str(self._pore_props[pore_id]["parameter"]["centroid"][0]) + " "
                                     out_string += str(self._pore_props[pore_id]["parameter"]["centroid"][1]) + " "
@@ -141,7 +145,7 @@ class Construct:
                     for pore_id,j in zip(self._pore_props.keys(),range(j)):
                         if pore_id[:5]=="shape":
                             if self._pore_props[pore_id]["parameter"]["central"]==[0,0,1]:
-                                with open(self._sim_link+"_gro/" + "position_{}_{}.dat".format(pore_id,mol), "w") as file_out:
+                                with open(self._box_path +"_gro/" + "position_{}_{}.dat".format(pore_id,mol), "w") as file_out:
                                     for i in range(num[j]):
                                         out_string = str(self._pore_props[pore_id]["parameter"]["centroid"][0]) + " "
                                         out_string += str(self._pore_props[pore_id]["parameter"]["centroid"][1]) + " "
@@ -150,7 +154,7 @@ class Construct:
                                     file_out.close()
 
                 if self._mols[mol][4] in ["res", "both"]:
-                    with open(self._sim_link+"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
+                    with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
                         for i in range(num[0]):
                             out_string = str(self._pore_props["system"]["dimensions"][0]/2) + " "
                             out_string += str(self._pore_props["system"]["dimensions"][1]/2) + " "
@@ -169,7 +173,7 @@ class Construct:
             # Position file for box system 
             elif self._mols[mol][0]=="fill" and self._mols[mol][5]:
                 num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*(self._mols[mol][5][1]-self._mols[mol][5][0]))
-                with open(self._sim_link+"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
+                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
                     for i in range(num):
                         out_string = str(self._mols[mol][6][0]/2) + " "
                         out_string += str(self._mols[mol][6][1]/2) + " "
@@ -180,7 +184,7 @@ class Construct:
             # Position file for box system to put molecules in a certain area
             elif self._mols[mol][0]!="fill" and self._mols[mol][5]:
                 num = self._mols[mol][0]
-                with open(self._sim_link+"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
+                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
                     for area in self._mols[mol][5]:
                         for i in range(int(num/len(self._mols[mol][5]))):
                             out_string = str(self._mols[mol][6][0]/2) + " "
@@ -213,7 +217,11 @@ class Construct:
             file_out.write("echo \"Load gromacs ...\"; exit;\n")
             if "fill" in [self._mols[mol][0] for mol in self._mols]:
                 file_out.write("echo \"Set ions names in sort script if necessary ...\"; exit;\n")
+            
+            # First lines for standard gromacs command
             gmx_standard =  "gmx_mpi insert-molecules " + "-f "+folder_gro+file_box+" " +  "-o "+folder_gro+file_box+" "
+            
+            # Loop over the molecules which you want to insert into the system
             for mol in self._mols:
                 # Fill box
                 if "PORE" in self._struct:
@@ -221,7 +229,7 @@ class Construct:
                     file_out.write("# Fill Reservoir\n")
                     print(self._mols[mol][-1])
                     if (self._mols[mol][0]=="fill") and (self._mols[mol][3]!=None):
-                        num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["reservoir"]*2*0.5)
+                        num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["reservoir"]*2)
                     else:
                         num = 0
                     if (self._mols[mol][4] in ["res","both"]):
@@ -242,7 +250,7 @@ class Construct:
                         if pore_id[:5]=="shape":
                             if self._pore_props[pore_id]["parameter"]["central"]==[0,0,1]:
                                 if (self._mols[mol][0]=="fill" and self._mols[mol][3]!=None ):
-                                    num_pore = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*np.pi*self._pore_props[pore_id]["diameter"]**2/4*(self._pore_props["system"]["reservoir"])*0.5)
+                                    num_pore = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*np.pi*self._pore_props[pore_id]["diameter"]**2/4*(self._pore_props["system"]["reservoir"]))
                                 else:
                                     num_pore = 0
                                 if self._mols[mol][4]!="res":
@@ -376,9 +384,12 @@ class Construct:
                     out_string += "-f "+folder_gro+file_box+" "
                     out_string += "-o "+folder_gro+file_box+" "
                     out_string += "-ci "+folder_gro+self._struct[mol].split("/")[-1]+" "
-                    out_string += "-try 10000 "
-                    out_string += "-scale 0.57 "
-                    #out_string += "-dr "+ str(self._pore_props["system"]["dimensions"][0]/2) + " " + str(self._pore_props["system"]["dimensions"][1]/2) + " " + str(self._pore_props["system"]["reservoir"]/2) + " "
+                    out_string += "-try 1000 "
+                    out_string += "-scale 0.47 "
+                    if "PORE" in self._struct:
+                        out_string += "-dr "+ str(self._pore_props["system"]["dimensions"][0]/2) + " " + str(self._pore_props["system"]["dimensions"][1]/2) + " " + str(self._pore_props["system"]["reservoir"]/2) + " "
+                    else:
+                        out_string += "-dr "+ str(self._pore_props["system"]["dimensions"][0]/2) + " " + str(self._pore_props["system"]["dimensions"][1]/2) + " " + str(self._pore_props["system"]["dimensions"]/2) + " "
                     out_string += "-ip "+ folder_gro + "position_{}.dat".format(mol)  +" " 
                     out_string += "-nmol "
                     out_string += str(10000) if self._mols[mol][2] is None else ("FILLDENS_" + mol)
@@ -420,8 +431,8 @@ class Construct:
         utils.mkdirp(self._box_path+"_gro")
 
         # Create construction shell file
-        #if "PORE" in self._struct:
-        self._pos_dat()
+        if "PORE" in self._struct:
+            self._pos_dat()
 
         # Copy structure files
         for mol in self._struct:
@@ -434,11 +445,11 @@ class Construct:
                 utils.copy(file_link, self._box_path+"_gro/"+"plumed.dat")
             else:
                 utils.copy(file_link, self._box_path+"_gro/"+file_link.split("/")[-1])
-        utils.mkdirp(self._box_path+"_fill")
+  
         # Pore simulation that needs to be filled
         if "fill" in [self._mols[mol][0] for mol in self._mols]:
             # Create filling backup folder
-    
+            utils.mkdirp(self._box_path+"_fill")
 
             # Create shell files
             self._fill()
@@ -451,4 +462,4 @@ class Construct:
             # if "PORE" in self._struct:
             #     utils.copy(os.path.split(__file__)[0]+"/templates/empty_grid.py", self._box_path+"_fill/"+"empty_grid.py")
 
-        utils.copy(os.path.split(__file__)[0]+"/templates/sort.py", self._box_path+"_fill/"+"sort.py")
+            utils.copy(os.path.split(__file__)[0]+"/templates/sort.py", self._box_path+"_fill/"+"sort.py")

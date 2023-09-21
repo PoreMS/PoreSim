@@ -297,5 +297,5 @@ class Actuate:
         if "run" in self._job:
             self._simulation()
         
-        self._analyze()
+            self._analyze()
 

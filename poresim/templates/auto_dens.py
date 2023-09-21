@@ -47,7 +47,7 @@ if __name__ == "__main__":
         if ana_props["dens"] or ana_props["diff"]:
             sample = pa.Sample("../_gro/pore.yml", ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
             if ana_props["dens"]:
-                sample.init_density("dens_"+ana_name+".obj", remove_pore_from_res=True)
+                sample.init_density("dens_"+ana_name+".obj", remove_pore_from_res=False)
             if ana_props["diff"]:
                 sample.init_diffusion_bin("diff_"+ana_name+".obj", bin_num=35)
             sample.sample(is_parallel=True)
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         # Calculate density - area is given in bins
         dens = {}
         {% for mol in mols2 -%}
-        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}.obj", target_dens={{mol.target_dens }}, area=[[10, 90], [10, 50]])
+        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}.obj", target_dens={{mol.target_dens }}, area=[[0, 100], [0, 100]])
         {% endfor %}
         # Fill and rerun
         num_diff = {}
