@@ -108,7 +108,7 @@ class Construct:
                 out_string += "-f "+folder_gro+file_box+" "
                 out_string += "-o "+folder_gro+file_box+" "
                 out_string += "-ci "+folder_gro+self._struct[mol].split("/")[-1]+" "
-                out_string += "-nmol "+str(int(self._mols[mol][0])) if not self._mols[mol][0]=="fill" else "-nmol "+str(10000)
+                out_string += "-nmol "+str(int(self._mols[mol][0])) if not self._mols[mol][0]=="fill" else "-nmol "+str(1000)
                 out_string += " >> logging.log 2>&1\n"
                 if (self._mols[mol][0]=="fill") and ("PORE" in self._struct):
                     out_string += "python "+folder_fill+"empty_grid.py "+folder_gro+" "+mol+" "+str(self._mols[mol][1])+"\n"
@@ -202,7 +202,7 @@ class Construct:
                     out_string += "-try 10000 "
                     out_string += "-scale 0.57 "
                     out_string += "-nmol "
-                    out_string += str(10000) if self._mols[mol][2] is None else ("FILLDENS_" + mol)
+                    out_string += 0 if self._mols[mol][2] is None else ("FILLDENS_" + mol)
                     out_string += " >> logging.log 2>&1\n"
                     if "PORE" in self._struct:
                         out_string += "python empty_grid.py "+folder_gro+" "+mol+" "+str(self._mols[mol][1])+"\n"
