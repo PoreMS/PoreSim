@@ -19,7 +19,7 @@ The docs include an example for creating [simulation boxes](http://ajax23.github
 
 PoreSim supports Python 3.5+.
 
-Installation requires [pyyaml](https://pypi.org/project/PyYAML/).
+Installation requires [pyyaml](https://pypi.org/project/PyYAML/) and [jinja2](https://pypi.org/project/Jinja2/).
 
 
 ## Installation
