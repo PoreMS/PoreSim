@@ -66,13 +66,18 @@ class Analyze:
             out_string = "gmx_mpi trjconv "
             out_string += "-f "+folder_step+file_trr+" "
             out_string += "-s "+folder_step+file_tpr+" "
-            out_string += "-o traj${mols[$key]}.xtc "
+            out_string += "-o traj_${mols[$key]}.xtc "
             out_string += "-pbc mol "
             out_string += "<<EOF\n"
             out_string += "$key\n"
             out_string += "EOF\n\n"
             file_out.write(out_string)
+            
+            file_out.write("done\n\n")
+
 
             file_out.write("echo \"System "+self._box_link+ " - Finished Extraction ...\"\n\n")
 
-            file_out.write("\ndone")
+            file_out.write("sbatch -p cpuonly ana.job")
+
+            

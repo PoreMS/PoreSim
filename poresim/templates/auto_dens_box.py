@@ -19,41 +19,24 @@ if __name__ == "__main__":
     mol_dict["{{mol.name }}"] = pms.Molecule("molecule", "{{mol.name }}", inp="{{mol.link }}")
     {% endfor %}
 
-
-    ## Silanol
-    sioh = pms.Molecule("sioh", "SL")
-    sioh.add("Si", [0, 0, 0], name="Si1")
-    sioh.add("O", 0, r=1.3, name="O1")
-    sioh.add("H", 1, r=1.0, name="H1")
-
-    # Load pore
-    pore = pa.utils.load("../_gro/pore.yml")
+    # Set box size (x,y,z)
+    box = []
 
     # Set analysis
     ana_list = {}
     {% for mol in mols -%}
-    ana_list["{{mol.name }}"] = {"traj": "traj_{{mol.name }}.xtc", "dens": True, "dens_box": True, "diff": False, "mc_trans": False, "mc": False, "mol": mol_dict["{{mol.name }}"], "atoms": []}
+    ana_list["{{mol.name }}"] = {"traj": "traj_{{mol.name }}.xtc", "dens_box": True, "mc_trans": False, "mc": False, "mol": mol_dict["{{mol.name }}"], "atoms": []}
     {% endfor %}
-
-    # ana_list["sioh"] = {"traj": "traj_sioh.xtc", "dens": True, "dens_box": True, "diff": False, "mc_trans": False, "mc": False, "mol": sioh, "atoms": ["O1"]}
 
     # Run analysis
     for ana_name, ana_props in ana_list.items():
         if ana_props["dens_box"]:
-            sample = pa.Sample(pore["dimensions"], ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
-            sample.init_density("dens_"+ana_name+"_box.obj", remove_pore_from_res=True)
-            sample.sample(is_parallel=True)
-
-        if ana_props["dens"] or ana_props["diff"]:
-            sample = pa.Sample("../_gro/pore.yml", ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
-            if ana_props["dens"]:
-                sample.init_density("dens_"+ana_name+".obj", remove_pore_from_res=True)
-            if ana_props["diff"]:
-                sample.init_diffusion_bin("diff_"+ana_name+".obj", bin_num=35)
+            sample = pa.Sample(box, ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
+            sample.init_density("dens_"+ana_name+"_box.obj")
             sample.sample(is_parallel=True)
 
         if ana_props["mc_trans"]:
-            sample = pa.Sample(pore["dimensions"], ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
+            sample = pa.Sample(box, ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
             sample.init_diffusion_mc("diff_"+ana_name+"_trans.obj", [1, 2, 5, 10, 20, 30, 40, 50, 60, 70])
             sample.sample(is_parallel=True)
 
@@ -61,13 +44,15 @@ if __name__ == "__main__":
             model = pa.CosineModel("diff_"+ana_name+"_trans.obj", 6, 10)
             pa.MC().run(model, "diff_"+ana_name+"_mc_cos.obj", nmc_eq=1000000, nmc=1000000)
 
+    
+    {% if fill %}
     # Automation
     is_auto = True
     if is_auto:
         # Calculate density - area is given in bins
         dens = {}
         {% for mol in mols -%}
-        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}.obj", target_dens={{mol.target_dens }}, area=[[10, 90], [10, 50]])
+        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}_box.obj", target_dens={{mol.target_dens }}, area=[[0,1], [0,150]])
         {% endfor %}
         # Fill and rerun
         num_diff = {}
@@ -82,4 +67,8 @@ if __name__ == "__main__":
             else:
                 ps.utils.replace("../_fill/fill.sh", "FILLDENS_{{mol.name }}", str(int(0)))
             {% endfor %}
-            os.system("cd ../_fill;sh fill.sh;cd ../min;{{submit }}")
+            os.system("cd ../_fill;sh fill.sh;cd ../min;{{submit }}") 
+    
+    {% else %}
+    # Nothing to fill up
+    {% endif %}    

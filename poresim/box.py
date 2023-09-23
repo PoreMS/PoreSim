@@ -69,7 +69,7 @@ class Box:
         link : string
             Molecule structure file link
         inp : integer, string
-            Define number of molecules or **fill** for filling a pore
+            Define number of molecules or **fill** for filling a pore or box
         num_atoms : integer, string, optional
             Number of atoms in the specified molecule or filetype for extraction
         auto_dens : float, None, optional
