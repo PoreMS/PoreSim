@@ -3,7 +3,7 @@
 * Possibility to place molecules in a targeted manner in the pore
 * Insertion of the molecules with Gromacs position files
 
-# v0.1.2 (Upcoming)
+# v0.1.2
 * Filling of pores also possible for mixtures (target density can be defined for more than one molecule)
 
 # v0.1.1
