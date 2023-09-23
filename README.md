@@ -7,7 +7,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5993763.svg)](https://doi.org/10.5281/zenodo.5993763)
 [![Build Status](https://github.com/Ajax23/PoreSim/actions/workflows/workflow.yml/badge.svg)](https://github.com/Ajax23/PoreSim/actions/workflows/workflow.yml)
 [![codecov](https://codecov.io/gh/Ajax23/PoreSim/branch/master/graph/badge.svg)](https://codecov.io/gh/Ajax23/PoreSim)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Ajax23/PoreSim.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ajax23/PoreSim/context:python)
 
 ## Documentation
 
