@@ -120,7 +120,6 @@ class Simulate:
             topol.generate_files()
 
             # Create structure files and shells
-            print(self._link, box_link)
             construct = Construct(self._link, box_link, box.get_mols(), box.get_struct())
             construct.generate_files()
 
@@ -139,7 +138,7 @@ class Simulate:
 
             # Create analysis shell file for automated filling
             if (any(mol["fill"] for mol in jinja2_dict))==True:
-                analyze = Analyze(self._link, box_link)
+                analyze = Analyze(self._link, box_link, self._sim_dict["cluster"])
                 analyze.extract_mol("nvt")
                 if "PORE" in box.get_struct():
                     # Open template with jinja2

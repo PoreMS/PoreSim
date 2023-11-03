@@ -32,7 +32,6 @@ class Construct:
         self._struct = struct
         if "PORE" in struct:
             self._pore_props = utils.load(struct["PORE"])
-            print(self._pore_props)
 
     ###################
     # Private Methods #
@@ -82,10 +81,6 @@ class Construct:
     def _pos_dat(self):
         
         for mol in self._mols:
-            print(self._mols[mol])
-            print(self._box_link)
-            print(self._sim_link)
-            print(self._box_path)
             # Position file for reservoir
             if (self._mols[mol][0]=="fill" and not self._mols[mol][6] and self._mols[mol][4] in ["res", "both"]):
                 num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["reservoir"]*2*0.5)
@@ -227,7 +222,6 @@ class Construct:
                 if "PORE" in self._struct:
                     # Fill reservoir 
                     file_out.write("# Fill Reservoir\n")
-                    print(self._mols[mol][-1])
                     if (self._mols[mol][0]=="fill") and (self._mols[mol][3]!=None):
                         num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["reservoir"]*2)
                     else:

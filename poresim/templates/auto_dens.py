@@ -53,7 +53,7 @@ if __name__ == "__main__":
             sample.sample(is_parallel=True)
 
         if ana_props["mc_trans"]:
-            sample = pa.Sample(pore["dimensions"], ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
+            sample = pa.Sample("../_gro/pore.yml", ana_props["traj"], ana_props["mol"], ana_props["atoms"], [1 for x in ana_props["atoms"]])
             sample.init_diffusion_mc("diff_"+ana_name+"_trans.obj", [1, 2, 5, 10, 20, 30, 40, 50, 60, 70])
             sample.sample(is_parallel=True)
 
