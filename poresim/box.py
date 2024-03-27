@@ -74,6 +74,16 @@ class Box:
             Number of atoms in the specified molecule or filetype for extraction
         auto_dens : float, None, optional
             Density in :math:`\\frac{\\text{kg}}{\\text{m}^3}`
+        mass : float, None, optional
+            molecular mass of the molecule to get an estimate of how many molecules you need to put in the box as the initial value for auto_dens.
+        section : string, "both", optional
+            'Both' the molecules in the pore and in the reservoir can be set. If you want the molecules only in the pore, choose 'pore'. If you want them only in the reservoir, choose 'res'.
+        area : list, [], optional
+            To set up a 2-phase box system without a pore, specify the areas of the section [a,b] where the molecules should be inserted using Gromacs.
+        box : list, [], optional
+            To set up a 2-phase system, specify the dimensions [x, y, z] of the simulation box.
+        kwargs_gmx : dictonary, {}, optional
+            dictonary to set up options for the gromacs "insert-molecules" command (adjust for example -try and -scale)
         """
         # Process input
         if not isinstance(inp, int) and not isinstance(inp, str):

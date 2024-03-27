@@ -100,7 +100,7 @@ class Construct:
                 for pore_id in self._pore_props.keys():
                     if pore_id[:5]=="shape":
                         if (self._pore_props[pore_id]["parameter"]["central"]==[0,0,1]) and (self._mols[mol][4] in ["pore", "both"]): 
-                            num_pore = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*np.pi*self._pore_props[pore_id]["diameter"]**2/4*(self._pore_props[pore_id]["parameter"]["length"])*0.5)
+                            num_pore = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*np.pi*self._pore_props[pore_id]["diameter"]**2/4*(self._pore_props[pore_id]["parameter"]["length"]))
                             with open(self._box_path +"_gro/" + "position_{}_{}.dat".format(pore_id,mol), "w") as file_out:
                                 for i in range(num_pore):
                                     out_string = str(self._pore_props[pore_id]["parameter"]["centroid"][0]) + " "
@@ -237,7 +237,8 @@ class Construct:
                             out_string += key + " " + str(value) + " "
                         out_string += " >> logging.log 2>&1\n"
                         file_out.write(out_string)
-                    
+                    file_out.write("echo \"Filled reservoir ...\"\n\n")
+
                     # Fill pore area
                     file_out.write("# Fill Pore\n")
                     for pore_id in self._pore_props.keys():
@@ -258,6 +259,7 @@ class Construct:
                                         out_string += key + "  " + str(value) + " "
                                     out_string += " >> logging.log 2>&1\n"
                                     file_out.write(out_string)
+                        file_out.write("echo \"Filled " + pore_id + "...\"\n\n")
                 # If only box system
                 else:
                     # Fill box system in a certain area

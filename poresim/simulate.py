@@ -173,7 +173,7 @@ class Simulate:
                     with open(box_link+"ana/ana.py", "w") as file_:
                         file_.write(output)
                 else:
-                    analyze = Analyze(self._link, box_link)
+                    analyze = Analyze(self._link, box_link, self._sim_dict["cluster"])
                     analyze.extract_mol("run")
                     with open(os.path.split(__file__)[0]+"/templates/auto_dens_box.py") as file_:
                             template = Template(file_.read())
