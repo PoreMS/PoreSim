@@ -427,8 +427,7 @@ class Construct:
         utils.mkdirp(self._box_path+"_gro")
 
         # Create construction shell file
-        if "PORE" in self._struct:
-            self._pos_dat()
+        self._pos_dat()
 
         # Copy structure files
         for mol in self._struct:
