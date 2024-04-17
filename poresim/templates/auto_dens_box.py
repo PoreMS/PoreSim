@@ -51,17 +51,36 @@ if __name__ == "__main__":
     if is_auto:
         # Calculate density - area is given in bins
         dens = {}
-        {% for mol in mols -%}
+        {% for mol in mols2 -%}
         dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}_box.obj", target_dens={{mol.target_dens }}, area=[[0,1], [0,150]])
         {% endfor %}
         # Fill and rerun
         num_diff = {}
-        {% for mol in mols -%}
+        {% for mol in mols2 -%}
         num_diff["{{mol.name }}"] = dens["{{mol.name }}"]["diff"]
+        {% if area %}
+        {% for areas in mol.area %}
+        with open("../_gro/" + "position_{}_area{}.dat".format("{{mol.name }}",{{loop.index - 1}}), "w") as file_out:
+            for i in range(int(num_diff["{{mol.name }}"]/2)):
+                out_string = str({{mol.box[0] }}/2) + " "
+                out_string += str({{mol.box[1] }}/2) + " "
+                out_string += str(({{areas[1] }}+{{areas[0] }})/2) + "\n"
+                file_out.write(out_string)
+            file_out.close() 
+        {% endfor %} 
+        {% else %}
+        with open("../_gro/" + "position_{}.dat".format("{{mol.name }}"), "w") as file_out:
+            for i in range(int(num_diff["{{mol.name }}"]/2)):
+                out_string = str({{mol.box[0] }}/2) + " "
+                out_string += str({{mol.box[1] }}/2) + " "
+                out_string += str({{mol.box[2] }}/2) + "\n"
+                file_out.write(out_string)
+            file_out.close()
+        {% endif %}
         {% endfor %}
         if (all(i<10 for i in num_diff.values()))==False:
             ps.utils.copy("../_fill/fillBackup.sh", "../_fill/fill.sh")
-            {% for mol in mols -%}
+            {% for mol in mols2 -%}
             if num_diff["{{mol.name }}"] > 10:
                 ps.utils.replace("../_fill/fill.sh", "FILLDENS_{{mol.name }}", str(int(num_diff["{{mol.name }}"])))
             else:

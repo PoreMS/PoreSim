@@ -79,7 +79,9 @@ class Construct:
             file_out.write("echo \"System "+self._box_link+" - Created pore index file ...\"\n")
 
     def _pos_dat(self):
-        
+        """
+        Helper function to create position files for Gromacs to insert molecules in the reservoir, in the pore or in a specify area of a box system
+        """
         for mol in self._mols:
             # Position file for reservoir
             if (self._mols[mol][0]=="fill" and not self._mols[mol][6] and self._mols[mol][4] in ["res", "both"]):
@@ -110,9 +112,9 @@ class Construct:
                                 file_out.close()
 
             # Position file for put a specific number of molecules in pore or reservoir 
-            elif self._mols[mol][0]!="fill" and not self._mols[mol][5]: 
+            elif self._mols[mol][0]!="fill" and not self._mols[mol][5] and not self._mols[mol][6]:   
                 j=0
- 
+
                 for pore_id in self._pore_props.keys():
                         if pore_id[:5]=="shape":
                             j = j + 1 
@@ -167,20 +169,41 @@ class Construct:
             
             # Position file for box system 
             elif self._mols[mol][0]=="fill" and self._mols[mol][5]:
-                num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*(self._mols[mol][5][1]-self._mols[mol][5][0]))
-                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
+                for area,i in zip(self._mols[mol][5], range(len(self._mols[mol][5]))):
+                    num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*(area[0]-area[1]))
+                    with open(self._box_path +"_gro/" + "position_{}_area{}.dat".format(mol,i), "w") as file_out:
+                        for i in range(num):
+                            out_string = str(self._mols[mol][6][0]/2) + " "
+                            out_string += str(self._mols[mol][6][1]/2) + " "
+                            out_string += str((self._mols[mol][5][1]+self._mols[mol][5][0])/2) + "\n"
+                            file_out.write(out_string)
+                        file_out.close()
+
+            elif self._mols[mol][0]=="fill" and not self._mols[mol][5]:
+                num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*self._mols[mol][6][2])
+                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol,i), "w") as file_out:
                     for i in range(num):
                         out_string = str(self._mols[mol][6][0]/2) + " "
                         out_string += str(self._mols[mol][6][1]/2) + " "
-                        out_string += str((self._mols[mol][5][1]+self._mols[mol][5][0])/2) + "\n"
+                        out_string += str((self._mols[mol][6][2])/2) + "\n"
                         file_out.write(out_string)
-                    file_out.close()
+                file_out.close()
+            
+            elif self._mols[mol][0]!="fill" and not self._mols[mol][5]:
+                num = self._mols[mol][0]
+                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol,i), "w") as file_out:
+                    for i in range(num):
+                        out_string = str(self._mols[mol][6][0]/2) + " "
+                        out_string += str(self._mols[mol][6][1]/2) + " "
+                        out_string += str((self._mols[mol][6][2])/2) + "\n"
+                        file_out.write(out_string)
+                file_out.close()
 
             # Position file for box system to put molecules in a certain area
             elif self._mols[mol][0]!="fill" and self._mols[mol][5]:
                 num = self._mols[mol][0]
-                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
-                    for area in self._mols[mol][5]:
+                for area,i in zip(self._mols[mol][5], range(len(self._mols[mol][5]))):
+                    with open(self._box_path +"_gro/" + "position_{}_area{}.dat".format(mol,i), "w") as file_out:
                         for i in range(int(num/len(self._mols[mol][5]))):
                             out_string = str(self._mols[mol][6][0]/2) + " "
                             out_string += str(self._mols[mol][6][1]/2) + " "
@@ -265,7 +288,7 @@ class Construct:
                     # Fill box system in a certain area
                     file_out.write("# Fill Box\n")
                     if self._mols[mol][5]:
-                        for area in self._mols[mol][5]:
+                        for area,i in zip(self._mols[mol][5], range(len(self._mols[mol][5]))):
                             if self._mols[mol][0]=="fill":
                                 num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*(area[1]-area[0]))
                             else:
@@ -273,7 +296,7 @@ class Construct:
                             out_string = gmx_standard
                             out_string += "-ci "+folder_gro+self._struct[mol].split("/")[-1]+" "
                             out_string += "-dr "+ str(self._mols[mol][6][0]/2) + " " + str(self._mols[mol][6][1]/2) + " " + str((area[1]-area[0])/2) + " "
-                            out_string += "-ip "+ folder_gro + "position_{}.dat".format(mol)  +" " 
+                            out_string += "-ip "+ folder_gro + "position_{}_area{}.dat".format(mol,i)  +" " 
                             out_string += "-nmol "+str(int(self._mols[mol][0])) if not self._mols[mol][0]=="fill" else "-nmol "+str(num) + " "
                             for key,value in self._mols[mol][-1].items():
                                 out_string += " "
@@ -282,13 +305,15 @@ class Construct:
                             file_out.write(out_string)
                         
                     else: 
-                        if self._mols[mol][5] and self._mols[mol][0]=="fill":
-                            num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*(self._mols[mol][5][1]-self._mols[mol][5][0]))
+                        if self._mols[mol][0]=="fill":
+                            num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*self._mols[mol][6][2])
                         else:
                             num = self._mols[mol][0]
                         out_string = gmx_standard
                         out_string += "-ci "+folder_gro+self._struct[mol].split("/")[-1]+" "
-                        out_string += "-nmol "+str(int(self._mols[mol][0])) if not self._mols[mol][0]=="fill" else "-nmol "+str(num) + " " 
+                        out_string += "-dr "+ str(self._mols[mol][6][0]/2) + " " + str(self._mols[mol][6][1]/2) + " " + str((self._mols[mol][6][2])/2) + " "
+                        out_string += "-ip "+ folder_gro + "position_{}.dat".format(mol)  +" " 
+                        out_string += "-nmol "+str(int(num))
                         for key,value in self._mols[mol][-1].items():
                             out_string += " "
                             out_string += key + " " + str(value) + " "
@@ -375,7 +400,21 @@ class Construct:
             # Fill box
             file_out.write("# Refill Box\n")
             for mol in self._mols:
-                if self._mols[mol][0]=="fill":
+                if self._mols[mol][0]=="fill" and self._mols[mol][5]:
+                    for area,i in zip(self._mols[mol][5], range(len(self._mols[mol][5]))):
+                        out_string = "gmx_mpi insert-molecules "
+                        out_string += "-f "+folder_gro+file_box+" "
+                        out_string += "-o "+folder_gro+file_box+" "
+                        out_string += "-ci "+folder_gro+self._struct[mol].split("/")[-1]+" "
+                        out_string += "-try 1000 "
+                        out_string += "-scale 0.47 "
+                        out_string += "-dr "+ str(self._mols[mol][6][0]/2) + " " + str(self._mols[mol][6][1]/2) + " " + str((area[1]-area[0])/2) + " "
+                        out_string += "-ip "+ folder_gro + "position_{}_area{}.dat".format(mol,i)  +" " 
+                        out_string += "-nmol "
+                        out_string += str(10000) if self._mols[mol][2] is None else ("FILLDENS_" + mol)
+                        out_string += " >> logging.log 2>&1\n" 
+                        file_out.write(out_string)
+                elif self._mols[mol][0]=="fill" and not self._mols[mol][5]:
                     out_string = "gmx_mpi insert-molecules "
                     out_string += "-f "+folder_gro+file_box+" "
                     out_string += "-o "+folder_gro+file_box+" "
@@ -385,7 +424,7 @@ class Construct:
                     if "PORE" in self._struct:
                         out_string += "-dr "+ str(self._pore_props["system"]["dimensions"][0]/2) + " " + str(self._pore_props["system"]["dimensions"][1]/2) + " " + str(self._pore_props["system"]["reservoir"]/2) + " "
                     else:
-                        out_string += "-dr "+ str(self._pore_props["system"]["dimensions"][0]/2) + " " + str(self._pore_props["system"]["dimensions"][1]/2) + " " + str(self._pore_props["system"]["dimensions"]/2) + " "
+                        out_string += "-dr "+ str(self._mols[mol][6][0]/2) + " " + str(self._mols[mol][6][1]/2) + " " + str(self._mols[mol][6][2]/2) + " "
                     out_string += "-ip "+ folder_gro + "position_{}.dat".format(mol)  +" " 
                     out_string += "-nmol "
                     out_string += str(10000) if self._mols[mol][2] is None else ("FILLDENS_" + mol)

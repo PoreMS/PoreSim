@@ -131,10 +131,17 @@ class Simulate:
             # Create list for automated filling template
             jinja2_dict = []
             jinja2_dict_fill = []
+            area_on = False
             for mol in box.get_mols():
+                
                 jinja2_dict.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "fill": box.get_mols()[mol][0]=="fill"})
-                if box.get_mols()[mol][0]=="fill":
+                if box.get_mols()[mol][0]=="fill" and "PORE" in box.get_struct():
                     jinja2_dict_fill.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "fill": box.get_mols()[mol][0]=="fill"})
+                elif box.get_mols()[mol][0]=="fill" and not box.get_mols()[mol][5]:
+                    jinja2_dict_fill.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "fill": box.get_mols()[mol][0]=="fill", "box": box.get_mols()[mol][6]})
+                elif box.get_mols()[mol][0]=="fill" and box.get_mols()[mol][5]:
+                    area_on = True
+                    jinja2_dict_fill.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "fill": box.get_mols()[mol][0]=="fill", "box": box.get_mols()[mol][6], "area": box.get_mols()[mol][5], "area_length": len(box.get_mols()[mol][5])})
 
             # Create analysis shell file for automated filling
             if (any(mol["fill"] for mol in jinja2_dict))==True:
@@ -157,7 +164,8 @@ class Simulate:
                         template = Template(file_.read())
 
                     # Adjust template 
-                    output = template.render(mols=jinja2_dict, mols2=jinja2_dict_fill, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job", fill = True)
+                    print(area_on)
+                    output = template.render(mols=jinja2_dict, mols2=jinja2_dict_fill, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job", fill = True, area = area_on)
                     #Save adjusted template
                     with open(box_link+"ana/ana.py", "w") as file_:
                         file_.write(output)
