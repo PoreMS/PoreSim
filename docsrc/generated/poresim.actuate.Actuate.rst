@@ -1,4 +1,4 @@
-.. raw:: html
+﻿.. raw:: html
 
     </div>
     <div class=col-md-9 content>
@@ -10,13 +10,16 @@ Actuate
 
 .. autoclass:: Actuate
 
+   
 
-
-
+   
    .. rubric:: Methods
 
    .. autosummary::
-
+   
+      ~Actuate._analyze
       ~Actuate._equilibration
       ~Actuate._simulation
       ~Actuate.generate_files
+   
+   

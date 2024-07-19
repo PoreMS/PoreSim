@@ -46,7 +46,7 @@ extensions = ['sphinx.ext.autodoc',
               'numpydoc']
 
 # Generate the API documentation when building
-autosummary_generate = True
+autosummary_generate = False
 numpydoc_show_class_members = False
 
 # Hide numbering
@@ -119,7 +119,7 @@ html_theme_options = {
     'source_link_position': "",
     'bootswatch_theme': "paper",
     'bootstrap_version': "3",
-    'navbar_links': [("API", "api"), ("Simulation", "simulation"), ],
+    'navbar_links': [("API", "api"), ("Simulation", "simulation"), ("Simulation 2-Phase", "simulation_2ph") ],
 }
 
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
@@ -210,5 +210,3 @@ texinfo_documents = [
 # examples, originally taken from scikit-learn's doc/conf.py
 
 
-def setup(app):
-    app.add_stylesheet('style.css')

@@ -1,4 +1,4 @@
-.. raw:: html
+﻿.. raw:: html
 
     </div>
     <div class=col-md-9 content>
@@ -10,11 +10,13 @@ Parameter
 
 .. autoclass:: Parameter
 
+   
 
-
-
+   
    .. rubric:: Methods
 
    .. autosummary::
-
+   
       ~Parameter.generate_files
+   
+   

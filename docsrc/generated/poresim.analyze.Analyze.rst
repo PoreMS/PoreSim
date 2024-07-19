@@ -1,4 +1,4 @@
-.. raw:: html
+﻿.. raw:: html
 
     </div>
     <div class=col-md-9 content>
@@ -10,11 +10,13 @@ Analyze
 
 .. autoclass:: Analyze
 
+   
 
-
-
+   
    .. rubric:: Methods
 
    .. autosummary::
-
+   
       ~Analyze.extract_mol
+   
+   

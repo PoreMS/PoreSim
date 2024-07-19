@@ -1,4 +1,4 @@
-.. raw:: html
+﻿.. raw:: html
 
     </div>
     <div class=col-md-9 content>
@@ -10,13 +10,13 @@ Benchmark
 
 .. autoclass:: Benchmark
 
+   
 
-
-
+   
    .. rubric:: Methods
 
    .. autosummary::
-
+   
       ~Benchmark._update_config
       ~Benchmark.add_box
       ~Benchmark.generate
@@ -27,3 +27,5 @@ Benchmark
       ~Benchmark.set_job
       ~Benchmark.set_param
       ~Benchmark.set_sim_dict
+   
+   
