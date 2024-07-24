@@ -1,39 +1,28 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="./">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Create a simulation box &#8212; PoreSim 0.1.1 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/style.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Create a simulation box &#8212; PoreSim 0.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css?v=cab96e3b" />
+    <script src="_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body>
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -46,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PoreSim</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -54,6 +43,8 @@
             
                 <li><a href="api.html">API</a></li>
                 <li><a href="#">Simulation</a></li>
+                <li><a href="simulation_complex.html">Complex Pore Simulation</a></li>
+                <li><a href="simulation_2ph.html">Simulation 2-Phase</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -111,19 +102,44 @@
 
 <div class="container">
   <div class="row">
-    <div class="body col-md-12 content" role="main">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Create a simulation box</a><ul>
+<li><a class="reference internal" href="#set-job-parameter-and-cluster-dictionaries">Set job, parameter, and cluster dictionaries</a></li>
+<li><a class="reference internal" href="#create-box-objects">Create box objects</a></li>
+<li><a class="reference internal" href="#create-simulation-objects">Create simulation objects</a></li>
+<li><a class="reference internal" href="#generate-folder-structure">Generate folder structure</a></li>
+<li><a class="reference internal" href="#create-benchmark">Create benchmark</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="sourcelink">
+  <a href="_sources/simulation.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
       
   <div class="container-fluid">
   <div class="row">
     <div class="col-md-10">
-      <div style="text-align: justify; text-justify: inter-word;"><div class="section" id="create-a-simulation-box">
-<h1>Create a simulation box<a class="headerlink" href="#create-a-simulation-box" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">poresim</span> <span class="k">as</span> <span class="nn">ps</span>
+      <div style="text-align: justify; text-justify: inter-word;"><section id="create-a-simulation-box">
+<h1>Create a simulation box<a class="headerlink" href="#create-a-simulation-box" title="Link to this heading">¶</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">poresim</span> <span class="k">as</span> <span class="nn">ps</span>
 </pre></div>
 </div>
-<div class="section" id="set-job-parameter-and-cluster-dictionaries">
-<h2>Set job, parameter, and cluster dictionaries<a class="headerlink" href="#set-job-parameter-and-cluster-dictionaries" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;data/horeka.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;np&quot;</span><span class="p">:</span>  <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;wall&quot;</span><span class="p">:</span> <span class="s2">&quot;00:30:00&quot;</span><span class="p">},</span>
+<section id="set-job-parameter-and-cluster-dictionaries">
+<h2>Set job, parameter, and cluster dictionaries<a class="headerlink" href="#set-job-parameter-and-cluster-dictionaries" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;data/horeka.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;np&quot;</span><span class="p">:</span>  <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;wall&quot;</span><span class="p">:</span> <span class="s2">&quot;00:30:00&quot;</span><span class="p">},</span>
        <span class="s2">&quot;nvt&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;data/horeka.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;np&quot;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="s2">&quot;wall&quot;</span><span class="p">:</span> <span class="s2">&quot;72:00:00&quot;</span><span class="p">},</span>
        <span class="s2">&quot;run&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;data/horeka.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;maxh&quot;</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span> <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;np&quot;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="s2">&quot;runs&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;wall&quot;</span><span class="p">:</span> <span class="s2">&quot;72:00:00&quot;</span><span class="p">}}</span>
 
@@ -136,16 +152,21 @@
            <span class="s2">&quot;queuing&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;add_np&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;mpi&quot;</span><span class="p">:</span> <span class="s2">&quot;$DO_PARALLEL&quot;</span><span class="p">,</span> <span class="s2">&quot;shell&quot;</span><span class="p">:</span> <span class="s2">&quot;horeka.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;submit&quot;</span><span class="p">:</span> <span class="s2">&quot;sbatch --partition cpuonly&quot;</span><span class="p">}}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="create-box-objects">
-<h2>Create box objects<a class="headerlink" href="#create-box-objects" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Define molecules</span>
+</section>
+<section id="create-box-objects">
+<h2>Create box objects<a class="headerlink" href="#create-box-objects" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define molecules</span>
 <span class="n">mols</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;methanol&quot;</span><span class="p">:</span> <span class="s2">&quot;1OL&quot;</span><span class="p">,</span> <span class="s2">&quot;ethanol&quot;</span><span class="p">:</span> <span class="s2">&quot;2OL&quot;</span><span class="p">}</span>
 
 <span class="c1"># Define target density</span>
 <span class="n">dens</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># kg/m^3</span>
 <span class="n">dens</span><span class="p">[</span><span class="s2">&quot;1OL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">788.009</span>
 <span class="n">dens</span><span class="p">[</span><span class="s2">&quot;2OL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">792.485</span>
+
+ <span class="c1"># Define molar mass</span>
+<span class="n">mass</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># g/mol</span>
+<span class="n">mass</span><span class="p">[</span><span class="s2">&quot;1OL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">32.04</span>
+<span class="n">mass</span><span class="p">[</span><span class="s2">&quot;2OL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">46.068</span>
 
 <span class="c1"># Generate simulation boxes</span>
 <span class="n">boxes</span> <span class="o">=</span> <span class="p">{}</span>
@@ -159,7 +180,7 @@
     <span class="n">boxes</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]</span><span class="o">.</span><span class="n">add_pore</span><span class="p">(</span><span class="n">pore_link</span><span class="o">+</span><span class="s2">&quot;pore.yml&quot;</span><span class="p">)</span>
     <span class="n">boxes</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]</span><span class="o">.</span><span class="n">add_struct</span><span class="p">(</span><span class="s2">&quot;mol_list&quot;</span><span class="p">,</span> <span class="n">pore_link</span><span class="o">+</span><span class="s2">&quot;pore.obj&quot;</span><span class="p">)</span>
     <span class="n">boxes</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]</span><span class="o">.</span><span class="n">add_struct</span><span class="p">(</span><span class="s2">&quot;SURFACE&quot;</span><span class="p">,</span> <span class="s2">&quot;data/surface/tms/tms.gro&quot;</span><span class="p">)</span>
-    <span class="n">boxes</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]</span><span class="o">.</span><span class="n">add_mol</span><span class="p">(</span><span class="n">short</span><span class="p">,</span> <span class="s2">&quot;data/mols/&quot;</span><span class="o">+</span><span class="n">mol</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">mol</span><span class="o">+</span><span class="s2">&quot;.gro&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="n">auto_dens</span><span class="o">=</span><span class="n">dens</span><span class="p">[</span><span class="n">short</span><span class="p">])</span>
+    <span class="n">boxes</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]</span><span class="o">.</span><span class="n">add_mol</span><span class="p">(</span><span class="n">short</span><span class="p">,</span> <span class="s2">&quot;data/mols/&quot;</span><span class="o">+</span><span class="n">mol</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">mol</span><span class="o">+</span><span class="s2">&quot;.gro&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="n">mass</span> <span class="o">=</span> <span class="n">mass</span><span class="p">[</span><span class="n">short</span><span class="p">],</span> <span class="n">auto_dens</span><span class="o">=</span><span class="n">dens</span><span class="p">[</span><span class="n">short</span><span class="p">])</span>
     <span class="n">boxes</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="n">pore_link</span><span class="o">+</span><span class="s2">&quot;pore.top&quot;</span><span class="p">,</span> <span class="s2">&quot;master&quot;</span><span class="p">)</span>
     <span class="n">boxes</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="n">pore_link</span><span class="o">+</span><span class="s2">&quot;grid.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
     <span class="n">boxes</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]</span><span class="o">.</span><span class="n">add_topol</span><span class="p">([</span><span class="s2">&quot;data/surface/tms/tms.top&quot;</span><span class="p">,</span> <span class="s2">&quot;data/surface/tms/tmsg.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;data/mols/&quot;</span><span class="o">+</span><span class="n">mol</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">mol</span><span class="o">+</span><span class="s2">&quot;.top&quot;</span><span class="p">])</span>
@@ -168,10 +189,10 @@
     <span class="n">boxes</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]</span><span class="o">.</span><span class="n">add_charge_si</span><span class="p">(</span><span class="mf">1.28</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="create-simulation-objects">
-<h2>Create simulation objects<a class="headerlink" href="#create-simulation-objects" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Simulation series</span>
+</section>
+<section id="create-simulation-objects">
+<h2>Create simulation objects<a class="headerlink" href="#create-simulation-objects" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation series</span>
 <span class="n">sim_series</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="s2">&quot;sim/amorph_paper_res&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">box</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">box</span> <span class="ow">in</span> <span class="n">boxes</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
 <span class="n">sim_series</span><span class="o">.</span><span class="n">set_cluster</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
 
@@ -180,25 +201,25 @@
 <span class="n">sim_single</span><span class="o">.</span><span class="n">set_cluster</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="generate-folder-structure">
-<h2>Generate folder structure<a class="headerlink" href="#generate-folder-structure" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">sim_series</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+</section>
+<section id="generate-folder-structure">
+<h2>Generate folder structure<a class="headerlink" href="#generate-folder-structure" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sim_series</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
 <span class="n">sim_single</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="create-benchmark">
-<h2>Create benchmark<a class="headerlink" href="#create-benchmark" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">bench</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Benchmark</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;1OL&quot;</span><span class="p">],</span> <span class="mi">75</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="s2">&quot;output/bench&quot;</span><span class="p">)</span>
+</section>
+<section id="create-benchmark">
+<h2>Create benchmark<a class="headerlink" href="#create-benchmark" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bench</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Benchmark</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="s2">&quot;1OL&quot;</span><span class="p">],</span> <span class="mi">75</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="s2">&quot;output/bench&quot;</span><span class="p">)</span>
 <span class="n">bench</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
 </pre></div>
 </div>
       </div>
     </div>
   </div>
-</div></div>
-</div>
+</div></section>
+</section>
 
 
     </div>
@@ -213,7 +234,7 @@
     </p>
     <p>
         &copy; Copyright 2021, Hamzeh Kraus.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.5.<br/>
     </p>
   </div>
 </footer>

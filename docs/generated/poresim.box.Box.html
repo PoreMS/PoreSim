@@ -1,39 +1,28 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="../">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Box &#8212; PoreSim 0.1.1 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.1.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Box &#8212; PoreSim 0.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=cab96e3b" />
+    <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
-<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body>
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -46,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           PoreSim</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -54,6 +43,8 @@
             
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../simulation.html">Simulation</a></li>
+                <li><a href="../simulation_complex.html">Complex Pore Simulation</a></li>
+                <li><a href="../simulation_2ph.html">Simulation 2-Phase</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -76,7 +67,10 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Box</a></li>
+<li><a class="reference internal" href="#">Box</a><ul>
+<li><a class="reference internal" href="#poresim.box.Box"><code class="docutils literal notranslate"><span class="pre">Box</span></code></a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -104,102 +98,113 @@
 
 <div class="container">
   <div class="row">
-    <div class="body col-md-12 content" role="main">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Box</a><ul>
+<li><a class="reference internal" href="#poresim.box.Box"><code class="docutils literal notranslate"><span class="pre">Box</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div id="sourcelink">
+  <a href="../_sources/generated/poresim.box.Box.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="box">
-<h1>Box<a class="headerlink" href="#box" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="poresim.box.Box">
-<em class="property">class </em><code class="descclassname">poresim.box.</code><code class="descname">Box</code><span class="sig-paren">(</span><em>name='box'</em>, <em>label=None</em><span class="sig-paren">)</span><a class="headerlink" href="#poresim.box.Box" title="Permalink to this definition">¶</a></dt>
+<div class=col-md-9 content><section id="box">
+<h1>Box<a class="headerlink" href="#box" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="poresim.box.Box">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">poresim.box.</span></span><span class="sig-name descname"><span class="pre">Box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'box'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#poresim.box.Box" title="Link to this definition">¶</a></dt>
 <dd><p>This class creates a hypothetical simulation box, to which molecules are
 added. Furthermore, all properties like temperature and specific job
 properties can be adjusted separate from the global simulation values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
-<dd><p class="first last">Simulation name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name</strong><span class="classifier">string, optional</span></dt><dd><p>Simulation name</p>
 </dd>
-<dt><strong>label</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None, string, optional</span></dt>
-<dd><p class="first last">Job identification label</p>
+<dt><strong>label</strong><span class="classifier">None, string, optional</span></dt><dd><p>Job identification label</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.add_box.html#poresim.box.Box.add_box" title="poresim.box.Box.add_box"><code class="xref py py-obj docutils literal"><span class="pre">add_box</span></code></a>(link)</td>
-<td>Set simulation box structure link.</td>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.add_box.html#poresim.box.Box.add_box" title="poresim.box.Box.add_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_box</span></code></a>(link)</p></td>
+<td><p>Set simulation box structure link.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.box.Box.add_charge_si.html#poresim.box.Box.add_charge_si" title="poresim.box.Box.add_charge_si"><code class="xref py py-obj docutils literal"><span class="pre">add_charge_si</span></code></a>(charge)</td>
-<td>Add silicon charge for grid-atoms</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.box.Box.add_charge_si.html#poresim.box.Box.add_charge_si" title="poresim.box.Box.add_charge_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_charge_si</span></code></a>(charge)</p></td>
+<td><p>Add silicon charge for grid-atoms</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.add_mol.html#poresim.box.Box.add_mol" title="poresim.box.Box.add_mol"><code class="xref py py-obj docutils literal"><span class="pre">add_mol</span></code></a>(short,&nbsp;link,&nbsp;inp[,&nbsp;num_atoms,&nbsp;auto_dens])</td>
-<td>Add a molecule to the simulation box.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.add_mol.html#poresim.box.Box.add_mol" title="poresim.box.Box.add_mol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mol</span></code></a>(short, link, inp[, num_atoms, ...])</p></td>
+<td><p>Add a molecule to the simulation box.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.box.Box.add_pore.html#poresim.box.Box.add_pore" title="poresim.box.Box.add_pore"><code class="xref py py-obj docutils literal"><span class="pre">add_pore</span></code></a>(link)</td>
-<td>Add pore object to structure folder.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.box.Box.add_pore.html#poresim.box.Box.add_pore" title="poresim.box.Box.add_pore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_pore</span></code></a>(link)</p></td>
+<td><p>Add pore object to structure folder.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.add_struct.html#poresim.box.Box.add_struct" title="poresim.box.Box.add_struct"><code class="xref py py-obj docutils literal"><span class="pre">add_struct</span></code></a>(ident,&nbsp;link)</td>
-<td>Add file link to the structure dictionary.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.add_struct.html#poresim.box.Box.add_struct" title="poresim.box.Box.add_struct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_struct</span></code></a>(ident, link)</p></td>
+<td><p>Add file link to the structure dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.box.Box.add_topol.html#poresim.box.Box.add_topol" title="poresim.box.Box.add_topol"><code class="xref py py-obj docutils literal"><span class="pre">add_topol</span></code></a>(link[,&nbsp;top_type])</td>
-<td>Add simulation topology files to simulation dictionary.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.box.Box.add_topol.html#poresim.box.Box.add_topol" title="poresim.box.Box.add_topol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_topol</span></code></a>(link[, top_type])</p></td>
+<td><p>Add simulation topology files to simulation dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.get_job.html#poresim.box.Box.get_job" title="poresim.box.Box.get_job"><code class="xref py py-obj docutils literal"><span class="pre">get_job</span></code></a>()</td>
-<td>Return the dictionary containing all simulation information.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.get_job.html#poresim.box.Box.get_job" title="poresim.box.Box.get_job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_job</span></code></a>()</p></td>
+<td><p>Return the dictionary containing all simulation information.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.box.Box.get_label.html#poresim.box.Box.get_label" title="poresim.box.Box.get_label"><code class="xref py py-obj docutils literal"><span class="pre">get_label</span></code></a>()</td>
-<td>Return the simulation label.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.box.Box.get_label.html#poresim.box.Box.get_label" title="poresim.box.Box.get_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_label</span></code></a>()</p></td>
+<td><p>Return the simulation label.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.get_mols.html#poresim.box.Box.get_mols" title="poresim.box.Box.get_mols"><code class="xref py py-obj docutils literal"><span class="pre">get_mols</span></code></a>()</td>
-<td>Return list of molecule numbers to be filled in the box.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.get_mols.html#poresim.box.Box.get_mols" title="poresim.box.Box.get_mols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mols</span></code></a>()</p></td>
+<td><p>Return list of molecule numbers to be filled in the box.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.box.Box.get_name.html#poresim.box.Box.get_name" title="poresim.box.Box.get_name"><code class="xref py py-obj docutils literal"><span class="pre">get_name</span></code></a>()</td>
-<td>Return the simulation box name.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.box.Box.get_name.html#poresim.box.Box.get_name" title="poresim.box.Box.get_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_name</span></code></a>()</p></td>
+<td><p>Return the simulation box name.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.get_param.html#poresim.box.Box.get_param" title="poresim.box.Box.get_param"><code class="xref py py-obj docutils literal"><span class="pre">get_param</span></code></a>()</td>
-<td>Return the dictionary containing all systems parameters.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.get_param.html#poresim.box.Box.get_param" title="poresim.box.Box.get_param"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_param</span></code></a>()</p></td>
+<td><p>Return the dictionary containing all systems parameters.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.box.Box.get_sim_dict.html#poresim.box.Box.get_sim_dict" title="poresim.box.Box.get_sim_dict"><code class="xref py py-obj docutils literal"><span class="pre">get_sim_dict</span></code></a>()</td>
-<td>Return the simulation dictionary.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.box.Box.get_sim_dict.html#poresim.box.Box.get_sim_dict" title="poresim.box.Box.get_sim_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sim_dict</span></code></a>()</p></td>
+<td><p>Return the simulation dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.get_struct.html#poresim.box.Box.get_struct" title="poresim.box.Box.get_struct"><code class="xref py py-obj docutils literal"><span class="pre">get_struct</span></code></a>()</td>
-<td>Return list of structure files.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.get_struct.html#poresim.box.Box.get_struct" title="poresim.box.Box.get_struct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_struct</span></code></a>()</p></td>
+<td><p>Return list of structure files.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.box.Box.get_topol.html#poresim.box.Box.get_topol" title="poresim.box.Box.get_topol"><code class="xref py py-obj docutils literal"><span class="pre">get_topol</span></code></a>()</td>
-<td>Return list of topology files.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.box.Box.get_topol.html#poresim.box.Box.get_topol" title="poresim.box.Box.get_topol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_topol</span></code></a>()</p></td>
+<td><p>Return list of topology files.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.set_job.html#poresim.box.Box.set_job" title="poresim.box.Box.set_job"><code class="xref py py-obj docutils literal"><span class="pre">set_job</span></code></a>(job)</td>
-<td>Set the dictionary containing all simulation information.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.set_job.html#poresim.box.Box.set_job" title="poresim.box.Box.set_job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_job</span></code></a>(job)</p></td>
+<td><p>Set the dictionary containing all simulation information.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.box.Box.set_label.html#poresim.box.Box.set_label" title="poresim.box.Box.set_label"><code class="xref py py-obj docutils literal"><span class="pre">set_label</span></code></a>(label)</td>
-<td>Set the simulation box label, for job identification.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.box.Box.set_label.html#poresim.box.Box.set_label" title="poresim.box.Box.set_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_label</span></code></a>(label)</p></td>
+<td><p>Set the simulation box label, for job identification.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.set_name.html#poresim.box.Box.set_name" title="poresim.box.Box.set_name"><code class="xref py py-obj docutils literal"><span class="pre">set_name</span></code></a>(name)</td>
-<td>Set the simulation box name.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.set_name.html#poresim.box.Box.set_name" title="poresim.box.Box.set_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_name</span></code></a>(name)</p></td>
+<td><p>Set the simulation box name.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.box.Box.set_param.html#poresim.box.Box.set_param" title="poresim.box.Box.set_param"><code class="xref py py-obj docutils literal"><span class="pre">set_param</span></code></a>(param)</td>
-<td>Set the dictionary containing all systems parameters.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.box.Box.set_param.html#poresim.box.Box.set_param" title="poresim.box.Box.set_param"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param</span></code></a>(param)</p></td>
+<td><p>Set the dictionary containing all systems parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.box.Box.set_sim_dict.html#poresim.box.Box.set_sim_dict" title="poresim.box.Box.set_sim_dict"><code class="xref py py-obj docutils literal"><span class="pre">set_sim_dict</span></code></a>(sim_dict)</td>
-<td>Set the simulation dictionary.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.box.Box.set_sim_dict.html#poresim.box.Box.set_sim_dict" title="poresim.box.Box.set_sim_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_sim_dict</span></code></a>(sim_dict)</p></td>
+<td><p>Set the simulation dictionary.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
 
     </div>
@@ -214,7 +219,7 @@ properties can be adjusted separate from the global simulation values.</p>
     </p>
     <p>
         &copy; Copyright 2021, Hamzeh Kraus.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.5.<br/>
     </p>
   </div>
 </footer>

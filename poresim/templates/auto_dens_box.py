@@ -51,15 +51,21 @@ if __name__ == "__main__":
     if is_auto:
         # Calculate density - area is given in bins
         dens = {}
-        {% for mol in mols2 -%}
-        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}_box.obj", target_dens={{mol.target_dens }}, area=[[0,1], [0,150]])
-        {% endfor %}
-        # Fill and rerun
         num_diff = {}
+
         {% for mol in mols2 -%}
-        num_diff["{{mol.name }}"] = dens["{{mol.name }}"]["diff"]
-        {% if area %}
+        data = pa.utils.load("dens_{{mol.name }}_box.obj")
+        {% if mol.area %}
         {% for areas in mol.area %}
+        # Define area of the molecule
+        index_low = list(data["data"]["ex_width"]).index({{areas[0] }})
+        index_up = list(data["data"]["ex_width"]).index({{areas[1] }})
+
+        #Calculate denstiy and different number of molecules to target
+        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}_box.obj", target_dens={{mol.target_dens }}, area=[[0,1], [index_low,index_up]])
+        num_diff["{{mol.name }}"] = dens["{{mol.name }}"]["diff"]
+
+        # Write position file for the molecules in the specific area
         with open("../_gro/" + "position_{}_area{}.dat".format("{{mol.name }}",{{loop.index - 1}}), "w") as file_out:
             for i in range(int(num_diff["{{mol.name }}"]/2)):
                 out_string = str({{mol.box[0] }}/2) + " "
@@ -69,6 +75,11 @@ if __name__ == "__main__":
             file_out.close() 
         {% endfor %} 
         {% else %}
+        #Calculate denstiy and different number of molecules to target
+        dens["{{mol.name }}"] = pa.density.bins("dens_{{mol.name }}_box.obj", target_dens={{mol.target_dens }}, area=[[0,1], [0,150]])
+        num_diff["{{mol.name }}"] = dens["{{mol.name }}"]["diff"]
+
+        # Write position file for the molecules
         with open("../_gro/" + "position_{}.dat".format("{{mol.name }}"), "w") as file_out:
             for i in range(int(num_diff["{{mol.name }}"]/2)):
                 out_string = str({{mol.box[0] }}/2) + " "
@@ -77,7 +88,9 @@ if __name__ == "__main__":
                 file_out.write(out_string)
             file_out.close()
         {% endif %}
-        {% endfor %}
+        {% endfor %} 
+
+        # Adjust fill.sh and start simulation again
         if (all(i<10 for i in num_diff.values()))==False:
             ps.utils.copy("../_fill/fillBackup.sh", "../_fill/fill.sh")
             {% for mol in mols2 -%}

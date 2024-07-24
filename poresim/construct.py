@@ -83,7 +83,6 @@ class Construct:
         Helper function to create position files for Gromacs to insert molecules in the reservoir, in the pore or in a specify area of a box system
         """
         for mol in self._mols:
-            print(self._mols[mol])
             # Position file for reservoir
             if (self._mols[mol][0]=="fill" and not self._mols[mol][6] and self._mols[mol][4] in ["res", "both"]):
                 num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["dimensions"][1]*self._pore_props["system"]["reservoir"]*2*0.5)
@@ -126,7 +125,7 @@ class Construct:
             # Position file for put a specific number of molecules in pore or reservoir 
             elif self._mols[mol][0]!="fill" and not self._mols[mol][5] and not self._mols[mol][6]:   
                 j=0
-                print(self._mols[mol])
+                # Check how much molecules have to set in pore or in reservoir if a number is given
                 for pore_id in self._pore_props.keys():
                         if pore_id[:5]=="shape":
                             j = j + 1 
@@ -150,8 +149,8 @@ class Construct:
                     if sum(num) != self._mols[mol][0]:
                         num[-1] = num[-1] + abs(self._mols[mol][0]-sum(num))
 
+                # Generate the position files for the number of molecules to set in the pores
                 if self._mols[mol][4] in ["pore", "both"]:
-                    print("hi")
                     for pore_id,j in zip(self._pore_props.keys(),range(j)):
                         if pore_id[:5]=="shape":
                             if self._pore_props[pore_id]["parameter"]["central"]==[0,0,1]:
@@ -163,6 +162,7 @@ class Construct:
                                         file_out.write(out_string)
                                     file_out.close()
 
+                # Generate the position files for the number of molecules to set in reservoir
                 if self._mols[mol][4] in ["res", "both"]:
                     with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
                         for i in range(num[0]):
@@ -176,6 +176,8 @@ class Construct:
                             out_string += str(self._pore_props["system"]["dimensions"][2] - self._pore_props["system"]["reservoir"]/2) + "\n"
                             file_out.write(out_string)
                         file_out.close()
+
+                # If slit pore you can set the molecules on wall 
                 elif self._mols[mol][4]=="wall":
                     for pore_id,j in zip(self._pore_props.keys(),range(j)):
                         if pore_id[:5]=="shape":
@@ -191,10 +193,6 @@ class Construct:
                                         out_string += str(self._pore_props["system"]["reservoir"] + self._pore_props[pore_id]["parameter"]["centroid"][2]) + "\n"
                                         file_out.write(out_string)
 
-
-
-    
-            
             # Position file for box system 
             elif self._mols[mol][0]=="fill" and self._mols[mol][5] and not self._mols[mol][4]=="wall":
                 for area,i in zip(self._mols[mol][5], range(len(self._mols[mol][5]))):
@@ -206,6 +204,7 @@ class Construct:
                             out_string += str((area[1]+area[0])/2) + "\n"
                             file_out.write(out_string)
                         file_out.close()
+            
 
             elif self._mols[mol][0]=="fill" and not self._mols[mol][5] and not self._mols[mol][4]=="wall":
                 num = int((self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*self._mols[mol][6][2])*0.8)
@@ -269,15 +268,16 @@ class Construct:
             
             # Loop over the molecules which you want to insert into the system
             for mol in self._mols:
+                file_out.write("\n####### " + mol + " #########\n")
                 # Fill box
                 if "PORE" in self._struct:
-                    # Fill reservoir 
-                    file_out.write("# Fill Reservoir " + mol +" \n")
                     if (self._mols[mol][0]=="fill") and (self._mols[mol][3]!=None):
                         num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["reservoir"]*2)
                     else:
                         num = 0
                     if (self._mols[mol][4] in ["res","both"]):
+                        # Fill reservoir 
+                        file_out.write("# Fill Reservoir " + mol +" \n")
                         out_string = gmx_standard
                         out_string += "-ci "+folder_gro+self._struct[mol].split("/")[-1]+" "
                         out_string += "-dr "+ str(self._pore_props["system"]["dimensions"][0]/2) + " " + str(self._pore_props["system"]["dimensions"][1]/2) + " " + str(self._pore_props["system"]["reservoir"]/2) + " "
@@ -288,7 +288,7 @@ class Construct:
                             out_string += key + " " + str(value) + " "
                         out_string += " >> logging.log 2>&1\n"
                         file_out.write(out_string)
-                    file_out.write("echo \"Filled reservoir " + mol + " ...\"\n\n")
+                        file_out.write("echo \"Filled reservoir with " + mol + " ...\"\n\n")
 
                     # Fill pore area
                     if self._mols[mol][4]=="pore" or self._mols[mol][4]=="both":
@@ -317,7 +317,9 @@ class Construct:
                                             out_string += key + "  " + str(value) + " "
                                         out_string += " >> logging.log 2>&1\n"
                                         file_out.write(out_string)
+                        file_out.write("echo \"Filled pore with " + mol + " ...\"\n\n")
                     
+                    # Fill wall
                     elif self._mols[mol][4] == "wall":
                         file_out.write("# Fill Pore Wall " + mol +" \n")
                         for pore_id in self._pore_props.keys():
@@ -353,9 +355,9 @@ class Construct:
                                 out_string += " "
                                 out_string += key + " " + str(value) + " "
                             out_string += " >> logging.log 2>&1\n"
-                            file_out.write(out_string)
-                        
+                            file_out.write(out_string)   
                     else: 
+                        # Fill box with density or specific number of molecules
                         if self._mols[mol][0]=="fill":
                             num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*self._mols[mol][6][2])
                         else:
@@ -529,11 +531,16 @@ class Construct:
             else:
                 utils.copy(file_link, self._box_path+"_gro/"+file_link.split("/")[-1])
   
-        # Pore simulation that needs to be filled
+        # If molecules have to put in a specific area of a pore system 
         if ("wall" or "pore" in [self._mols[mol][4] for mol in self._mols]):
             if not "box" in [self._mols[mol][4] for mol in self._mols]:
                 self._pos_dat()
 
+        # If molecules have to set in a specific area of a box system
+        if [self._mols[mol][5] for mol in self._mols]:
+            self._pos_dat()
+
+        # Pore simulation that needs to be filled
         if "fill" in [self._mols[mol][0] for mol in self._mols]:
             # Create filling backup folder
             utils.mkdirp(self._box_path+"_fill")
@@ -547,9 +554,5 @@ class Construct:
             # Create fill backup for automatic filling
             if not all(x is None for x in [self._mols[mol][2] for mol in self._mols]):
                 utils.copy(self._box_path+"_fill/fill.sh", self._box_path+"_fill/fillBackup.sh")
-
-            # Copy empty script
-            # if "PORE" in self._struct:
-            #     utils.copy(os.path.split(__file__)[0]+"/templates/empty_grid.py", self._box_path+"_fill/"+"empty_grid.py")
 
             utils.copy(os.path.split(__file__)[0]+"/templates/sort.py", self._box_path+"_fill/"+"sort.py")

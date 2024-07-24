@@ -266,7 +266,7 @@ class Actuate:
         # Get simulation properties
         np = str(int(20))
         nodes = str(int(1))
-        wall = "30:00:00"
+        wall = "10:00:00"
 
         # Create shell
         utils.mkdirp(self._link+"ana")

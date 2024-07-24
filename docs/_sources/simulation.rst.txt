@@ -46,6 +46,11 @@ Create box objects
   dens["1OL"] = 788.009
   dens["2OL"] = 792.485
 
+   # Define molar mass
+  mass = {}  # g/mol
+  mass["1OL"] = 32.04
+  mass["2OL"] = 46.068
+
   # Generate simulation boxes
   boxes = {}
   pore_link = "pore/"
@@ -58,7 +63,7 @@ Create box objects
       boxes[sim_label].add_pore(pore_link+"pore.yml")
       boxes[sim_label].add_struct("mol_list", pore_link+"pore.obj")
       boxes[sim_label].add_struct("SURFACE", "data/surface/tms/tms.gro")
-      boxes[sim_label].add_mol(short, "data/mols/"+mol+"/"+mol+".gro", "fill", auto_dens=dens[short])
+      boxes[sim_label].add_mol(short, "data/mols/"+mol+"/"+mol+".gro", "fill", mass = mass[short], auto_dens=dens[short])
       boxes[sim_label].add_topol(pore_link+"pore.top", "master")
       boxes[sim_label].add_topol(pore_link+"grid.itp", "top")
       boxes[sim_label].add_topol(["data/surface/tms/tms.top", "data/surface/tms/tmsg.itp", "data/mols/"+mol+"/"+mol+".top"])

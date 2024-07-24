@@ -75,9 +75,12 @@ class Box:
         auto_dens : float, None, optional
             Density in :math:`\\frac{\\text{kg}}{\\text{m}^3}`
         mass : float, None, optional
-            molecular mass of the molecule to get an estimate of how many molecules you need to put in the box as the initial value for auto_dens.
+            molecular mass (:math:`\\frac{\\text{g}}{\\text{mol}}`) of the molecule to get an estimate of how many molecules you need to put in the box as the initial value for auto_dens.
         section : string, "both", optional
-            'Both' the molecules in the pore and in the reservoir can be set. If you want the molecules only in the pore, choose 'pore'. If you want them only in the reservoir, choose 'res'.
+            'Both' the molecules in the pore and in the reservoir can be set. 
+            If you want the molecules only in the pore, choose 'pore'. If you want them only in the reservoir, choose 'res'. 
+            For a slit pore you can use wall to put the molecules as a layer on the SiO2 surface.
+            Chose "box" for a box system.
         area : list, [], optional
             To set up a 2-phase box system without a pore, specify the areas of the section [a,b] where the molecules should be inserted using Gromacs.
         box : list, [], optional
@@ -108,6 +111,11 @@ class Box:
                         break
                     else:
                         counter += 1
+
+        # If Fill
+        if inp=="fill" and not mass:
+            print("If you use auto_dens you have to specifiy the molar mass of the molecule")
+            return
 
         # Add to global list
         self._sim_dict["struct"][short] = link
