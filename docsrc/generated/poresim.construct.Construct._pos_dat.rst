@@ -5,9 +5,9 @@
     </div>
     <div class=col-md-9 content>
 
-Simulate\.set\_param
+Construct\.\_pos_dat
 ====================
 
-.. currentmodule:: poresim.simulate
+.. currentmodule:: poresim.construct
 
-.. automethod:: Simulate.set_param
+.. automethod:: Construct._pos_dat

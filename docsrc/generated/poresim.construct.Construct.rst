@@ -18,6 +18,7 @@ Construct
    .. autosummary::
    
       ~Construct._fill
+      ~Construct._pos_dat
       ~Construct._structure
       ~Construct._topol_index
       ~Construct.generate_files
