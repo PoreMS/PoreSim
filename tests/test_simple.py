@@ -85,6 +85,26 @@ class UserModelCase(unittest.TestCase):
         self.assertEqual(box.add_mol("EDC", "data/educt.gro", 10, auto_dens="DOTA"), None)
 
 
+    def test_fill_box(self):
+        job = {"min": {"file": "data/forhlr.sh", "nodes": 2, "np": 20, "wall": "24:00:00"},
+               "nvt": {"file": "data/forhlr.sh", "nodes": 4, "np": 20, "wall": "24:00:00"},
+               "run": {"file": "data/forhlr.sh", "maxh": 24, "nodes": 11, "np": 20, "runs": 15, "wall": "24:00:00"}}
+
+        param = {"min": {"file": "data/pore_min.mdp"},
+                 "nvt": {"file": "data/pore_nvt.mdp", "param": {"NUMBEROFSTEPS": 2000000, "TEMPERATURE_VAL": 298}},
+                 "run": {"file": "data/pore_run.mdp", "param": {"NUMBEROFSTEPS": 20000000, "TEMPERATURE_VAL": 298}}}
+
+        # Boxes
+        box = ps.Box("box")
+        box.add_box("data/box.gro")
+        box.add_mol("BEN", "data/benzene.gro", "fill", auto_dens=500)
+        box.add_topol("data/benzene.top", "master")
+        box.set_job(job)
+        box.set_param(param)
+
+        print()
+
+
     ############
     # Simulate #
     ############
