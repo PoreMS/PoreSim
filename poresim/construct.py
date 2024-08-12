@@ -376,7 +376,6 @@ class Construct:
 
             #if "fill" in [self._mols[mol][0] for mol in self._mols]:
             file_out.write("python "+folder_fill+"sort.py "+folder_gro+"\n")
-
             file_out.write("echo \"System "+self._box_link+" - Filled simulation box ...\"\n\n")
 
             # Update topology and create index
@@ -481,7 +480,7 @@ class Construct:
                         out_string += "-dr "+ str(self._mols[mol][6][0]/2) + " " + str(self._mols[mol][6][1]/2) + " " + str(self._mols[mol][6][2]/2) + " "
                     out_string += "-ip "+ folder_gro + "position_{}.dat".format(mol)  +" " 
                     out_string += "-nmol "
-                    out_string += str(10000) if self._mols[mol][2] is None else ("FILLDENS_" + mol)
+                    out_string += 0 if self._mols[mol][2] is None else ("FILLDENS_" + mol)
                     out_string += " >> logging.log 2>&1\n"
                     # if "PORE" in self._struct:
                     #     out_string += "python empty_grid.py "+folder_gro+" "+mol+" "+str(self._mols[mol][1])+"\n"

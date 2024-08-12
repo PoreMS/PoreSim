@@ -281,8 +281,8 @@ class Actuate:
         utils.replace(link_shell, "COMMANDCHANGEDIR", "cd "+self._clr_link+str("ana"))
 
         # Insert into file
+        utils.replace(link_shell, "COMMANDGROMACS", "sh ana.sh")
         utils.replace(link_shell, "COMMANDGROMACS", "python ana.py")
-
 
     ##################
     # Public Methods #
@@ -297,5 +297,6 @@ class Actuate:
         if "run" in self._job:
             self._simulation()
         
+            # Set ana.job file
             self._analyze()
 

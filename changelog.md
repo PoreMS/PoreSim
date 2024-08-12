@@ -1,4 +1,4 @@
-# v0.2.0 (Upcoming)
+# v0.2.0
 * Update for PoreMS 0.3.0 and PoreAna 0.2.3
 * Possibility to place molecules in a targeted manner in the pore
 * For a slit pore you can set molecules near the wall to generate a layer on the wall

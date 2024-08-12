@@ -5,8 +5,20 @@
 SPHINXOPTS    =
 ifdef OS
    SPHINXBUILD   = python -msphinx
+   RM = cmd.exe /c rd /s /q
+   CP = cmd.exe /c xcopy /s /e /h /i /y
+   TOUCH = fsutil file createnew
+   TOUCHLEN = 0
+   DOCS = ..\docs
+   BUILDHTML = _build\html\.
 else
    SPHINXBUILD   = python3 -msphinx
+   RM = rm -r
+   CP = cp -a
+   TOUCH = touch
+   TOUCHLEN =
+   DOCS = ../docs
+   BUILDHTML = _build/html/.
 endif
 # SPHINXBUILD   = python3 -msphinx
 SPHINXPROJ    = MolDyn
@@ -26,8 +38,8 @@ help:
 
 # Github documentation copy
 github:
-	@rm -r ../docs
-	@mkdir ../docs
-	@touch ../docs/.nojekyll
+	@$(RM) $(DOCS)
+	@mkdir $(DOCS)
+	@$(TOUCH) $(DOCS)/.nojekyll $(TOUCHLEN)
 	@make html
-	@cp -a _build/html/. ../docs
+	@$(CP) $(BUILDHTML) $(DOCS)
