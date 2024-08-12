@@ -50,7 +50,7 @@ class Box:
         """
         self._sim_dict["struct"]["PORE"] = link
 
-    def add_mol(self, short, link, inp, num_atoms="gro", auto_dens=None):
+    def add_mol(self, short, link, inp, num_atoms="gro", auto_dens=None, mass = None,  section="both",area= [], box = [], kwargs_gmx = {}):
         """Add a molecule to the simulation box. A unique short name and a
         structure-file link have to be given.
 
@@ -74,6 +74,19 @@ class Box:
             Number of atoms in the specified molecule or filetype for extraction
         auto_dens : float, None, optional
             Density in :math:`\\frac{\\text{kg}}{\\text{m}^3}`
+        mass : float, None, optional
+            molecular mass (:math:`\\frac{\\text{g}}{\\text{mol}}`) of the molecule to get an estimate of how many molecules you need to put in the box as the initial value for auto_dens.
+        section : string, "both", optional
+            'Both' the molecules in the pore and in the reservoir can be set. 
+            If you want the molecules only in the pore, choose 'pore'. If you want them only in the reservoir, choose 'res'. 
+            For a slit pore you can use wall to put the molecules as a layer on the SiO2 surface.
+            Chose "box" for a box system.
+        area : list, [], optional
+            To set up a 2-phase box system without a pore, specify the areas of the section [a,b] where the molecules should be inserted using Gromacs.
+        box : list, [], optional
+            To set up a 2-phase system, specify the dimensions [x, y, z] of the simulation box.
+        kwargs_gmx : dictonary, {}, optional
+            dictonary to set up options for the gromacs "insert-molecules" command (adjust for example -try and -scale)
         """
         # Process input
         if not isinstance(inp, int) and not isinstance(inp, str):
@@ -99,9 +112,14 @@ class Box:
                     else:
                         counter += 1
 
+        # If Fill
+        if inp=="fill" and not mass:
+            print("If you use auto_dens you have to specifiy the molar mass of the molecule")
+            return
+
         # Add to global list
         self._sim_dict["struct"][short] = link
-        self._sim_dict["mols"][short] = [inp, num_atoms, auto_dens]
+        self._sim_dict["mols"][short] = [inp, num_atoms, auto_dens, mass,  section,area, box, kwargs_gmx]
 
     def add_struct(self, ident, link):
         """Add file link to the structure dictionary.

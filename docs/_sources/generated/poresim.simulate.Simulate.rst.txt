@@ -1,4 +1,4 @@
-.. raw:: html
+﻿.. raw:: html
 
     </div>
     <div class=col-md-9 content>
@@ -10,13 +10,13 @@ Simulate
 
 .. autoclass:: Simulate
 
+   
 
-
-
+   
    .. rubric:: Methods
 
    .. autosummary::
-
+   
       ~Simulate._update_config
       ~Simulate.add_box
       ~Simulate.generate
@@ -27,3 +27,5 @@ Simulate
       ~Simulate.set_job
       ~Simulate.set_param
       ~Simulate.set_sim_dict
+   
+   

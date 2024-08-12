@@ -1,26 +1,16 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="../">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Benchmark &#8212; PoreSim 0.1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.1.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Benchmark &#8212; PoreSim 0.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=cab96e3b" />
+    <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -32,8 +22,7 @@
 <script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body>
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -46,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           PoreSim</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -54,6 +43,8 @@
             
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../simulation.html">Simulation</a></li>
+                <li><a href="../simulation_complex.html">Complex Pore Simulation</a></li>
+                <li><a href="../simulation_2ph.html">Simulation 2-Phase</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -76,7 +67,10 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Benchmark</a></li>
+<li><a class="reference internal" href="#">Benchmark</a><ul>
+<li><a class="reference internal" href="#poresim.benchmark.Benchmark"><code class="docutils literal notranslate"><span class="pre">Benchmark</span></code></a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -104,91 +98,99 @@
 
 <div class="container">
   <div class="row">
-    <div class="body col-md-12 content" role="main">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Benchmark</a><ul>
+<li><a class="reference internal" href="#poresim.benchmark.Benchmark"><code class="docutils literal notranslate"><span class="pre">Benchmark</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div id="sourcelink">
+  <a href="../_sources/generated/poresim.benchmark.Benchmark.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="benchmark">
-<h1>Benchmark<a class="headerlink" href="#benchmark" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="poresim.benchmark.Benchmark">
-<em class="property">class </em><code class="descclassname">poresim.benchmark.</code><code class="descname">Benchmark</code><span class="sig-paren">(</span><em>box</em>, <em>np</em>, <em>nodes</em>, <em>link='./benchmark'</em>, <em>iterator='nodes'</em><span class="sig-paren">)</span><a class="headerlink" href="#poresim.benchmark.Benchmark" title="Permalink to this definition">¶</a></dt>
+<div class=col-md-9 content><section id="benchmark">
+<h1>Benchmark<a class="headerlink" href="#benchmark" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="poresim.benchmark.Benchmark">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">poresim.benchmark.</span></span><span class="sig-name descname"><span class="pre">Benchmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">np</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./benchmark'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nodes'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#poresim.benchmark.Benchmark" title="Link to this definition">¶</a></dt>
 <dd><p>This class extends the simulate class
-<a class="reference internal" href="poresim.simulate.Simulate.html#poresim.simulate.Simulate" title="poresim.simulate.Simulate"><code class="xref py py-class docutils literal"><span class="pre">poresim.simulate.Simulate</span></code></a> for benchmarking. It creates a
+<a class="reference internal" href="poresim.simulate.Simulate.html#poresim.simulate.Simulate" title="poresim.simulate.Simulate"><code class="xref py py-class docutils literal notranslate"><span class="pre">poresim.simulate.Simulate</span></code></a> for benchmarking. It creates a
 benchmark in order to figure out the best possible number of node and
 processor combination to simulate with.</p>
 <p>Depending on the iterator, different aspects will be benchmarked. Currently
 following inputs are possible</p>
 <ul class="simple">
-<li><strong>nodes</strong> - varying number of nodes at constant CPU number</li>
-<li><strong>np</strong> - varying number of CPUs at constant node number</li>
+<li><p><strong>nodes</strong> - varying number of nodes at constant CPU number</p></li>
+<li><p><strong>np</strong> - varying number of CPUs at constant node number</p></li>
 </ul>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>box</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Box</span></dt>
-<dd><p class="first last">Simulation box object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>box</strong><span class="classifier">Box</span></dt><dd><p>Simulation box object</p>
 </dd>
-<dt><strong>np</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer, list</span></dt>
-<dd><p class="first last">Number of processors to try</p>
+<dt><strong>np</strong><span class="classifier">integer, list</span></dt><dd><p>Number of processors to try</p>
 </dd>
-<dt><strong>nodes</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer, list</span></dt>
-<dd><p class="first last">Number of nodes to try</p>
+<dt><strong>nodes</strong><span class="classifier">integer, list</span></dt><dd><p>Number of nodes to try</p>
 </dd>
-<dt><strong>link</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
-<dd><p class="first last">Simulation folder link</p>
+<dt><strong>link</strong><span class="classifier">string, optional</span></dt><dd><p>Simulation folder link</p>
 </dd>
-<dt><strong>iterator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
-<dd><p class="first last">Aspect to be benchmarked</p>
+<dt><strong>iterator</strong><span class="classifier">string, optional</span></dt><dd><p>Aspect to be benchmarked</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="poresim.benchmark.Benchmark._update_config.html#poresim.benchmark.Benchmark._update_config" title="poresim.benchmark.Benchmark._update_config"><code class="xref py py-obj docutils literal"><span class="pre">_update_config</span></code></a>()</td>
-<td>Update simulation config file.</td>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark._update_config.html#poresim.benchmark.Benchmark._update_config" title="poresim.benchmark.Benchmark._update_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_update_config</span></code></a>()</p></td>
+<td><p>Update simulation config file.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.benchmark.Benchmark.add_box.html#poresim.benchmark.Benchmark.add_box" title="poresim.benchmark.Benchmark.add_box"><code class="xref py py-obj docutils literal"><span class="pre">add_box</span></code></a>(box)</td>
-<td>Add simulation box to simulation dictionary.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark.add_box.html#poresim.benchmark.Benchmark.add_box" title="poresim.benchmark.Benchmark.add_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_box</span></code></a>(box)</p></td>
+<td><p>Add simulation box to simulation dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.benchmark.Benchmark.generate.html#poresim.benchmark.Benchmark.generate" title="poresim.benchmark.Benchmark.generate"><code class="xref py py-obj docutils literal"><span class="pre">generate</span></code></a>()</td>
-<td>Generate simulation folder.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark.generate.html#poresim.benchmark.Benchmark.generate" title="poresim.benchmark.Benchmark.generate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code></a>()</p></td>
+<td><p>Generate simulation folder.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.benchmark.Benchmark.get_box.html#poresim.benchmark.Benchmark.get_box" title="poresim.benchmark.Benchmark.get_box"><code class="xref py py-obj docutils literal"><span class="pre">get_box</span></code></a>()</td>
-<td>Return the simulation box dictionary.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark.get_box.html#poresim.benchmark.Benchmark.get_box" title="poresim.benchmark.Benchmark.get_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_box</span></code></a>()</p></td>
+<td><p>Return the simulation box dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.benchmark.Benchmark.get_sim_dict.html#poresim.benchmark.Benchmark.get_sim_dict" title="poresim.benchmark.Benchmark.get_sim_dict"><code class="xref py py-obj docutils literal"><span class="pre">get_sim_dict</span></code></a>()</td>
-<td>Return the simulation dictionary.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark.get_sim_dict.html#poresim.benchmark.Benchmark.get_sim_dict" title="poresim.benchmark.Benchmark.get_sim_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sim_dict</span></code></a>()</p></td>
+<td><p>Return the simulation dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.benchmark.Benchmark.set_box.html#poresim.benchmark.Benchmark.set_box" title="poresim.benchmark.Benchmark.set_box"><code class="xref py py-obj docutils literal"><span class="pre">set_box</span></code></a>(box)</td>
-<td>Set the simulation box.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark.set_box.html#poresim.benchmark.Benchmark.set_box" title="poresim.benchmark.Benchmark.set_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_box</span></code></a>(box)</p></td>
+<td><p>Set the simulation box.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.benchmark.Benchmark.set_cluster.html#poresim.benchmark.Benchmark.set_cluster" title="poresim.benchmark.Benchmark.set_cluster"><code class="xref py py-obj docutils literal"><span class="pre">set_cluster</span></code></a>(cluster)</td>
-<td>Set the dictionary containing all cluster preferences.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark.set_cluster.html#poresim.benchmark.Benchmark.set_cluster" title="poresim.benchmark.Benchmark.set_cluster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_cluster</span></code></a>(cluster)</p></td>
+<td><p>Set the dictionary containing all cluster preferences.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.benchmark.Benchmark.set_job.html#poresim.benchmark.Benchmark.set_job" title="poresim.benchmark.Benchmark.set_job"><code class="xref py py-obj docutils literal"><span class="pre">set_job</span></code></a>(job)</td>
-<td>Set the dictionary containing all simulation information.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark.set_job.html#poresim.benchmark.Benchmark.set_job" title="poresim.benchmark.Benchmark.set_job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_job</span></code></a>(job)</p></td>
+<td><p>Set the dictionary containing all simulation information.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.benchmark.Benchmark.set_param.html#poresim.benchmark.Benchmark.set_param" title="poresim.benchmark.Benchmark.set_param"><code class="xref py py-obj docutils literal"><span class="pre">set_param</span></code></a>(param)</td>
-<td>Set the dictionary containing all systems parameters.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark.set_param.html#poresim.benchmark.Benchmark.set_param" title="poresim.benchmark.Benchmark.set_param"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param</span></code></a>(param)</p></td>
+<td><p>Set the dictionary containing all systems parameters.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.benchmark.Benchmark.set_sim_dict.html#poresim.benchmark.Benchmark.set_sim_dict" title="poresim.benchmark.Benchmark.set_sim_dict"><code class="xref py py-obj docutils literal"><span class="pre">set_sim_dict</span></code></a>(sim_dict)</td>
-<td>Set the simulation dictionary.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.benchmark.Benchmark.set_sim_dict.html#poresim.benchmark.Benchmark.set_sim_dict" title="poresim.benchmark.Benchmark.set_sim_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_sim_dict</span></code></a>(sim_dict)</p></td>
+<td><p>Set the simulation dictionary.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
 
     </div>
@@ -202,8 +204,8 @@ following inputs are possible</p>
       
     </p>
     <p>
-        &copy; Copyright 2021, Hamzeh Kraus.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.<br/>
+        &copy; Copyright 2023, Hamzeh Kraus.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.6.<br/>
     </p>
   </div>
 </footer>

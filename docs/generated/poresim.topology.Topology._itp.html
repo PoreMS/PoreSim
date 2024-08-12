@@ -1,26 +1,16 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="../">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Topology._itp &#8212; PoreSim 0.1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.1.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Topology._itp &#8212; PoreSim 0.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=cab96e3b" />
+    <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -32,8 +22,7 @@
 <script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body>
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -46,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           PoreSim</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -54,6 +43,8 @@
             
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../simulation.html">Simulation</a></li>
+                <li><a href="../simulation_complex.html">Complex Pore Simulation</a></li>
+                <li><a href="../simulation_2ph.html">Simulation 2-Phase</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -76,7 +67,10 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Topology._itp</a></li>
+<li><a class="reference internal" href="#">Topology._itp</a><ul>
+<li><a class="reference internal" href="#poresim.topology.Topology._itp"><code class="docutils literal notranslate"><span class="pre">Topology._itp()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -104,40 +98,55 @@
 
 <div class="container">
   <div class="row">
-    <div class="body col-md-12 content" role="main">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Topology._itp</a><ul>
+<li><a class="reference internal" href="#poresim.topology.Topology._itp"><code class="docutils literal notranslate"><span class="pre">Topology._itp()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div id="sourcelink">
+  <a href="../_sources/generated/poresim.topology.Topology._itp.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="topology-itp">
-<h1>Topology._itp<a class="headerlink" href="#topology-itp" title="Permalink to this headline">¶</a></h1>
-<dl class="method">
-<dt id="poresim.topology.Topology._itp">
-<code class="descclassname">Topology.</code><code class="descname">_itp</code><span class="sig-paren">(</span><em>link</em>, <em>charge</em><span class="sig-paren">)</span><a class="headerlink" href="#poresim.topology.Topology._itp" title="Permalink to this definition">¶</a></dt>
+<div class=col-md-9 content><section id="topology-itp">
+<h1>Topology._itp<a class="headerlink" href="#topology-itp" title="Link to this heading">¶</a></h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="poresim.topology.Topology._itp">
+<span class="sig-prename descclassname"><span class="pre">Topology.</span></span><span class="sig-name descname"><span class="pre">_itp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#poresim.topology.Topology._itp" title="Link to this definition">¶</a></dt>
 <dd><p>Create an itp file from a GROMACS topology contain everything except</p>
 <ul class="simple">
-<li>defaults</li>
-<li>atomtypes</li>
-<li>system</li>
-<li>molecules</li>
+<li><p>defaults</p></li>
+<li><p>atomtypes</p></li>
+<li><p>system</p></li>
+<li><p>molecules</p></li>
 </ul>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>link</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Topology file link</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>link</strong><span class="classifier">string</span></dt><dd><p>Topology file link</p>
 </dd>
-<dt><strong>charge</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None, float</span></dt>
-<dd><p class="first last">Silicon charge for pore grid molecules</p>
+<dt><strong>charge</strong><span class="classifier">None, float</span></dt><dd><p>Silicon charge for pore grid molecules</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-</div>
+</section>
 
 
     </div>
@@ -151,8 +160,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2021, Hamzeh Kraus.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.<br/>
+        &copy; Copyright 2023, Hamzeh Kraus.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.6.<br/>
     </p>
   </div>
 </footer>

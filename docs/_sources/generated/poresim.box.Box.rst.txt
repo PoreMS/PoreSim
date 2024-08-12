@@ -1,4 +1,4 @@
-.. raw:: html
+﻿.. raw:: html
 
     </div>
     <div class=col-md-9 content>
@@ -10,13 +10,13 @@ Box
 
 .. autoclass:: Box
 
+   
 
-
-
+   
    .. rubric:: Methods
 
    .. autosummary::
-
+   
       ~Box.add_box
       ~Box.add_charge_si
       ~Box.add_mol
@@ -36,3 +36,5 @@ Box
       ~Box.set_name
       ~Box.set_param
       ~Box.set_sim_dict
+   
+   

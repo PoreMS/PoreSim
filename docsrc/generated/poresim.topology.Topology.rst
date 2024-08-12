@@ -1,4 +1,4 @@
-.. raw:: html
+﻿.. raw:: html
 
     </div>
     <div class=col-md-9 content>
@@ -10,13 +10,15 @@ Topology
 
 .. autoclass:: Topology
 
+   
 
-
-
+   
    .. rubric:: Methods
 
    .. autosummary::
-
+   
       ~Topology._itp
       ~Topology._read
       ~Topology.generate_files
+   
+   

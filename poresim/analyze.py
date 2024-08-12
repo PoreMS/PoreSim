@@ -19,10 +19,11 @@ class Analyze:
     box_link : string
         Simulation box folder link
     """
-    def __init__(self, sim_link, box_link):
+    def __init__(self, sim_link, box_link, cluster):
         # Initialize
         self._sim_link = sim_link
         self._box_path = box_link
+        self._cluster = cluster
         self._box_link = "./" if sim_link == box_link else "./" + \
             box_link.split("/")[-2]+"/"
 
@@ -78,6 +79,6 @@ class Analyze:
 
             file_out.write("echo \"System "+self._box_link+ " - Finished Extraction ...\"\n\n")
 
-            file_out.write("sbatch -p cpuonly ana.job")
+            file_out.write(self._cluster["queuing"]["submit"] + " ana.job")
 
             

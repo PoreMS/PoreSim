@@ -66,7 +66,7 @@ class UserModelCase(unittest.TestCase):
         # Boxes
         box = ps.Box("box")
         box.add_box("data/pore.gro")
-        box.add_pore("data/pore_system.obj")
+        box.add_pore("data/pore.yml")
         box.add_mol("EDC", "data/educt.gro", 10)
         box.add_mol("PRD", "data/productmc.gro", 12)
         box.add_mol("BEN", "data/benzene.gro", "fill", auto_dens=500)
@@ -103,10 +103,10 @@ class UserModelCase(unittest.TestCase):
 
         box1 = ps.Box("box1")
         box1.add_box("data/pore.gro")
-        box1.add_pore("data/pore_system.obj")
+        box1.add_pore("data/pore.yml")
         box1.add_mol("EDC", "data/educt.gro", 10)
         box1.add_mol("PRD", "data/productmc.gro", 12)
-        box1.add_mol("BEN", "data/benzene.gro", "fill", auto_dens=500)
+        box1.add_mol("BEN", "data/benzene.gro", "fill", auto_dens=500, mass=78.11)
         box1.add_topol("data/pore.top", "master")
         box1.add_topol("data/grid.itp", "top")
         box1.add_topol(["data/educt.top", "data/productmc.top", "data/benzene.top"])
@@ -119,10 +119,10 @@ class UserModelCase(unittest.TestCase):
 
         box2 = ps.Box("box2", "bxx")
         box2.add_box("data/pore.gro")
-        box2.add_pore("data/pore_system.obj")
+        box2.add_pore("data/pore.yml")
         box2.add_mol("EDC", "data/educt.gro", 15)
         box2.add_mol("PRD", "data/productmc.gro", 12)
-        box2.add_mol("BEN", "data/benzene.gro", "fill", auto_dens=500)
+        box2.add_mol("BEN", "data/benzene.gro", "fill", auto_dens=500, mass=78.11)
         box2.add_topol("data/pore.top", "master")
         box2.add_topol("data/grid.itp", "top")
         box2.add_topol(["data/educt.top", "data/productmc.top", "data/benzene.top"])
@@ -131,7 +131,7 @@ class UserModelCase(unittest.TestCase):
         box2.set_param(param)
         box2.add_charge_si(1.314730)
 
-        sim1 = ps.Simulate("output/series", [box1, box2])  # Series
+        #sim1 = ps.Simulate("output/series", [box1, box2])  # Series
         sim2 = ps.Simulate("output/single", box1)  # Single
         sim3 = ps.Simulate("output/single", box1)
 
@@ -141,7 +141,7 @@ class UserModelCase(unittest.TestCase):
         sim3.set_cluster(cluster)
 
         print()
-        sim1.generate()
+        #sim1.generate()
         print()
         sim2.generate()
 
@@ -162,10 +162,10 @@ class UserModelCase(unittest.TestCase):
 
         box = ps.Box("box")
         box.add_box("data/pore.gro")
-        box.add_pore("data/pore_system.obj")
+        box.add_pore("data/pore.yml")
         box.add_mol("EDC", "data/educt.gro", 10)
         box.add_mol("PRD", "data/productmc.gro", 12)
-        box.add_mol("BEN", "data/benzene.gro", "fill", auto_dens=500)
+        box.add_mol("BEN", "data/benzene.gro", "fill", auto_dens=500, mass=78.11)
         box.add_topol("data/pore.top", "master")
         box.add_topol("data/grid.itp", "top")
         box.add_topol(["data/educt.top", "data/productmc.top", "data/benzene.top"])

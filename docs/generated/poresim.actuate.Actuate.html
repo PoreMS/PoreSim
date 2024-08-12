@@ -1,26 +1,16 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="../">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Actuate &#8212; PoreSim 0.1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.1.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Actuate &#8212; PoreSim 0.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=cab96e3b" />
+    <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -32,8 +22,7 @@
 <script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body>
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -46,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           PoreSim</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -54,6 +43,8 @@
             
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../simulation.html">Simulation</a></li>
+                <li><a href="../simulation_complex.html">Complex Pore Simulation</a></li>
+                <li><a href="../simulation_2ph.html">Simulation 2-Phase</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -76,7 +67,10 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Actuate</a></li>
+<li><a class="reference internal" href="#">Actuate</a><ul>
+<li><a class="reference internal" href="#poresim.actuate.Actuate"><code class="docutils literal notranslate"><span class="pre">Actuate</span></code></a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -104,65 +98,75 @@
 
 <div class="container">
   <div class="row">
-    <div class="body col-md-12 content" role="main">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Actuate</a><ul>
+<li><a class="reference internal" href="#poresim.actuate.Actuate"><code class="docutils literal notranslate"><span class="pre">Actuate</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div id="sourcelink">
+  <a href="../_sources/generated/poresim.actuate.Actuate.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="actuate">
-<h1>Actuate<a class="headerlink" href="#actuate" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="poresim.actuate.Actuate">
-<em class="property">class </em><code class="descclassname">poresim.actuate.</code><code class="descname">Actuate</code><span class="sig-paren">(</span><em>sim_link</em>, <em>box_link</em>, <em>cluster</em>, <em>job</em>, <em>label</em>, <em>structure</em><span class="sig-paren">)</span><a class="headerlink" href="#poresim.actuate.Actuate" title="Permalink to this definition">¶</a></dt>
+<div class=col-md-9 content><section id="actuate">
+<h1>Actuate<a class="headerlink" href="#actuate" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="poresim.actuate.Actuate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">poresim.actuate.</span></span><span class="sig-name descname"><span class="pre">Actuate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#poresim.actuate.Actuate" title="Link to this definition">¶</a></dt>
 <dd><p>This class creates needed shell files for running the simulation using
 GROMACS.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>sim_link</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Simulation master folder link</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sim_link</strong><span class="classifier">string</span></dt><dd><p>Simulation master folder link</p>
 </dd>
-<dt><strong>box_link</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Simulation box folder link</p>
+<dt><strong>box_link</strong><span class="classifier">string</span></dt><dd><p>Simulation box folder link</p>
 </dd>
-<dt><strong>cluster: dictionary</strong></dt>
-<dd><p class="first last">Cluster information dictionary</p>
+<dt><strong>cluster: dictionary</strong></dt><dd><p>Cluster information dictionary</p>
 </dd>
-<dt><strong>job</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
-<dd><p class="first last">Job dictionary</p>
+<dt><strong>job</strong><span class="classifier">dictionary</span></dt><dd><p>Job dictionary</p>
 </dd>
-<dt><strong>label</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Box label</p>
+<dt><strong>label</strong><span class="classifier">string</span></dt><dd><p>Box label</p>
 </dd>
-<dt><strong>structure</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
-<dd><p class="first last">Box structure dictionary</p>
+<dt><strong>structure</strong><span class="classifier">dictionary</span></dt><dd><p>Box structure dictionary</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="poresim.actuate.Actuate._equilibration.html#poresim.actuate.Actuate._equilibration" title="poresim.actuate.Actuate._equilibration"><code class="xref py py-obj docutils literal"><span class="pre">_equilibration</span></code></a>()</td>
-<td>Create equilibration simulation shells for</td>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_analyze</span></code>()</p></td>
+<td><p>Create analyse job files for poreana.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="poresim.actuate.Actuate._simulation.html#poresim.actuate.Actuate._simulation" title="poresim.actuate.Actuate._simulation"><code class="xref py py-obj docutils literal"><span class="pre">_simulation</span></code></a>()</td>
-<td>Create simulation job files.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.actuate.Actuate._equilibration.html#poresim.actuate.Actuate._equilibration" title="poresim.actuate.Actuate._equilibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_equilibration</span></code></a>()</p></td>
+<td><p>Create equilibration simulation shells for * <strong>min</strong> for energy minimization * <strong>nvt</strong> for temperature equilibration * <strong>npt</strong> for pressure equilibration</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="poresim.actuate.Actuate.generate_files.html#poresim.actuate.Actuate.generate_files" title="poresim.actuate.Actuate.generate_files"><code class="xref py py-obj docutils literal"><span class="pre">generate_files</span></code></a>()</td>
-<td>Generate structure files and shells.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="poresim.actuate.Actuate._simulation.html#poresim.actuate.Actuate._simulation" title="poresim.actuate.Actuate._simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_simulation</span></code></a>()</p></td>
+<td><p>Create simulation job files.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="poresim.actuate.Actuate.generate_files.html#poresim.actuate.Actuate.generate_files" title="poresim.actuate.Actuate.generate_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_files</span></code></a>()</p></td>
+<td><p>Generate structure files and shells.</p></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</div>
+</section>
 
 
     </div>
@@ -176,8 +180,8 @@ GROMACS.</p>
       
     </p>
     <p>
-        &copy; Copyright 2021, Hamzeh Kraus.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.<br/>
+        &copy; Copyright 2023, Hamzeh Kraus.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.6.<br/>
     </p>
   </div>
 </footer>

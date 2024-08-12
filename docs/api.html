@@ -1,26 +1,17 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="./">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API reference &#8212; PoreSim 0.1.2 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/style.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>API reference &#8212; PoreSim 0.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css?v=cab96e3b" />
+    <script src="_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 <meta charset='utf-8'>
@@ -32,8 +23,7 @@
 <script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body>
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -46,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PoreSim</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -54,6 +44,8 @@
             
                 <li><a href="#">API</a></li>
                 <li><a href="simulation.html">Simulation</a></li>
+                <li><a href="simulation_complex.html">Complex Pore Simulation</a></li>
+                <li><a href="simulation_2ph.html">Simulation 2-Phase</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -109,71 +101,82 @@
 
 <div class="container">
   <div class="row">
-    <div class="body col-md-12 content" role="main">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">API reference</a><ul>
+<li><a class="reference internal" href="#simulation">Simulation</a></li>
+<li><a class="reference internal" href="#simulation-helper">Simulation-Helper</a></li>
+<li><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="sourcelink">
+  <a href="_sources/api.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
       
-  <div class="section" id="api-reference">
-<h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="simulation">
-<span id="simulate-api"></span><h2>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/poresim.box.Box.html#poresim.box.Box" title="poresim.box.Box"><code class="xref py py-obj docutils literal"><span class="pre">box.Box</span></code></a>([name,&nbsp;label])</td>
-<td>This class creates a hypothetical simulation box, to which molecules are added.</td>
+  <section id="api-reference">
+<h1>API reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
+<section id="simulation">
+<span id="simulate-api"></span><h2>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/poresim.box.Box.html#poresim.box.Box" title="poresim.box.Box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">box.Box</span></code></a>([name, label])</p></td>
+<td><p>This class creates a hypothetical simulation box, to which molecules are added.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/poresim.simulate.Simulate.html#poresim.simulate.Simulate" title="poresim.simulate.Simulate"><code class="xref py py-obj docutils literal"><span class="pre">simulate.Simulate</span></code></a>([link,&nbsp;box])</td>
-<td>This class generates the simulation folder for a series of simulations.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/poresim.simulate.Simulate.html#poresim.simulate.Simulate" title="poresim.simulate.Simulate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate.Simulate</span></code></a>([link, box])</p></td>
+<td><p>This class generates the simulation folder for a series of simulations.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/poresim.benchmark.Benchmark.html#poresim.benchmark.Benchmark" title="poresim.benchmark.Benchmark"><code class="xref py py-obj docutils literal"><span class="pre">benchmark.Benchmark</span></code></a>(box,&nbsp;np,&nbsp;nodes[,&nbsp;link,&nbsp;…])</td>
-<td>This class extends the simulate class <a class="reference internal" href="generated/poresim.simulate.Simulate.html#poresim.simulate.Simulate" title="poresim.simulate.Simulate"><code class="xref py py-class docutils literal"><span class="pre">poresim.simulate.Simulate</span></code></a> for benchmarking.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/poresim.benchmark.Benchmark.html#poresim.benchmark.Benchmark" title="poresim.benchmark.Benchmark"><code class="xref py py-obj docutils literal notranslate"><span class="pre">benchmark.Benchmark</span></code></a>(box, np, nodes[, link, ...])</p></td>
+<td><p>This class extends the simulate class <a class="reference internal" href="generated/poresim.simulate.Simulate.html#poresim.simulate.Simulate" title="poresim.simulate.Simulate"><code class="xref py py-class docutils literal notranslate"><span class="pre">poresim.simulate.Simulate</span></code></a> for benchmarking.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="simulation-helper">
-<span id="simulate-help-api"></span><h2>Simulation-Helper<a class="headerlink" href="#simulation-helper" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/poresim.actuate.Actuate.html#poresim.actuate.Actuate" title="poresim.actuate.Actuate"><code class="xref py py-obj docutils literal"><span class="pre">actuate.Actuate</span></code></a>(sim_link,&nbsp;box_link,&nbsp;cluster,&nbsp;…)</td>
-<td>This class creates needed shell files for running the simulation using GROMACS.</td>
+</section>
+<section id="simulation-helper">
+<span id="simulate-help-api"></span><h2>Simulation-Helper<a class="headerlink" href="#simulation-helper" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/poresim.actuate.Actuate.html#poresim.actuate.Actuate" title="poresim.actuate.Actuate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">actuate.Actuate</span></code></a>(sim_link, box_link, cluster, ...)</p></td>
+<td><p>This class creates needed shell files for running the simulation using GROMACS.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/poresim.construct.Construct.html#poresim.construct.Construct" title="poresim.construct.Construct"><code class="xref py py-obj docutils literal"><span class="pre">construct.Construct</span></code></a>(sim_link,&nbsp;box_link,&nbsp;…)</td>
-<td>This class creates shell-files for generating the and filling the simulation box using GROMACS.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/poresim.construct.Construct.html#poresim.construct.Construct" title="poresim.construct.Construct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct.Construct</span></code></a>(sim_link, box_link, ...)</p></td>
+<td><p>This class creates shell-files for generating the and filling the simulation box using GROMACS.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/poresim.parameter.Parameter.html#poresim.parameter.Parameter" title="poresim.parameter.Parameter"><code class="xref py py-obj docutils literal"><span class="pre">parameter.Parameter</span></code></a>(link,&nbsp;param)</td>
-<td>This class generates parameter files by replacing the given parameter in prepared files.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/poresim.parameter.Parameter.html#poresim.parameter.Parameter" title="poresim.parameter.Parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameter.Parameter</span></code></a>(link, param)</p></td>
+<td><p>This class generates parameter files by replacing the given parameter in prepared files.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/poresim.topology.Topology.html#poresim.topology.Topology" title="poresim.topology.Topology"><code class="xref py py-obj docutils literal"><span class="pre">topology.Topology</span></code></a>(link,&nbsp;topol)</td>
-<td>This class reads and extract all information from topology files of the molecules specified in the simulation box.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/poresim.topology.Topology.html#poresim.topology.Topology" title="poresim.topology.Topology"><code class="xref py py-obj docutils literal notranslate"><span class="pre">topology.Topology</span></code></a>(link, topol)</p></td>
+<td><p>This class reads and extract all information from topology files of the molecules specified in the simulation box.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/poresim.analyze.Analyze.html#poresim.analyze.Analyze" title="poresim.analyze.Analyze"><code class="xref py py-obj docutils literal"><span class="pre">analyze.Analyze</span></code></a>(sim_link,&nbsp;box_link)</td>
-<td>This class creates shell-files for generating shell file for analysing a simulation.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/poresim.analyze.Analyze.html#poresim.analyze.Analyze" title="poresim.analyze.Analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze.Analyze</span></code></a>(sim_link, box_link, cluster)</p></td>
+<td><p>This class creates shell-files for generating shell file for analysing a simulation.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="utilities">
-<span id="utilities-api"></span><h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/poresim.utils.html#module-poresim.utils" title="poresim.utils"><code class="xref py py-obj docutils literal"><span class="pre">utils</span></code></a></td>
-<td>Here popular basic methods are noted.</td>
+</section>
+<section id="utilities">
+<span id="utilities-api"></span><h2>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/poresim.utils.html#module-poresim.utils" title="poresim.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils</span></code></a></p></td>
+<td><p>Here popular basic methods are noted.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -187,8 +190,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2021, Hamzeh Kraus.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.<br/>
+        &copy; Copyright 2023, Hamzeh Kraus.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.6.<br/>
     </p>
   </div>
 </footer>
