@@ -19,6 +19,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.5',
-    install_requires=['pyyaml', 'jinja2==3.0.3'],
+    install_requires=['numpy','pyyaml', 'jinja2==3.0.3'],
     include_package_data=True,
 )

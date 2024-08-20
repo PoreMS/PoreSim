@@ -309,7 +309,7 @@ class Construct:
                                         if self._pore_props[pore_id]["shape"]=="SLIT":
                                             out_string += "-dr "+ str(0.90*self._pore_props["system"]["dimensions"][0]/2) + " " + str(0.90*self._pore_props[pore_id]["diameter"]/2) + " " + str((0.9*self._pore_props[pore_id]["parameter"]["length"])/2) + " "
                                         else:
-                                            out_string += "-dr "+ str(0.50*np.sqrt(0.5 *self._pore_props[pore_id]["diameter"]**2)/2) + " " + str(0.50*np.sqrt(0.5 *self._pore_props[pore_id]["diameter"]**2)/2) + " " + str((0.9*self._pore_props[pore_id]["parameter"]["length"])/2) + " "
+                                            out_string += "-dr "+ str(0.50*np.sqrt(0.9 *self._pore_props[pore_id]["diameter"]**2)/2) + " " + str(0.50*np.sqrt(0.9 *self._pore_props[pore_id]["diameter"]**2)/2) + " " + str((0.9*self._pore_props[pore_id]["parameter"]["length"])/2) + " "
                                         out_string += "-ip "+ folder_gro + "position_{}_{}.dat".format(pore_id,mol)  +" " 
                                         out_string += "-nmol "+str(int(self._mols[mol][0])) if not self._mols[mol][0]=="fill" else "-nmol "+str(num_pore) + "  "
                                         for key,value in self._mols[mol][-1].items():
@@ -531,13 +531,14 @@ class Construct:
                 utils.copy(file_link, self._box_path+"_gro/"+file_link.split("/")[-1])
   
         # If molecules have to put in a specific area of a pore system 
-        if ("wall" or "pore" in [self._mols[mol][4] for mol in self._mols]):
-            if not "box" in [self._mols[mol][4] for mol in self._mols]:
-                self._pos_dat()
+        if "PORE" in self._struct:
+            if ("wall" or "pore" in [self._mols[mol][4] for mol in self._mols]):
+                if not "box" in [self._mols[mol][4] for mol in self._mols]:
+                    self._pos_dat()
 
-        # If molecules have to set in a specific area of a box system
-        if [self._mols[mol][5] for mol in self._mols]:
-            self._pos_dat()
+            # If molecules have to set in a specific area of a box system
+            if [self._mols[mol][5] for mol in self._mols]:
+                self._pos_dat()
 
         # Pore simulation that needs to be filled
         if "fill" in [self._mols[mol][0] for mol in self._mols]:
