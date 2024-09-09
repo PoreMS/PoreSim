@@ -536,9 +536,9 @@ class Construct:
                 if not "box" in [self._mols[mol][4] for mol in self._mols]:
                     self._pos_dat()
 
-            # If molecules have to set in a specific area of a box system
-            if [self._mols[mol][5] for mol in self._mols]:
-                self._pos_dat()
+        # If molecules have to set in a specific area of a box system
+        if [self._mols[mol][5] for mol in self._mols]:
+            self._pos_dat()
 
         # Pore simulation that needs to be filled
         if "fill" in [self._mols[mol][0] for mol in self._mols]:
