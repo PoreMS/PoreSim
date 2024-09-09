@@ -184,12 +184,12 @@ class Construct:
                                 with open(self._box_path +"_gro/" + "position_{}_{}.dat".format(pore_id,mol), "w") as file_out:
                                     for i in range(int(self._mols[mol][0]/2)):
                                         out_string = str(self._pore_props[pore_id]["parameter"]["centroid"][0]) + " "
-                                        out_string += str(self._pore_props[pore_id]["parameter"]["centroid"][1]-self._pore_props[pore_id]["parameter"]["diameter"]/2*0.75) + " "
+                                        out_string += str(self._pore_props[pore_id]["parameter"]["centroid"][1]-self._pore_props[pore_id]["parameter"]["height"]/2*0.75) + " "
                                         out_string += str(self._pore_props["system"]["reservoir"] + self._pore_props[pore_id]["parameter"]["centroid"][2]) + "\n"
                                         file_out.write(out_string)
                                     for i in range(int(self._mols[mol][0]/2)):
                                         out_string = str(self._pore_props[pore_id]["parameter"]["centroid"][0]) + " "
-                                        out_string += str(self._pore_props[pore_id]["parameter"]["centroid"][1]+self._pore_props[pore_id]["parameter"]["diameter"]/2*0.75) + " "
+                                        out_string += str(self._pore_props[pore_id]["parameter"]["centroid"][1]+self._pore_props[pore_id]["parameter"]["height"]/2*0.75) + " "
                                         out_string += str(self._pore_props["system"]["reservoir"] + self._pore_props[pore_id]["parameter"]["centroid"][2]) + "\n"
                                         file_out.write(out_string)
 
