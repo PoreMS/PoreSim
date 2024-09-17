@@ -84,7 +84,7 @@ class Construct:
         """
         for mol in self._mols:
             # Position file for reservoir
-            if (self._mols[mol][0]=="fill" and not self._mols[mol][6] and self._mols[mol][4] in ["res", "both"]):
+            if (self._mols[mol][0]=="fill" and not self._mols[mol][6] and self._mols[mol][4] in ["res", "both"]) and "PORE" in self._struct:
                 num = int(self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._pore_props["system"]["dimensions"][0]*self._pore_props["system"]["dimensions"][1]*self._pore_props["system"]["reservoir"]*2*0.5)
                 with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
                     for i in range(int(num/2)):
@@ -110,7 +110,7 @@ class Construct:
                                     out_string += str(self._pore_props["system"]["reservoir"] + self._pore_props[pore_id]["parameter"]["centroid"][2]) + "\n"
                                     file_out.write(out_string)
                                 file_out.close()
-            elif (self._mols[mol][0]=="fill" and not self._mols[mol][6] and self._mols[mol][4] in ["pore"]):
+            elif (self._mols[mol][0]=="fill" and not self._mols[mol][6] and self._mols[mol][4] in ["pore"]) and "PORE" in self._struct:
                 for pore_id in self._pore_props.keys():
                         if pore_id[:5]=="shape":
                             if (self._pore_props[pore_id]["parameter"]["central"]==[0,0,1]) and (self._mols[mol][4] in ["pore", "both"]): 
@@ -123,7 +123,7 @@ class Construct:
                                         file_out.write(out_string)
                                     file_out.close()
             # Position file for put a specific number of molecules in pore or reservoir 
-            elif self._mols[mol][0]!="fill" and not self._mols[mol][5] and not self._mols[mol][6]:   
+            elif self._mols[mol][0]!="fill" and not self._mols[mol][5] and not self._mols[mol][6] and "PORE" in self._struct:   
                 j=0
                 # Check how much molecules have to set in pore or in reservoir if a number is given
                 for pore_id in self._pore_props.keys():
@@ -208,7 +208,7 @@ class Construct:
 
             elif self._mols[mol][0]=="fill" and not self._mols[mol][5] and not self._mols[mol][4]=="wall":
                 num = int((self._mols[mol][2]/self._mols[mol][3]/10*6.022*self._mols[mol][6][0]*self._mols[mol][6][1]*self._mols[mol][6][2])*0.8)
-                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol,i), "w") as file_out:
+                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
                     for i in range(num):
                         out_string = str(self._mols[mol][6][0]/2) + " "
                         out_string += str(self._mols[mol][6][1]/2) + " "
@@ -218,7 +218,7 @@ class Construct:
             
             elif self._mols[mol][0]!="fill" and not self._mols[mol][5]:
                 num = self._mols[mol][0]
-                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol,i), "w") as file_out:
+                with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
                     for i in range(num):
                         out_string = str(self._mols[mol][6][0]/2) + " "
                         out_string += str(self._mols[mol][6][1]/2) + " "
@@ -537,8 +537,9 @@ class Construct:
                     self._pos_dat()
 
         # If molecules have to set in a specific area of a box system
-        if [self._mols[mol][5] for mol in self._mols]:
-            self._pos_dat()
+        for mol in self._mols:
+            if self._mols[mol][5]:
+                self._pos_dat()
 
         # Pore simulation that needs to be filled
         if "fill" in [self._mols[mol][0] for mol in self._mols]:
