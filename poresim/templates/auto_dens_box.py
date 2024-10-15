@@ -21,6 +21,9 @@ if __name__ == "__main__":
 
     # Set box size (x,y,z)
     box = []
+    if not box:
+        print("Set box dimension to run ana.py")
+        exit()
 
     # Set analysis
     ana_list = {}
@@ -52,10 +55,9 @@ if __name__ == "__main__":
         # Calculate density - area is given in bins
         dens = {}
         num_diff = {}
-
         {% for mol in mols2 -%}
-        data = pa.utils.load("dens_{{mol.name }}_box.obj")
         {% if mol.area %}
+        data = pa.utils.load("dens_{{mol.name }}_box.obj")
         {% for areas in mol.area %}
         # Define area of the molecule
         index_low = list(data["data"]["ex_width"]).index({{areas[0] }})

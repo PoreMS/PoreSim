@@ -97,7 +97,7 @@ class Actuate:
                 # Simulation options
                 utils.replace(link_shell, "SIMULATIONNODES", nodes[step])
                 utils.replace(link_shell, "SIMULATIONPROCS", np[step])
-                utils.replace(link_shell, "SIMULATIONGPU", ":gpus=1:exclusive_process" if gpu[step] else "")
+                utils.replace(link_shell, "SIMULATIONGPU", "gpu:" + str(gpu[step]) if gpu[step]!=False else "")
                 utils.replace(link_shell, "SIMULATIONTIME", wall[step])
                 utils.replace(link_shell, "SIMULATIONLABEL", self._label+"_"+step)
                 utils.replace(link_shell, "COMMANDCHANGEDIR", "cd "+self._clr_link+step)
@@ -281,7 +281,6 @@ class Actuate:
         utils.replace(link_shell, "COMMANDCHANGEDIR", "cd "+self._clr_link+str("ana"))
 
         # Insert into file
-        utils.replace(link_shell, "COMMANDGROMACS", "sh ana.sh")
         utils.replace(link_shell, "COMMANDGROMACS", "python ana.py")
 
     ##################

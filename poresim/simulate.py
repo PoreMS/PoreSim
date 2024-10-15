@@ -167,7 +167,6 @@ class Simulate:
                         template = Template(file_.read())
 
                     # Adjust template 
-                    print(area_on)
                     output = template.render(mols=jinja2_dict, mols2=jinja2_dict_fill, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job", fill = True, area = area_on)
                     #Save adjusted template
                     with open(box_link+"ana/ana.py", "w") as file_:

@@ -4,22 +4,22 @@ cluster:
   queuing:
     add_np: false
     mpi: $DO_PARALLEL
-    shell: forhlr.sh
-    submit: sbatch --partition multinode
+    shell: horeka.sh
+    submit: sbatch --partition cpuonly
 
 job:
   min:
-    file: data/forhlr.sh
+    file: data/horeka.sh
     nodes: 1
     np: 28
     wall: 00:24:00:00
   nvt:
-    file: data/forhlr.sh
+    file: data/horeka.sh
     nodes: 1
     np: 28
     wall: 00:24:00:00
   run:
-    file: data/forhlr.sh
+    file: data/horeka.sh
     maxh: 24
     nodes: 1
     np: 28
@@ -28,14 +28,14 @@ job:
 
 param:
   min:
-    file: data/pore_min.mdp
+    file: data/npt_min.mdp
   nvt:
-    file: data/pore_nvt.mdp
+    file: data/npt_nvt.mdp
     param:
       NUMBEROFSTEPS: 2000000
       TEMPERATURE_VAL: 298
   run:
-    file: data/pore_run.mdp
+    file: data/npt_run.mdp
     param:
       NUMBEROFSTEPS: 20000000
       TEMPERATURE_VAL: 298

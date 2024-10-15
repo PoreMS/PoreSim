@@ -58,9 +58,9 @@ class Benchmark(Simulate):
         """
         # Set parameter dictionary
         params = self._sim_dict["param"]
-        params["nvt"]["param"]["NUMBEROFSTEPS"] = 1000
+        params["nvt"]["param"]["NUMBEROFSTEPS"] = 5000
         if "npt" in params:
-            params["npt"]["param"]["NUMBEROFSTEPS"] = 1000
+            params["npt"]["param"]["NUMBEROFSTEPS"] = 5000
         if "run" in params:
             del params["run"]
 
@@ -113,16 +113,16 @@ class Benchmark(Simulate):
                 # Set job dictionary
                 job["min"]["np"] = n
                 job["min"]["nodes"] = node
-                job["min"]["wall"] = "00:30:00"
+                job["min"]["wall"] = "01:00:00"
 
                 job["nvt"]["np"] = n
                 job["nvt"]["nodes"] = node
-                job["nvt"]["wall"] = "00:30:00"
+                job["nvt"]["wall"] = "01:00:00"
 
                 if "npt" in params:
                     job["npt"]["np"] = n
                     job["npt"]["nodes"] = node
-                    job["npt"]["wall"] = "00:30:00"
+                    job["npt"]["wall"] = "01:00:00"
 
                 # Set subfolder
                 self._sim_dict["job"] = job

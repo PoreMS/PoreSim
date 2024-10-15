@@ -217,6 +217,9 @@ class Construct:
                 file_out.close()
             
             elif self._mols[mol][0]!="fill" and not self._mols[mol][5]:
+                if not self._mols[mol][6]:
+                    print("If you fill a system with on molecule specify in add_mol for every molecule the box dimension")
+                    exit()
                 num = self._mols[mol][0]
                 with open(self._box_path +"_gro/" + "position_{}.dat".format(mol), "w") as file_out:
                     for i in range(num):
@@ -429,7 +432,8 @@ class Construct:
             out_string = "mkdir "+folder_fill+"$fill_num\n"
             out_string += "mv "+folder_gro+file_box+" "+folder_fill+"$fill_num\n"
             out_string += "mv "+folder_top+file_top+" "+folder_fill+"$fill_num\n"
-            out_string += "mv "+folder_gro+file_ndx+" "+folder_fill+"$fill_num\n"
+            if "PORE" in self._struct:
+                out_string += "mv "+folder_gro+file_ndx+" "+folder_fill+"$fill_num\n"
             out_string += "cp "+folder_nvt+sim_nvt+".gro "+folder_gro+file_box+"\n"
             out_string += "cp "+folder_top+file_t_b+" "+folder_top+file_top+"\n"
             out_string += "mv "+folder_min+" "+folder_fill+"$fill_num\n"
@@ -482,8 +486,6 @@ class Construct:
                     out_string += "-nmol "
                     out_string += 0 if self._mols[mol][2] is None else ("FILLDENS_" + mol)
                     out_string += " >> logging.log 2>&1\n"
-                    # if "PORE" in self._struct:
-                    #     out_string += "python empty_grid.py "+folder_gro+" "+mol+" "+str(self._mols[mol][1])+"\n"
                     file_out.write(out_string)
             file_out.write("python sort.py "+folder_gro+"\n")
             file_out.write("echo \"System "+self._box_link+" - Refilled simulation box ...\"\n\n")
