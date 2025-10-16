@@ -1,4 +1,4 @@
-<img src="https://github.com/PoreMS/PoreSim/blob/master/docsrc/pics/logo_text_sub.svg" width="60%">
+<img src="https://github.com/PoreMS/PoreSim/blob/main/docsrc/pics/logo_text_sub.svg" width="60%">
 
 --------------------------------------
 
