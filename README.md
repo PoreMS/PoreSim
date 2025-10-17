@@ -6,7 +6,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/PoreMS/PoreSim/blob/master/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14028685.svg)](https://doi.org/10.5281/zenodo.14028685)
 [![Build Status](https://github.com/PoreMS/PoreSim/actions/workflows/workflow.yml/badge.svg)](https://github.com/PoreMS/PoreSim/actions/workflows/workflow.yml)
-[![codecov](https://codecov.io/gh/PoreMS/PoreSim/branch/master/graph/badge.svg)](https://codecov.io/gh/PoreMS/PoreSim)
+[![codecov](https://codecov.io/gh/PoreMS/PoreSim/branch/main/graph/badge.svg)](https://codecov.io/gh/PoreMS/PoreSim)
 
 ## Documentation
 
