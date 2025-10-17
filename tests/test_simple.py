@@ -183,8 +183,8 @@ class UserModelCase(unittest.TestCase):
         box = ps.Box("box")
         box.add_box("data/pore.gro")
         box.add_pore("data/pore.yml")
-        box.add_mol("EDC", "data/educt.gro", 10)
-        box.add_mol("PRD", "data/productmc.gro", 12)
+        box.add_mol("EDC", "data/educt.gro", 10, section = "pore")
+        box.add_mol("PRD", "data/productmc.gro", 12, section = "res")
         box.add_mol("BEN", "data/benzene.gro", "fill", auto_dens=500, mass=78.11)
         box.add_topol("data/pore.top", "master")
         box.add_topol("data/grid.itp", "top")
@@ -205,6 +205,23 @@ class UserModelCase(unittest.TestCase):
         bench2.set_param(param)
         bench2.generate()
 
+
+    def test_2phase(self):
+        pores = ps.Box("353_2phase")
+        pores.set_label("353_2phase")
+
+        # Import empty gro file with the dimensions of box
+        pores.add_box("data/box_2phase.gro")
+
+        # Add gro files of the molecules
+        # IL Phase
+        pores.add_mol("CAT", "data/2phase/catalyst.gro", inp=10, area=[[0,5],[15,20]], box = [8,8,20], kwargs_gmx={"-try":1000, "-scale":0.47})
+        pores.add_mol("EDC", "data/2phase/reactant.gro", inp=10, area = [[5,15]], box = [8,8,20], kwargs_gmx={"-try":1000, "-scale":0.47})
+        pores.add_mol("IM", "data/2phase/bmi.gro", inp=1600, area = [[0,5],[15,20]], box = [8,8,20], kwargs_gmx={"-try":1000, "-scale":0.47})
+        pores.add_mol("BF4", "data/2phase/bf4.gro", inp=1620, area = [[0,5],[15,20]], box = [8,8,20], kwargs_gmx={"-try":1000, "-scale":0.47})
+
+        # Heptane Phase
+        pores.add_mol("HEP", "data/2phase/1-heptane.gro", inp=2420, area = [[5,15]], box = [8,8,20],kwargs_gmx={"-try":1000, "-scale":0.47})
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

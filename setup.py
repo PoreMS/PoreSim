@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="poresim",
-    version="0.2.0",
+    version="0.3.0",
     author="Hamzeh Kraus",
     author_email="kraus@itt.uni-stuttgart.de",
     description="Pore system simulation generator.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Ajax23/testa",
+    url="https://github.com/PoreMS/PoreSim",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

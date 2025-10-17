@@ -1,3 +1,6 @@
+# v0.3.0
+* New version due to a change of GitHub organisation.
+
 # v0.2.0
 * Update for PoreMS 0.3.0 and PoreAna 0.2.3
 * Possibility to place molecules in a targeted manner in the pore
