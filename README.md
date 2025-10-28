@@ -50,3 +50,14 @@ Please submit any reproducible bugs you encounter to the [issue tracker](https:/
 ## How to Cite PoreSim
 
 When citing PoreSim please use the current **Zenodo DOI** corresponding to the used PoreSim version. (Current DOI is listed in the badges.)
+
+## Legacy Code Notice
+
+This repository contains the actively maintained and current codebase.  
+Earlier development stages and archived versions (including those used in publication XYZ) are stored in the following legacy repository:
+
+[https://github.com/Ajax23/PoreSim](https://github.com/Ajax23/PoreSim)
+
+Please note:
+• Legacy versions are no longer actively maintained  
+• APIs, file formats, and dependencies may differ  
