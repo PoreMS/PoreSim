@@ -59,5 +59,5 @@ Earlier development stages and archived versions (including those used in public
 [https://github.com/Ajax23/PoreSim](https://github.com/Ajax23/PoreSim)
 
 Please note:
-• Legacy versions are no longer actively maintained  
-• APIs, file formats, and dependencies may differ  
+- Legacy versions are no longer actively maintained  
+- APIs, file formats, and dependencies may differ  
