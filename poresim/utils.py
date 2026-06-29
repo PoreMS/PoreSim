@@ -13,7 +13,7 @@ from shutil import copyfile
 
 def load(link):
     with open(link, "r") as file_in:
-        return yaml.load(file_in, Loader=yaml.UnsafeLoader)
+        return yaml.load(file_in, Loader=yaml.SafeLoader)
     
 def mkdirp(directory):
     """Create directory if it does not exist.

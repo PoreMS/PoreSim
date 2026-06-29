@@ -279,7 +279,7 @@ class Box:
         job : dictionary
             Simulation dictionary
         """
-        return self._sim_dict["job"] if "job" in self._sim_dict.keys() else None
+        return self._sim_dict.get("job")
 
     def get_param(self):
         """Return the dictionary containing all systems parameters.
@@ -289,7 +289,7 @@ class Box:
         param : dictionary
             Parameter dictionary
         """
-        return self._sim_dict["param"] if "param" in self._sim_dict.keys() else None
+        return self._sim_dict.get("param")
 
     def get_mols(self):
         """Return list of molecule numbers to be filled in the box.

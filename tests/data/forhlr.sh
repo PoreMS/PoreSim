@@ -3,11 +3,12 @@
 #SBATCH --ntasks-per-node=SIMULATIONPROCS
 #SBATCH --time=SIMULATIONTIME
 #SBATCH --job-name=SIMULATIONLABEL
+#SBATCH --gres=SIMULATIONGPU
 
 #SBATCH --error=SIMULATIONLABEL.e.%J
 #SBATCH --output=SIMULATIONLABEL.o.%J
 
-module load chem/gromacs/2016.5-impi
+module load chem/gromacs/2024.3
 
 COMMANDCHANGEDIR
 

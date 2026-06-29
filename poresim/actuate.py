@@ -5,7 +5,6 @@
 ################################################################################
 
 
-from re import A
 import poresim.utils as utils
 
 
@@ -29,17 +28,23 @@ class Actuate:
         Box structure dictionary
     """
     def __init__(self, sim_link, box_link, cluster, job, label, structure):
-        # Initialize
         self._link = box_link
         self._sim_link = sim_link
-        self._box_link = "./" if sim_link == box_link else "./"+box_link.split("/")[-2]+"/"
-        self._clr_link = cluster["directory"]+sim_link.split("/")[-2]+"/"
-        self._clr_link += "" if sim_link == box_link else box_link.split("/")[-2]+"/"
+        self._box_link = "./" if sim_link == box_link else "./" + box_link.split("/")[-2] + "/"
+        self._clr_link = cluster["directory"] + sim_link.split("/")[-2] + "/"
+        self._clr_link += "" if sim_link == box_link else box_link.split("/")[-2] + "/"
         self._cluster = cluster
         self._job = job
         self._label = label
         self._is_pore = "PORE" in structure
         self._is_plm = "PLUMED" in structure
+        # Shared folder/file paths used across shell generation
+        self._folder_gro = "../_gro/"
+        self._folder_top = "../_top/"
+        self._folder_mdp = "../_mdp/"
+        self._file_box = "box.gro"
+        self._file_top = "topol.top"
+        self._file_ndx = "index.ndx"
 
 
     ###################
@@ -51,21 +56,17 @@ class Actuate:
         * **nvt** for temperature equilibration
         * **npt** for pressure equilibration
         """
-        # Set simulation folder descriptors
         sim_min = "min"
         sim_nvt = "nvt"
         sim_npt = "npt"
         sim_all = {sim_min: sim_min, sim_nvt: sim_nvt, sim_npt: sim_npt}
 
-        # Set folder names
-        folder_gro = "../_gro/"
-        folder_top = "../_top/"
-        folder_mdp = "../_mdp/"
-
-        # Set file names
-        file_box = "box.gro"
-        file_top = "topol.top"
-        file_ndx = "index.ndx"
+        folder_gro = self._folder_gro
+        folder_top = self._folder_top
+        folder_mdp = self._folder_mdp
+        file_box = self._file_box
+        file_top = self._file_top
+        file_ndx = self._file_ndx
 
         # Get simulation properties
         np = {step: str(self._job[step]["np"]) for step in self._job}
@@ -154,19 +155,15 @@ class Actuate:
         The breakpoint can be set using the *sim_num* variable in the shell
         file.
         """
-        # Set simulation folder descriptor
         sim_nvt = "nvt"
         sim_npt = "npt"
         sim_run = "run"
 
-        # Set folder names
-        folder_gro = "../_gro/"
-        folder_top = "../_top/"
-        folder_mdp = "../_mdp/"
-
-        # Set file names
-        file_top = "topol.top"
-        file_ndx = "index.ndx"
+        folder_gro = self._folder_gro
+        folder_top = self._folder_top
+        folder_mdp = self._folder_mdp
+        file_top = self._file_top
+        file_ndx = self._file_ndx
 
         # Get last step
         last = "../"+sim_npt+"/"+sim_npt if "npt" in self._job else "../"+sim_nvt+"/"+sim_nvt
