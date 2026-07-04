@@ -16,6 +16,7 @@ extensions = [
 # autoapi: scan the poresim package and generate API pages automatically
 autoapi_dirs = ['../poresim']
 autoapi_type = 'python'
+autoapi_ignore = ['*/templates/*']
 autoapi_options = [
     'members',
     'undoc-members',
