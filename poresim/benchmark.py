@@ -41,7 +41,7 @@ class Benchmark(Simulate):
     """
     def __init__(self, box, np, nodes, link="./benchmark", iterator="nodes"):
         # Call super class
-        super(Benchmark, self).__init__(link, box)
+        super().__init__(link, box)
 
         # Initialize
         self._box = box

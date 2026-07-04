@@ -49,7 +49,7 @@ class Analyze:
 
         # Open file
         utils.mkdirp(self._box_path+"ana")
-        with open(self._box_path+"ana/ana.sh", "w") as file_out:
+        with open(self._box_path+"ana/ana.sh", "w", encoding="utf-8") as file_out:
             # Check if backup folder is given
             file_out.write("# Set Todos\n")
             file_out.write("echo \"Load gromacs ...\"; exit;\n")

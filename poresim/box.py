@@ -50,7 +50,7 @@ class Box:
         """
         self._sim_dict["struct"]["PORE"] = link
 
-    def add_mol(self, short, link, inp, num_atoms="gro", auto_dens=None, mass = None,  section="both",area= [], box = [], kwargs_gmx = {}):
+    def add_mol(self, short, link, inp, num_atoms="gro", auto_dens=None, mass=None, section="both", area=None, box=None, kwargs_gmx=None):
         """Add a molecule to the simulation box. A unique short name and a
         structure-file link have to be given.
 
@@ -88,6 +88,13 @@ class Box:
         kwargs_gmx : dictonary, {}, optional
             dictonary to set up options for the gromacs "insert-molecules" command (adjust for example -try and -scale)
         """
+        if area is None:
+            area = []
+        if box is None:
+            box = []
+        if kwargs_gmx is None:
+            kwargs_gmx = {}
+
         # Process input
         if not isinstance(inp, int) and not isinstance(inp, str):
             print("Wrong input for the molecule number ...")

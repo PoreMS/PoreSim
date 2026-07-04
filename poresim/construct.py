@@ -49,7 +49,7 @@ class Construct:
         positions : numpy.ndarray
             Array of shape (N, 3) with x, y, z coordinates
         """
-        with open(path, "w") as f:
+        with open(path, "w", encoding="utf-8") as f:
             for row in positions:
                 f.write(f"{row[0]} {row[1]} {row[2]}\n")
 
@@ -250,7 +250,7 @@ class Construct:
         folder_fill = self._box_link + "_fill/"
         file_box = "box.gro"
 
-        with open(self._sim_link + "construct.sh", "a") as file_out:
+        with open(self._sim_link + "construct.sh", "a", encoding="utf-8") as file_out:
             label_width = 12 + len(self._box_link)
             file_out.write("#" * label_width + "\n")
             file_out.write(f"# Process {self._box_link} #\n")
@@ -362,7 +362,7 @@ class Construct:
 
         has_auto_dens = not all(self._mols[mol][2] is None for mol in self._mols)
 
-        with open(self._box_path + "_fill/fill.sh", "w") as file_out:
+        with open(self._box_path + "_fill/fill.sh", "w", encoding="utf-8") as file_out:
             file_out.write("# Create Todos\n")
             file_out.write("echo \"Load gromacs ...\"; exit;\n")
             if has_auto_dens:
