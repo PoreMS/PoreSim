@@ -27,7 +27,7 @@
 * CI migrated from `pip` to `uv` (`astral-sh/setup-uv@v5`); `requirements.txt` removed (deps resolved via `pyproject.toml`)
 
 ### Administrative
-* `setup.py`: version 1.0.0, `python_requires='>=3.12'`, author email updated, jinja2 unpinned
+* `pyproject.toml`: version 1.0.0, `requires-python = ">=3.12"`, author email updated, jinja2 unpinned; `[project.optional-dependencies]` dev group added (`pytest`, `pytest-cov`)
 * README: updated image paths, Python version, PyPI badge, testing and installation instructions
 
 
