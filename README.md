@@ -17,7 +17,7 @@ The docs include an example for creating [simulation boxes](https://porems.githu
 
 ## Dependencies
 
-PoreSim requires Python 3.10+.
+PoreSim requires Python 3.12+.
 
 Installation requires [pyyaml](https://pypi.org/project/PyYAML/), [numpy](https://numpy.org/), and [jinja2](https://pypi.org/project/Jinja2/).
 

@@ -22,10 +22,10 @@
 ### CI / tooling
 * GitHub Actions: added ruff linting workflow (`lint.yml`)
 * GitHub Actions: added pip-audit security scan workflow (`security.yml`)
-* CI matrix updated: Python 3.10–3.13; `python_requires` bumped to `>=3.10`
+* CI matrix updated: Python 3.12–3.13; `python_requires` bumped to `>=3.12`
 
 ### Administrative
-* `setup.py`: version 1.0.0, `python_requires='>=3.10'`, author email updated, jinja2 unpinned
+* `setup.py`: version 1.0.0, `python_requires='>=3.12'`, author email updated, jinja2 unpinned
 * README: updated image paths, Python version, PyPI badge, testing and installation instructions
 
 
