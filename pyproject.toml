@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "poresim"
+version = "1.0.0"
+description = "Pore system simulation generator."
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Hamzeh Kraus", email = "kraus@itt.uni-stuttgart.de" }]
+requires-python = ">=3.12"
+dependencies = ["numpy", "pyyaml", "jinja2"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/PoreMS/PoreSim"
+
+[tool.setuptools.package-data]
+poresim = ["templates/*"]
