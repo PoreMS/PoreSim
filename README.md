@@ -39,15 +39,14 @@ Or download the repository and install in the top directory via:
 
 ## Testing
 
-A local venv with both PoreMS and PoreSim installed in editable mode is provided:
+Install in editable mode with test dependencies:
 
-    python -m venv venv
-    venv/bin/pip install -e /path/to/PoreMS
-    venv/bin/pip install -e .
-    venv/bin/pip install pytest pytest-cov
+    pip install -e ".[dev]"
 
-    venv/bin/python -m pytest tests/test_unit.py          # fast unit tests
-    venv/bin/python -m pytest tests/test_integration.py   # full integration tests (slow)
+Then run the tests:
+
+    pytest tests/test_unit.py          # fast unit tests
+    pytest tests/test_integration.py   # full integration tests (slow)
 
 
 ## Development
