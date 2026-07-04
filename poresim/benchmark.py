@@ -4,14 +4,12 @@
 """All necessary function for running the simulation."""
 ################################################################################
 
-
 import poresim.utils as utils
-
-from poresim.simulate import Simulate
-from poresim.parameter import Parameter
-from poresim.topology import Topology
-from poresim.construct import Construct
 from poresim.actuate import Actuate
+from poresim.construct import Construct
+from poresim.parameter import Parameter
+from poresim.simulate import Simulate
+from poresim.topology import Topology
 
 
 class Benchmark(Simulate):
@@ -39,6 +37,7 @@ class Benchmark(Simulate):
     iterator : string, optional
         Aspect to be benchmarked
     """
+
     def __init__(self, box, np, nodes, link="./benchmark", iterator="nodes"):
         # Call super class
         super().__init__(link, box)
@@ -49,13 +48,11 @@ class Benchmark(Simulate):
         self._nodes = nodes if isinstance(nodes, list) else [nodes]
         self._iterator = iterator
 
-
     ##################
     # Public Methods #
     ##################
     def generate(self):
-        """Generate simulation folder.
-        """
+        """Generate simulation folder."""
         # Set parameter dictionary
         params = self._sim_dict["param"]
         params["nvt"]["param"]["NUMBEROFSTEPS"] = 5000
@@ -74,7 +71,7 @@ class Benchmark(Simulate):
         self._box.set_param(params)
 
         # Create parameter files
-        box_link = self._link+self._box.get_name()+"/"
+        box_link = self._link + self._box.get_name() + "/"
 
         # Create folder if multiple boxes exist
         utils.mkdirp(box_link)
@@ -88,11 +85,20 @@ class Benchmark(Simulate):
         topol.generate_files()
 
         # Create structure files and shells
-        construct = Construct(self._link, box_link, self._box.get_mols(), self._box.get_struct())
+        construct = Construct(
+            self._link, box_link, self._box.get_mols(), self._box.get_struct()
+        )
         construct.generate_files()
 
         # Create simulation shells
-        actuate = Actuate(self._link, box_link, self._sim_dict["cluster"], self._sim_dict["job"], self._box.get_label(), self._box.get_struct())
+        actuate = Actuate(
+            self._link,
+            box_link,
+            self._sim_dict["cluster"],
+            self._sim_dict["job"],
+            self._box.get_label(),
+            self._box.get_struct(),
+        )
         actuate.generate_files()
 
         # Process iterator input
@@ -102,7 +108,7 @@ class Benchmark(Simulate):
             iterator = self._np
 
         # Create copy shell after minimization
-        with open(self._link+"benchmark.sh", "a") as file_out:
+        with open(self._link + "benchmark.sh", "a") as file_out:
             # Create subfolders for different simulations
             job = self._sim_dict["job"]
             for it in iterator:
@@ -127,21 +133,28 @@ class Benchmark(Simulate):
                 # Set subfolder
                 self._sim_dict["job"] = job
                 self._box.set_name(str(it).zfill(2))
-                self._box.set_label("b_"+str(it).zfill(2))
-                box_link = self._link+self._box.get_name()+"/"
+                self._box.set_label("b_" + str(it).zfill(2))
+                box_link = self._link + self._box.get_name() + "/"
 
                 # Create parameter files
                 param = Parameter(box_link, self._box.get_param())
                 param.generate_files()
 
                 # Create simulation shells
-                actuate = Actuate(self._link, box_link, self._sim_dict["cluster"], self._sim_dict["job"], self._box.get_label(), self._box.get_struct())
+                actuate = Actuate(
+                    self._link,
+                    box_link,
+                    self._sim_dict["cluster"],
+                    self._sim_dict["job"],
+                    self._box.get_label(),
+                    self._box.get_struct(),
+                )
                 actuate.generate_files()
 
                 # Write copy to shell
-                file_out.write("cp -r X/_gro "+self._box.get_name()+"/_gro\n")
-                file_out.write("cp -r X/_top "+self._box.get_name()+"/_top\n")
-                file_out.write("cp X/min/* "+self._box.get_name()+"/min/\n\n")
+                file_out.write("cp -r X/_gro " + self._box.get_name() + "/_gro\n")
+                file_out.write("cp -r X/_top " + self._box.get_name() + "/_top\n")
+                file_out.write("cp X/min/* " + self._box.get_name() + "/min/\n\n")
 
         # Set equilibration master shell to nvt
-        utils.replace(self._link+"equilibrate.sh", "min", "nvt")
+        utils.replace(self._link + "equilibrate.sh", "min", "nvt")

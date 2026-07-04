@@ -4,17 +4,18 @@
 """Here popular basic methods are noted."""
 ################################################################################
 
-
-import os
 import fileinput
-import yaml
+import os
 from shutil import copyfile
+
+import yaml
 
 
 def load(link):
     with open(link, "r") as file_in:
         return yaml.load(file_in, Loader=yaml.SafeLoader)
-    
+
+
 def mkdirp(directory):
     """Create directory if it does not exist.
 
@@ -94,7 +95,7 @@ def mumol_m2_to_mols(c, A):
     N : float
         Number of molecules
     """
-    return 0.6022*c*A
+    return 0.6022 * c * A
 
 
 def mols_to_mumol_m2(N, A):
@@ -134,7 +135,7 @@ def mols_to_mumol_m2(N, A):
     c : float
         Concentration in :math:`\\frac{\\mu\\text{mol}}{\\text{m}^2}`
     """
-    return N/0.6022/A
+    return N / 0.6022 / A
 
 
 def mmol_g_to_mumol_m2(c, SBET):
@@ -160,7 +161,7 @@ def mmol_g_to_mumol_m2(c, SBET):
     c : float
         Concentration in :math:`\\frac{\\mu\\text{mol}}{\\text{m}^2}`
     """
-    return c/SBET*1e3
+    return c / SBET * 1e3
 
 
 def mmol_l_to_mols(c, V):
@@ -200,7 +201,7 @@ def mmol_l_to_mols(c, V):
     N : float
         Number of molecules
     """
-    return 6.022e-4*c*V
+    return 6.022e-4 * c * V
 
 
 def mols_to_mmol_l(N, V):
@@ -239,4 +240,4 @@ def mols_to_mmol_l(N, V):
     c : float
         Concentration in :math:`\\frac{\\text{mmol}}{\\text{l}}`
     """
-    return N/6.022e-4/V
+    return N / 6.022e-4 / V
