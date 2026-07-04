@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Simulation with molecules only in the pore &#8212; PoreSim 0.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css?v=cab96e3b" />
+    <script src="_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          PoreSim</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="api.html">API</a></li>
+                <li><a href="simulation.html">Simulation</a></li>
+                <li><a href="#">Complex Pore Simulation</a></li>
+                <li><a href="simulation_2ph.html">Simulation 2-Phase</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Simulation with molecules only in the pore</a><ul>
+<li><a class="reference internal" href="#set-job-inputs-for-your-working-station">Set job inputs for your working station</a></li>
+<li><a class="reference internal" href="#create-a-box-object-with-the-molecules-contained-in-your-system">Create a box object with the molecules contained in your system</a></li>
+<li><a class="reference internal" href="#create-simulation-objects-and-generate-folder-structure">Create simulation objects and generate folder structure</a></li>
+<li><a class="reference internal" href="#image-of-the-system-after-filling-the-box">Image of the system after filling the box</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">Simulation with molecules only in the pore</a><ul>
+<li><a class="reference internal" href="#set-job-inputs-for-your-working-station">Set job inputs for your working station</a></li>
+<li><a class="reference internal" href="#create-a-box-object-with-the-molecules-contained-in-your-system">Create a box object with the molecules contained in your system</a></li>
+<li><a class="reference internal" href="#create-simulation-objects-and-generate-folder-structure">Create simulation objects and generate folder structure</a></li>
+<li><a class="reference internal" href="#image-of-the-system-after-filling-the-box">Image of the system after filling the box</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="sourcelink">
+  <a href="_sources/simulation_complex.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="simulation-with-molecules-only-in-the-pore">
+<h1>Simulation with molecules only in the pore<a class="headerlink" href="#simulation-with-molecules-only-in-the-pore" title="Link to this heading">¶</a></h1>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">poresim</span> <span class="k">as</span> <span class="nn">ps</span>
+</pre></div>
+</div>
+<section id="set-job-inputs-for-your-working-station">
+<h2>Set job inputs for your working station<a class="headerlink" href="#set-job-inputs-for-your-working-station" title="Link to this heading">¶</a></h2>
+<p>Example Bash file for Horeka:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH --nodes=SIMULATIONNODES</span>
+<span class="c1">#SBATCH --ntasks-per-node=SIMULATIONPROCS</span>
+<span class="c1">#SBATCH --time=SIMULATIONTIME</span>
+<span class="c1">#SBATCH --job-name=SIMULATIONLABEL</span>
+<span class="c1">#SBATCH --error=SIMULATIONLABEL.e.%J</span>
+<span class="c1">#SBATCH --output=SIMULATIONLABEL.o.%J</span>
+
+<span class="n">module</span> <span class="n">load</span> <span class="n">chem</span><span class="o">/</span><span class="n">gromacs</span><span class="o">/</span><span class="mf">2019.6</span><span class="n">_cpu</span>
+
+<span class="n">COMMANDCHANGEDIR</span>
+
+<span class="n">COMMANDGROMACS</span>
+</pre></div>
+</div>
+<p>Simulation inputs</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpu</span> <span class="o">=</span> <span class="mi">75</span>
+<span class="n">job</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;data/bash.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;np&quot;</span><span class="p">:</span> <span class="n">cpu</span><span class="p">,</span> <span class="s2">&quot;wall&quot;</span><span class="p">:</span> <span class="s2">&quot;24:00:00&quot;</span><span class="p">},</span>
+       <span class="s2">&quot;nvt&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;data/bash.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;np&quot;</span><span class="p">:</span> <span class="n">cpu</span><span class="p">,</span> <span class="s2">&quot;wall&quot;</span><span class="p">:</span> <span class="s2">&quot;24:00:00&quot;</span><span class="p">},</span>
+       <span class="s2">&quot;run&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;data/bash.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;maxh&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;np&quot;</span><span class="p">:</span> <span class="n">cpu</span><span class="p">,</span> <span class="s2">&quot;runs&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;wall&quot;</span><span class="p">:</span> <span class="s2">&quot;24:00:00&quot;</span><span class="p">}}</span>
+
+<span class="n">param</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;../Simulation_Inputs/Pore/pore_eq_min.mdp&quot;</span><span class="p">},</span>
+         <span class="s2">&quot;nvt&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;../Simulation_Inputs/Pore/pore_eq_nvt.mdp&quot;</span><span class="p">,</span> <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;NUMBEROFSTEPS&quot;</span><span class="p">:</span> <span class="mi">500000</span><span class="p">,</span> <span class="s2">&quot;TEMPERATURE_VAL&quot;</span><span class="p">:</span> <span class="mf">353.15</span><span class="p">}},</span>
+         <span class="s2">&quot;run&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;../Simulation_Inputs/Pore/pore_prod_run.mdp&quot;</span><span class="p">,</span> <span class="s2">&quot;param&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;NUMBEROFSTEPS&quot;</span><span class="p">:</span> <span class="mi">200000000</span><span class="p">,</span> <span class="s2">&quot;TEMPERATURE_VAL&quot;</span><span class="p">:</span> <span class="mf">353.15</span><span class="p">}}}</span>
+
+<span class="n">cluster_horeka</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;directory&quot;</span><span class="p">:</span> <span class="s2">&quot;xxx&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;queuing&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;add_np&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;mpi&quot;</span><span class="p">:</span> <span class="s2">&quot;$DO_PARALLEL&quot;</span><span class="p">,</span> <span class="s2">&quot;shell&quot;</span><span class="p">:</span> <span class="s2">&quot;horeka.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;submit&quot;</span><span class="p">:</span> <span class="s2">&quot;sbatch -p cpuonly &quot;</span><span class="p">}}</span>
+</pre></div>
+</div>
+</section>
+<section id="create-a-box-object-with-the-molecules-contained-in-your-system">
+<h2>Create a box object with the molecules contained in your system<a class="headerlink" href="#create-a-box-object-with-the-molecules-contained-in-your-system" title="Link to this heading">¶</a></h2>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pores</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="s2">&quot;conf4&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;conf4&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_box</span><span class="p">(</span><span class="s2">&quot;../PoreMS/pore.gro&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_pore</span><span class="p">(</span><span class="s2">&quot;../PoreMS/pore.yml&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_struct</span><span class="p">(</span><span class="s2">&quot;mol_list&quot;</span><span class="p">,</span> <span class="s2">&quot;../PoreMS/pore.obj&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add gro files</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_mol</span><span class="p">(</span><span class="s2">&quot;CAT&quot;</span><span class="p">,</span> <span class="s2">&quot;../Molecules/cat.gro&quot;</span><span class="p">,</span> <span class="n">inp</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;pore&quot;</span><span class="p">,</span>  <span class="n">kwargs_gmx</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;-try&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_mol</span><span class="p">(</span><span class="s2">&quot;EDC&quot;</span><span class="p">,</span> <span class="s2">&quot;../Molecules/edc.gro&quot;</span><span class="p">,</span> <span class="n">inp</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;res&quot;</span><span class="p">,</span>  <span class="n">kwargs_gmx</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;-try&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_mol</span><span class="p">(</span><span class="s2">&quot;IM&quot;</span><span class="p">,</span> <span class="s2">&quot;../Molecules/im.gro&quot;</span><span class="p">,</span> <span class="n">inp</span><span class="o">=</span><span class="mi">311</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;pore&quot;</span><span class="p">,</span> <span class="n">kwargs_gmx</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;-try&quot;</span><span class="p">:</span> <span class="mi">50000</span><span class="p">}</span> <span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_mol</span><span class="p">(</span><span class="s2">&quot;BF4&quot;</span><span class="p">,</span> <span class="s2">&quot;../Molecules/bf4.gro&quot;</span><span class="p">,</span> <span class="n">inp</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="s2">&quot;pore&quot;</span><span class="p">,</span>  <span class="n">kwargs_gmx</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;-try&quot;</span><span class="p">:</span> <span class="mi">50000</span><span class="p">})</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_mol</span><span class="p">(</span><span class="s2">&quot;HEP&quot;</span><span class="p">,</span> <span class="s2">&quot;../Molecules/1-heptane.gro&quot;</span><span class="p">,</span> <span class="n">inp</span><span class="o">=</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="n">mass</span> <span class="o">=</span> <span class="mf">100.21</span><span class="p">,</span> <span class="n">auto_dens</span><span class="o">=</span><span class="mf">629.595</span><span class="p">,</span> <span class="n">section</span> <span class="o">=</span> <span class="s2">&quot;res&quot;</span><span class="p">,</span> <span class="n">kwargs_gmx</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;-try&quot;</span><span class="p">:</span><span class="mi">1000</span><span class="p">}</span> <span class="p">)</span>
+
+
+<span class="c1"># Add top files</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../PoreMS/master_topol_pore.top&quot;</span><span class="p">,</span> <span class="s2">&quot;master&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Topologies/forcefield_new_red.itp&quot;</span><span class="p">,</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Topologies/ffnonbonded_new_red.itp&quot;</span><span class="p">,</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Topologies/ffbonded_new.itp&quot;</span><span class="p">,</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Surfaces_Molecules/tms.itp&quot;</span><span class="p">,</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Surfaces_Molecules/tmsg.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../PoreMS/grid.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Topologies/cat.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Topologies/bf4.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Topologies/im.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Surfaces_Molecules/im_img_surface.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Topologies/1-heptane.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">add_topol</span><span class="p">(</span><span class="s2">&quot;../Topologies/educt_oplsaa.itp&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span>
+
+<span class="n">pores</span><span class="o">.</span><span class="n">set_job</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+<span class="n">pores</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you only want to put molecules into the pore, it is better to add the larger molecules first
+to make sure that Gromacs can get them into the pore.</p>
+</div>
+</section>
+<section id="create-simulation-objects-and-generate-folder-structure">
+<h2>Create simulation objects and generate folder structure<a class="headerlink" href="#create-simulation-objects-and-generate-folder-structure" title="Link to this heading">¶</a></h2>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="s2">&quot;Simulation/pore/conf4-r&quot;</span><span class="p">,</span> <span class="n">pores</span><span class="p">)</span>  <span class="c1"># Single</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">set_cluster</span><span class="p">(</span><span class="n">cluster_horeka</span><span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Finished</span> <span class="pre">simulation</span> <span class="pre">folder</span> <span class="pre">-</span> <span class="pre">conf4-r</span> <span class="pre">...</span></code></p>
+</section>
+<section id="image-of-the-system-after-filling-the-box">
+<h2>Image of the system after filling the box<a class="headerlink" href="#image-of-the-system-after-filling-the-box" title="Link to this heading">¶</a></h2>
+<p>Inside view of the pore after running construct.sh.
+Colour code: catalyst, red; ionic anion, orange; ionic kation (on pore surface), green; ionic kation, blue; rectant, grey; heptane not shown.</p>
+<figure class="align-center" id="fig1">
+<a class="reference internal image-reference" href="_images/pore_il.pdf"><img alt="_images/pore_il.pdf" src="_images/pore_il.pdf" style="width: 70%;" />
+</a>
+</figure>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2023, Hamzeh Kraus.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.6.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
