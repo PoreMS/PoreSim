@@ -11,4 +11,6 @@ __pycache__
 .claude
 venv
 docs/_build
+docs/autoapi/
+docs/generated/
 tests/output

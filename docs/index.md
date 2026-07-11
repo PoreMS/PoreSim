@@ -1,14 +1,4 @@
-:::{figure} /pics/logo_text.svg
-:align: center
-:width: 40%
-:::
-
 # Pore System Simulation Generator
-
-:::{note}
-You are viewing the current documentation. The archived documentation for
-the previous release is available at [v_old docs](v_old/index.html).
-:::
 
 This Python package generates simulation folders and GROMACS run scripts for
 pore systems built with [PoreMS](https://porems.github.io/PoreMS/).
@@ -23,7 +13,7 @@ To see the code or report a bug, please visit the
 
 ## API Reference
 
-Full API documentation is auto-generated from source: [API Reference](autoapi/index.html)
+Full API documentation is auto-generated from source: [API Reference](autoapi/index)
 
 :::{toctree}
 :hidden:
