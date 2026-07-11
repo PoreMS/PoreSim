@@ -4,7 +4,6 @@
 """Process topology files."""
 ################################################################################
 
-
 import poresim.utils as utils
 
 
@@ -22,14 +21,14 @@ class Topology:
     topol : dictionary
         Topology dictionary
     """
+
     def __init__(self, link, topol):
         # Initialize
-        self._link = link+"_top/"
+        self._link = link + "_top/"
         self._topol = topol
 
         # Create folder
         utils.mkdirp(self._link)
-
 
     ###################
     # Private Methods #
@@ -67,7 +66,7 @@ class Topology:
                 elif len(dat) > 0 and dat[0] == "[":
                     block = dat[1]
 
-                    if not dat[1] in data.keys():
+                    if dat[1] not in data.keys():
                         is_new = True
                         data[block] = []
 
@@ -92,13 +91,13 @@ class Topology:
         data = self._read(link)
         dont = ["defaults", "atomtypes", "system", "molecules"]
 
-        itp_link = self._link+link.split("/")[-1].split(".")[0]+".itp"
+        itp_link = self._link + link.split("/")[-1].split(".")[0] + ".itp"
 
         # Create itp
         with open(itp_link, "w") as file_out:
             for param in data:
-                if not param in dont:
-                    file_out.write("[ "+param+" ]\n")
+                if param not in dont:
+                    file_out.write("[ " + param + " ]\n")
                     for line in data[param]:
                         file_out.write(line)
                     file_out.write("\n")
@@ -107,24 +106,22 @@ class Topology:
         if charge is not None:
             utils.replace(itp_link, "CHARGESI", "%8.6f" % charge)
 
-
     ##################
     # Public Methods #
     ##################
     def generate_files(self):
-        """Generate topology files.
-        """
+        """Generate topology files."""
         # Get silicon charge if existent
         charge = self._topol["charge"] if "charge" in self._topol else None
 
         # Run through topologies
         for top_type in self._topol:
-            if not top_type=="charge":
+            if not top_type == "charge":
                 for file_link in self._topol[top_type]:
-                    if top_type=="master":
-                        utils.copy(file_link, self._link+"topol.top")
-                        utils.copy(file_link, self._link+"topolBackup.top")
-                    elif top_type=="top":
-                        utils.copy(file_link, self._link+file_link.split("/")[-1])
-                    elif top_type=="itp":
+                    if top_type == "master":
+                        utils.copy(file_link, self._link + "topol.top")
+                        utils.copy(file_link, self._link + "topolBackup.top")
+                    elif top_type == "top":
+                        utils.copy(file_link, self._link + file_link.split("/")[-1])
+                    elif top_type == "itp":
                         self._itp(file_link, charge)

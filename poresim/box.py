@@ -17,6 +17,7 @@ class Box:
     label : None, string, optional
         Job identification label
     """
+
     def __init__(self, name="box", label=None):
         # Initialize
         self._sim_dict = {}
@@ -24,8 +25,7 @@ class Box:
 
         self._sim_dict["struct"] = {}
         self._sim_dict["mols"] = {}
-        self._sim_dict["topol"] = {"master":[], "top":[], "itp":[]}
-
+        self._sim_dict["topol"] = {"master": [], "top": [], "itp": []}
 
     ##################
     # Public Methods #
@@ -50,7 +50,19 @@ class Box:
         """
         self._sim_dict["struct"]["PORE"] = link
 
-    def add_mol(self, short, link, inp, num_atoms="gro", auto_dens=None, mass = None,  section="both",area= [], box = [], kwargs_gmx = {}):
+    def add_mol(
+        self,
+        short,
+        link,
+        inp,
+        num_atoms="gro",
+        auto_dens=None,
+        mass=None,
+        section="both",
+        area=None,
+        box=None,
+        kwargs_gmx=None,
+    ):
         """Add a molecule to the simulation box. A unique short name and a
         structure-file link have to be given.
 
@@ -77,8 +89,8 @@ class Box:
         mass : float, None, optional
             molecular mass (:math:`\\frac{\\text{g}}{\\text{mol}}`) of the molecule to get an estimate of how many molecules you need to put in the box as the initial value for auto_dens.
         section : string, "both", optional
-            'Both' the molecules in the pore and in the reservoir can be set. 
-            If you want the molecules only in the pore, choose 'pore'. If you want them only in the reservoir, choose 'res'. 
+            'Both' the molecules in the pore and in the reservoir can be set.
+            If you want the molecules only in the pore, choose 'pore'. If you want them only in the reservoir, choose 'res'.
             For a slit pore you can use wall to put the molecules as a layer on the SiO2 surface.
             Chose "box" for a box system.
         area : list, [], optional
@@ -88,16 +100,25 @@ class Box:
         kwargs_gmx : dictonary, {}, optional
             dictonary to set up options for the gromacs "insert-molecules" command (adjust for example -try and -scale)
         """
+        if area is None:
+            area = []
+        if box is None:
+            box = []
+        if kwargs_gmx is None:
+            kwargs_gmx = {}
+
         # Process input
         if not isinstance(inp, int) and not isinstance(inp, str):
             print("Wrong input for the molecule number ...")
             return
 
-        if not isinstance(num_atoms, int) and not num_atoms in ["gro"]:
+        if not isinstance(num_atoms, int) and num_atoms not in ["gro"]:
             print("Wrong input for the number of atoms ...")
             return
 
-        if auto_dens is not None and not (isinstance(auto_dens, float) or isinstance(auto_dens, int)):
+        if auto_dens is not None and not (
+            isinstance(auto_dens, float) or isinstance(auto_dens, int)
+        ):
             print("Wrong input for the auto density option ...")
             return
 
@@ -113,13 +134,24 @@ class Box:
                         counter += 1
 
         # If Fill
-        if inp=="fill" and not mass:
-            print("If you use auto_dens you have to specifiy the molar mass of the molecule")
+        if inp == "fill" and not mass:
+            print(
+                "If you use auto_dens you have to specifiy the molar mass of the molecule"
+            )
             return
 
         # Add to global list
         self._sim_dict["struct"][short] = link
-        self._sim_dict["mols"][short] = [inp, num_atoms, auto_dens, mass,  section,area, box, kwargs_gmx]
+        self._sim_dict["mols"][short] = [
+            inp,
+            num_atoms,
+            auto_dens,
+            mass,
+            section,
+            area,
+            box,
+            kwargs_gmx,
+        ]
 
     def add_struct(self, ident, link):
         """Add file link to the structure dictionary.
@@ -162,7 +194,6 @@ class Box:
             Silicon charge for pore grid molecules
         """
         self._sim_dict["topol"]["charge"] = charge
-
 
     ##################
     # Setter Methods #
@@ -237,7 +268,6 @@ class Box:
         """
         self._sim_dict["param"] = param
 
-
     ##################
     # Getter Methods #
     ##################
@@ -279,7 +309,7 @@ class Box:
         job : dictionary
             Simulation dictionary
         """
-        return self._sim_dict["job"] if "job" in self._sim_dict.keys() else None
+        return self._sim_dict.get("job")
 
     def get_param(self):
         """Return the dictionary containing all systems parameters.
@@ -289,7 +319,7 @@ class Box:
         param : dictionary
             Parameter dictionary
         """
-        return self._sim_dict["param"] if "param" in self._sim_dict.keys() else None
+        return self._sim_dict.get("param")
 
     def get_mols(self):
         """Return list of molecule numbers to be filled in the box.

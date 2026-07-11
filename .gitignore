@@ -1,5 +1,6 @@
 poresim.egg-info
 build
+dist
 __pycache__
 *.pyc
 .DS_Store
@@ -7,3 +8,9 @@ __pycache__
 .ipynb_checkpoints
 .coverage
 .pytest_cache
+.claude
+venv
+docs/_build
+docs/autoapi/
+docs/generated/
+tests/output

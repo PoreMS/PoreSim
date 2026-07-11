@@ -4,20 +4,19 @@
 """Create simulation boxes with all necessary files."""
 ################################################################################
 
-
 import os
-import yaml
 import shutil
+
+import yaml
 from jinja2 import Template
 
 import poresim.utils as utils
-
-from poresim.box import Box
-from poresim.parameter import Parameter
-from poresim.topology import Topology
-from poresim.construct import Construct
 from poresim.actuate import Actuate
 from poresim.analyze import Analyze
+from poresim.box import Box
+from poresim.construct import Construct
+from poresim.parameter import Parameter
+from poresim.topology import Topology
 
 
 class Simulate:
@@ -32,10 +31,11 @@ class Simulate:
     box : Box, list, optional
         Simulation box object, a series of those
     """
+
     def __init__(self, link="./simulation/", box=None):
         # Initialize
-        self._link = link if link[-1] == "/" else link+"/"
-        self._config = self._link+"/"+"config.yml"
+        self._link = link if link[-1] == "/" else link + "/"
+        self._config = self._link + "config.yml"
 
         # Create simulation folder if not existent
         utils.mkdirp(self._link)
@@ -43,10 +43,10 @@ class Simulate:
         # Create simulation config file if not existent
         if not os.path.isfile(self._config):
             # Get package directory
-            package_dir = os.path.split(__file__)[0]+"/"
+            package_dir = os.path.split(__file__)[0] + "/"
 
             # Job file
-            file_in = package_dir+"templates/config.yml"
+            file_in = package_dir + "templates/config.yml"
             file_out = self._config
             shutil.copy(file_in, file_out)
 
@@ -65,23 +65,22 @@ class Simulate:
         # Add boxes to simulation dictionary
         if box is not None:
             boxes = box if isinstance(box, list) else [box]
-            self._sim_dict["box"] = {i:boxes[i] for i in range(len(boxes))}
+            self._sim_dict["box"] = {i: boxes[i] for i in range(len(boxes))}
             self._update_config()
-
 
     ###################
     # Private Methods #
     ###################
     def _update_config(self):
-        """Update simulation config file.
-        """
+        """Update simulation config file."""
         sim_dict = self._sim_dict.copy()
 
-        sim_dict["box"] = {box_id:sim_dict["box"][box_id].get_sim_dict() for box_id in sim_dict["box"]}
+        sim_dict["box"] = {
+            box_id: sim_dict["box"][box_id].get_sim_dict() for box_id in sim_dict["box"]
+        }
 
         with open(self._config, "w") as file_out:
             file_out.write(yaml.dump(sim_dict))
-
 
     ##################
     # Public Methods #
@@ -95,23 +94,28 @@ class Simulate:
             Simulation box or a list of those
         """
         boxes = box if isinstance(box, list) else [box]
-        for box in boxes:
-            self._sim_dict["box"][len(boxes)] = box
+        for b in boxes:
+            self._sim_dict["box"][len(self._sim_dict["box"])] = b
         self._update_config()
 
     def generate(self):
-        """Generate simulation folder.
-        """
+        """Generate simulation folder."""
         # Run through boxes
         for box_id in self._sim_dict["box"]:
             box = self._sim_dict["box"][box_id]
-            box_link = self._link+box.get_name()+"/" if len(self._sim_dict["box"])>1 else self._link
+            box_link = (
+                self._link + box.get_name() + "/"
+                if len(self._sim_dict["box"]) > 1
+                else self._link
+            )
 
             # Create folder if multiple boxes exist
             utils.mkdirp(box_link)
 
             # Create parameter files
-            params = self._sim_dict["param"] if box.get_param() is None else box.get_param()
+            params = (
+                self._sim_dict["param"] if box.get_param() is None else box.get_param()
+            )
             param = Parameter(box_link, params)
             param.generate_files()
 
@@ -120,82 +124,84 @@ class Simulate:
             topol.generate_files()
 
             # Create structure files and shells
-            construct = Construct(self._link, box_link, box.get_mols(), box.get_struct())
+            construct = Construct(
+                self._link, box_link, box.get_mols(), box.get_struct()
+            )
             construct.generate_files()
 
             # Create simulation shellsboxes[sim_name].add_struct("GENERATE", "data/generate.sh")
             job = self._sim_dict["job"] if box.get_job() is None else box.get_job()
-            actuate = Actuate(self._link, box_link, self._sim_dict["cluster"], job, box.get_label(), box.get_struct())
-            actuate.generate_files()        
+            actuate = Actuate(
+                self._link,
+                box_link,
+                self._sim_dict["cluster"],
+                job,
+                box.get_label(),
+                box.get_struct(),
+            )
+            actuate.generate_files()
 
-            # Create list for automated filling template
+            # Build template context for analysis scripts
             jinja2_dict = []
             jinja2_dict_fill = []
             area_on = False
+            is_pore = "PORE" in box.get_struct()
             for mol in box.get_mols():
-                jinja2_dict.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "fill": box.get_mols()[mol][0]=="fill"})
-                if box.get_mols()[mol][0]=="fill" and "PORE" in box.get_struct():
-                    jinja2_dict_fill.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "fill": box.get_mols()[mol][0]=="fill"})
-                elif box.get_mols()[mol][0]=="fill" and not box.get_mols()[mol][5]:
-                    jinja2_dict_fill.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "fill": box.get_mols()[mol][0]=="fill", "box": box.get_mols()[mol][6]})
-                elif box.get_mols()[mol][0]=="fill" and box.get_mols()[mol][5]:
-                    area_on = True
-                    jinja2_dict_fill.append({"name": mol, "link": "../_gro/"+box.get_struct()[mol].split("/")[-1], "target_dens": str(box.get_mols()[mol][2]), "fill": box.get_mols()[mol][0]=="fill", "box": box.get_mols()[mol][6], "area": box.get_mols()[mol][5], "area_length": len(box.get_mols()[mol][5])})
+                mol_data = box.get_mols()[mol]
+                mol_link = "../_gro/" + box.get_struct()[mol].split("/")[-1]
+                entry = {
+                    "name": mol,
+                    "link": mol_link,
+                    "target_dens": str(mol_data[2]),
+                    "fill": mol_data[0] == "fill",
+                }
+                jinja2_dict.append(entry)
+                if mol_data[0] == "fill":
+                    fill_entry = dict(entry)
+                    if not is_pore:
+                        if mol_data[5]:
+                            area_on = True
+                            fill_entry.update(
+                                {
+                                    "box": mol_data[6],
+                                    "area": mol_data[5],
+                                    "area_length": len(mol_data[5]),
+                                }
+                            )
+                        else:
+                            fill_entry["box"] = mol_data[6]
+                    jinja2_dict_fill.append(fill_entry)
 
+            has_fill = any(mol["fill"] for mol in jinja2_dict)
+            template_name = "auto_dens.py" if is_pore else "auto_dens_box.py"
 
-            # Create analysis shell file for automated filling
-            if (any(mol["fill"] for mol in jinja2_dict))==True:
-                analyze = Analyze(self._link, box_link, self._sim_dict["cluster"])
-                analyze.extract_mol("nvt")
+            if has_fill:
+                Analyze(self._link, box_link, self._sim_dict["cluster"]).extract_mol(
+                    "nvt"
+                )
+            elif not is_pore:
+                Analyze(self._link, box_link, self._sim_dict["cluster"]).extract_mol(
+                    "run"
+                )
 
-                # If a pore system is considered
-                if "PORE" in box.get_struct():
-                    # Open template with jinja2
-                    with open(os.path.split(__file__)[0]+"/templates/auto_dens.py") as file_:
-                        template = Template(file_.read())
+            utils.mkdirp(box_link + "ana")
+            template_path = os.path.join(
+                os.path.split(__file__)[0], "templates", template_name
+            )
+            with open(template_path) as f:
+                template = Template(f.read())
+            output = template.render(
+                mols=jinja2_dict,
+                mols2=jinja2_dict_fill,
+                submit=self._sim_dict["cluster"]["queuing"]["submit"] + " min.job",
+                fill=has_fill,
+                area=area_on,
+            )
+            with open(box_link + "ana/ana.py", "w") as f:
+                f.write(output)
 
-                    # Adjust template 
-                    output = template.render(mols=jinja2_dict, mols2=jinja2_dict_fill, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job", fill = True)
-                    #Save adjusted template
-                    with open(box_link+"ana/ana.py", "w") as file_:
-                        file_.write(output)
-
-                # If a box system is considered     
-                else:
-                    # Open template with jinja2
-                    with open(os.path.split(__file__)[0]+"/templates/auto_dens_box.py") as file_:
-                        template = Template(file_.read())
-
-                    # Adjust template 
-                    output = template.render(mols=jinja2_dict, mols2=jinja2_dict_fill, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job", fill = True, area = area_on)
-                    #Save adjusted template
-                    with open(box_link+"ana/ana.py", "w") as file_:
-                        file_.write(output)
-            
-            # If the system should not be filled up
-            else:
-                if "PORE" in box.get_struct():
-                    # Open template with jinja2
-                    with open(os.path.split(__file__)[0]+"/templates/auto_dens.py") as file_:
-                        template = Template(file_.read())
-
-                    # Adjust template 
-                    output = template.render(mols=jinja2_dict, mols2=jinja2_dict_fill, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job", fill =False)
-                    #Save adjusted template
-                    with open(box_link+"ana/ana.py", "w") as file_:
-                        file_.write(output)
-                else:
-                    analyze = Analyze(self._link, box_link, self._sim_dict["cluster"])
-                    analyze.extract_mol("run")
-                    with open(os.path.split(__file__)[0]+"/templates/auto_dens_box.py") as file_:
-                            template = Template(file_.read())
-                    output = template.render(mols=jinja2_dict, submit=self._sim_dict["cluster"]["queuing"]["submit"]+" min.job", fill = False)
-                    with open(box_link+"ana/ana.py", "w") as file_:
-                            file_.write(output)
-                            
             # End message
-            print("Finished simulation folder - "+box.get_label()+" ...")
-
+            print("Finished simulation folder - " + box.get_label() + " ...")
 
     ##################
     # Setter Methods #
@@ -220,7 +226,7 @@ class Simulate:
             Simulation box object or a series of those
         """
         boxes = box if isinstance(box, list) else [box]
-        self._sim_dict["box"] = {i:boxes[i] for i in range(len(boxes))}
+        self._sim_dict["box"] = {i: boxes[i] for i in range(len(boxes))}
         self._update_config()
 
     def set_job(self, job):
@@ -285,7 +291,6 @@ class Simulate:
         """
         self._sim_dict["cluster"] = cluster
         self._update_config()
-
 
     ##################
     # Getter Methods #
