@@ -99,7 +99,7 @@ sim.generate()
 Inside view of the pore after running construct.sh.
 Colour code: catalyst, red; ionic anion, orange; ionic kation (on pore surface), green; ionic kation, blue; rectant, grey; heptane not shown.
 
-:::{figure} /pics/pore_il.pdf
+:::{figure} /pics/pore_il.svg
 :align: center
 :width: 70%
 :::
