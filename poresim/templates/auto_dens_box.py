@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # Set analysis
     ana_list = {}
     {% for mol in mols -%}
-    ana_list["{{mol.name }}"] = {"traj": "traj_{{mol.name }}.xtc", "dens_box": True, "mc_trans": False, "mc": False, "mol": mol_dict["{{mol.name }}"], "atoms": []}
+    ana_list["{{mol.name }}"] = {"traj": "traj_{{mol.name }}.xtc","traj_trr": "traj_{{mol.name }}.trr", "dens_box": True, "mc_trans": False, "mc": False, "vacf": False, "mol": mol_dict["{{mol.name }}"], "atoms": []}
     {% endfor %}
 
     # Run analysis
@@ -47,6 +47,10 @@ if __name__ == "__main__":
             model = pa.CosineModel("diff_"+ana_name+"_trans.obj", 6, 10)
             pa.MC().run(model, "diff_"+ana_name+"_mc_cos.obj", nmc_eq=1000000, nmc=1000000)
 
+        if ana_props["vacf"]:
+            sample = pa.Sample(box, ana_props["traj_trr"], ana_props["mol"], ana_props["atoms"],[1 for x in ana_props["atoms"]] )
+            sample.init_diffusion_vacf("diff_vacf.obj", direction="z", len_correration=len_corr, new_time_origin=new_time_o, sample_step=sample_st, len_frame=len_fr, bin_num=128)
+            sample.sample(is_parallel=True)
     
     {% if fill %}
     # Automation

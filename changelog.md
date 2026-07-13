@@ -1,3 +1,6 @@
+# v0.3.0 (Upcomming)
+* Add VACF sampling from PoreAnan in the analysis file.
+
 # v0.3.0
 * New version due to a change of GitHub organisation.
 
