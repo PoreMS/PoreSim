@@ -148,131 +148,6 @@ class Simulate:
             area_on = False
             is_pore = "PORE" in box.get_struct()
             for mol in box.get_mols():
-<<<<<<< HEAD
-                jinja2_dict.append(
-                    {
-                        "name": mol,
-                        "link": "../_gro/" + box.get_struct()[mol].split("/")[-1],
-                        "target_dens": str(box.get_mols()[mol][2]),
-                        "fill": box.get_mols()[mol][0] == "fill",
-                    }
-                )
-                if box.get_mols()[mol][0] == "fill" and "PORE" in box.get_struct():
-                    jinja2_dict_fill.append(
-                        {
-                            "name": mol,
-                            "link": "../_gro/" + box.get_struct()[mol].split("/")[-1],
-                            "target_dens": str(box.get_mols()[mol][2]),
-                            "fill": box.get_mols()[mol][0] == "fill",
-                        }
-                    )
-                elif box.get_mols()[mol][0] == "fill" and not box.get_mols()[mol][5]:
-                    jinja2_dict_fill.append(
-                        {
-                            "name": mol,
-                            "link": "../_gro/" + box.get_struct()[mol].split("/")[-1],
-                            "target_dens": str(box.get_mols()[mol][2]),
-                            "fill": box.get_mols()[mol][0] == "fill",
-                            "box": box.get_mols()[mol][6],
-                        }
-                    )
-                elif box.get_mols()[mol][0] == "fill" and box.get_mols()[mol][5]:
-                    area_on = True
-                    jinja2_dict_fill.append(
-                        {
-                            "name": mol,
-                            "link": "../_gro/" + box.get_struct()[mol].split("/")[-1],
-                            "target_dens": str(box.get_mols()[mol][2]),
-                            "fill": box.get_mols()[mol][0] == "fill",
-                            "box": box.get_mols()[mol][6],
-                            "area": box.get_mols()[mol][5],
-                            "area_length": len(box.get_mols()[mol][5]),
-                        }
-                    )
-
-            # Create analysis shell file for automated filling
-            if (any(mol["fill"] for mol in jinja2_dict)) == True:
-                analyze = Analyze(self._link, box_link, self._sim_dict["cluster"])
-                analyze.extract_mol("nvt")
-
-                # If a pore system is considered
-                if "PORE" in box.get_struct():
-                    # Open template with jinja2
-                    with open(
-                        os.path.split(__file__)[0] + "/templates/auto_dens.py"
-                    ) as file_:
-                        template = Template(file_.read())
-
-                    # Adjust template
-                    output = template.render(
-                        mols=jinja2_dict,
-                        mols2=jinja2_dict_fill,
-                        submit=self._sim_dict["cluster"]["queuing"]["submit"]
-                        + " min.job",
-                        fill=True,
-                    )
-                    # Save adjusted template
-                    with open(box_link + "ana/ana.py", "w") as file_:
-                        file_.write(output)
-
-                # If a box system is considered
-                else:
-                    # Open template with jinja2
-                    with open(
-                        os.path.split(__file__)[0] + "/templates/auto_dens_box.py"
-                    ) as file_:
-                        template = Template(file_.read())
-
-                    # Adjust template
-                    output = template.render(
-                        mols=jinja2_dict,
-                        mols2=jinja2_dict_fill,
-                        submit=self._sim_dict["cluster"]["queuing"]["submit"]
-                        + " min.job",
-                        fill=True,
-                        area=area_on,
-                    )
-                    # Save adjusted template
-                    with open(box_link + "ana/ana.py", "w") as file_:
-                        file_.write(output)
-
-            # If the system should not be filled up
-            else:
-                if "PORE" in box.get_struct():
-                    # Open template with jinja2
-                    with open(
-                        os.path.split(__file__)[0] + "/templates/auto_dens.py"
-                    ) as file_:
-                        template = Template(file_.read())
-
-                    # Adjust template
-                    output = template.render(
-                        mols=jinja2_dict,
-                        mols2=jinja2_dict_fill,
-                        submit=self._sim_dict["cluster"]["queuing"]["submit"]
-                        + " min.job",
-                        fill=False,
-                    )
-                    # Save adjusted template
-                    with open(box_link + "ana/ana.py", "w") as file_:
-                        file_.write(output)
-                else:
-                    analyze = Analyze(self._link, box_link, self._sim_dict["cluster"])
-                    analyze.extract_mol("run")
-                    with open(
-                        os.path.split(__file__)[0] + "/templates/auto_dens_box.py"
-                    ) as file_:
-                        template = Template(file_.read())
-                    output = template.render(
-                        mols=jinja2_dict,
-                        submit=self._sim_dict["cluster"]["queuing"]["submit"]
-                        + " min.job",
-                        fill=False,
-                    )
-                    with open(box_link + "ana/ana.py", "w") as file_:
-                        file_.write(output)
-
-=======
                 mol_data = box.get_mols()[mol]
                 mol_link = "../_gro/" + box.get_struct()[mol].split("/")[-1]
                 entry = {
@@ -326,7 +201,6 @@ class Simulate:
             with open(box_link + "ana/ana.py", "w") as f:
                 f.write(output)
 
->>>>>>> optimization
             # End message
             print("Finished simulation folder - " + box.get_label() + " ...")
 

@@ -8,12 +8,8 @@
 import os
 
 import numpy as np
-
-<<<<<<< HEAD
-=======
 import poresim.utils as utils
 
->>>>>>> optimization
 
 class Construct:
     """This class creates shell-files for generating and filling the simulation
@@ -120,48 +116,6 @@ class Construct:
         file_out.write("# Update Topology\n")
         for mol in self._mols:
             file_out.write(
-<<<<<<< HEAD
-                "count"
-                + mol
-                + '=$(($(grep -c "'
-                + mol
-                + '" '
-                + folder_gro
-                + file_box
-                + ")/"
-                + str(self._mols[mol][1])
-                + "))\n"
-            )
-            file_out.write(
-                'echo "'
-                + mol
-                + ' "$count'
-                + mol
-                + " >> "
-                + folder_top
-                + file_top
-                + "\n"
-            )
-
-        file_out.write(
-            'echo "System ' + self._box_link + ' - Updated topology ..."\n\n'
-        )
-
-        # Create index file
-        if "PORE" in self._struct:
-            file_out.write("# Create Index\n")
-            out_string = "gmx_mpi make_ndx "
-            out_string += "-f " + folder_gro + file_box + " "
-            out_string += "-o " + folder_gro + file_ndx
-            out_string += " >> logging.log 2>&1 <<EOF\n"
-            out_string += "0 & a SI1 OM1\n"
-            out_string += "q\n"
-            out_string += "EOF\n"
-            file_out.write(out_string)
-
-            file_out.write(
-                'echo "System ' + self._box_link + ' - Created pore index file ..."\n'
-=======
                 f'count{mol}=$(($(grep -c "{mol}" {folder_gro}{file_box})/{self._mols[mol][1]}))\n'
             )
             file_out.write(f'echo "{mol} "$count{mol} >> {folder_top}{file_top}\n')
@@ -181,7 +135,6 @@ class Construct:
             file_out.write(cmd)
             file_out.write(
                 f'echo "System {self._box_link} - Created pore index file ..."\n'
->>>>>>> optimization
             )
 
     def _pos_dat(self):
@@ -346,7 +299,6 @@ class Construct:
                     )
                     self._write_positions(f"{gro}position_{mol}_area{i}.dat", positions)
 
->>>>>>> optimization
     def _structure(self):
         """Create a shell file for constructing and filling the simulation box using GROMACS.
         Also updates the topology and (for pore systems) creates the required index file.
@@ -365,7 +317,6 @@ class Construct:
                 file_out.write(
                     'echo "Set ions names in sort script if necessary ..."; exit;\n'
                 )
-
 
             for mol in self._mols:
                 inp, _, auto_dens, mass, section, area, box_dim, _ = self._mols[mol]
@@ -559,9 +510,6 @@ class Construct:
         folder_fill = "./"
         folder_gro = "../_gro/"
         folder_top = "../_top/"
-        folder_ana = "../" + sim_ana + "/"
-        folder_min = "../" + sim_min + "/"
-        folder_nvt = "../" + sim_nvt + "/"
         folder_ana = "../ana/"
         folder_min = f"../{sim_min}/"
         folder_nvt = f"../{sim_nvt}/"
@@ -654,7 +602,6 @@ class Construct:
                         f"-nmol {nmol} >> logging.log 2>&1\n"
                     )
 
-
             file_out.write(f"python sort.py {folder_gro}\n")
             file_out.write(
                 f'echo "System {self._box_link} - Refilled simulation box ..."\n\n'
@@ -701,7 +648,6 @@ class Construct:
             sections = [self._mols[mol][4] for mol in self._mols]
             if ("wall" in sections or "pore" in sections) and "box" not in sections:
                 self._pos_dat()
-
 
         for mol in self._mols:
             if self._mols[mol][5]:
