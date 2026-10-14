@@ -2,6 +2,7 @@
 # Parameter Class                                                              #
 #                                                                              #
 """Process parameter files."""
+
 ################################################################################
 
 
@@ -19,9 +20,10 @@ class Parameter:
     param : dictionary
         Parameter dictionary
     """
+
     def __init__(self, link, param):
         # Initialize
-        self._link = link+"_mdp/"
+        self._link = link + "_mdp/"
         self._param = param
 
         # Create folder
@@ -44,9 +46,13 @@ class Parameter:
         """
         # Run through mdp files
         for step in self._param:
-            file_name = step+".mdp"
-            utils.copy(self._param[step]["file"], self._link+file_name)
+            file_name = step + ".mdp"
+            utils.copy(self._param[step]["file"], self._link + file_name)
 
             if "param" in self._param[step]:
                 for inp in self._param[step]["param"]:
-                    utils.replace(self._link+file_name, inp, str(self._param[step]["param"][inp]))
+                    utils.replace(
+                        self._link + file_name,
+                        inp,
+                        str(self._param[step]["param"][inp]),
+                    )
