@@ -1,0 +1,42 @@
+poresim.topology
+================
+
+.. py:module:: poresim.topology
+
+.. autoapi-nested-parse::
+
+   Process topology files.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   poresim.topology.Topology
+
+
+Module Contents
+---------------
+
+.. py:class:: Topology(link, topol)
+
+   This class reads and extract all information from topology files of the
+   molecules specified in the simulation box. The aim was creating an
+   independent class for editing and updating the topologies if necessary.
+
+   Further editing functions should be easy to add.
+
+   :param link: Simulation box link
+   :type link: string
+   :param topol: Topology dictionary
+   :type topol: dictionary
+
+
+   .. py:method:: generate_files()
+
+      Generate topology files.
+
+
+

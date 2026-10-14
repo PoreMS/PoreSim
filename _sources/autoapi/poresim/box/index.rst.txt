@@ -1,0 +1,264 @@
+poresim.box
+===========
+
+.. py:module:: poresim.box
+
+.. autoapi-nested-parse::
+
+   Create simulation box object.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   poresim.box.Box
+
+
+Module Contents
+---------------
+
+.. py:class:: Box(name='box', label=None)
+
+   This class creates a hypothetical simulation box, to which molecules are
+   added. Furthermore, all properties like temperature and specific job
+   properties can be adjusted separate from the global simulation values.
+
+   :param name: Simulation name
+   :type name: string, optional
+   :param label: Job identification label
+   :type label: None, string, optional
+
+
+   .. py:method:: add_box(link)
+
+      Set simulation box structure link.
+
+      :param link: Simulation box structure link
+      :type link: string
+
+
+
+   .. py:method:: add_pore(link)
+
+      Add pore object to structure folder.
+
+      :param link: Pore object link
+      :type link: string
+
+
+
+   .. py:method:: add_mol(short, link, inp, num_atoms='gro', auto_dens=None, mass=None, section='both', area=None, box=None, kwargs_gmx=None)
+
+      Add a molecule to the simulation box. A unique short name and a
+      structure-file link have to be given.
+
+      Furthermore, the input is either a specific number of molecules or the
+      input **fill** in order to continuously fill the simulation box with the
+      specified molecule. This can be done automatically by defining the
+      reference density to fill up to.
+
+      The number atoms can either be specified numerically or extracted, which
+      currently only works for the GROMACS file-type.
+
+      :param short: Molecule short name as given in the topology
+      :type short: string
+      :param link: Molecule structure file link
+      :type link: string
+      :param inp: Define number of molecules or **fill** for filling a pore or box
+      :type inp: integer, string
+      :param num_atoms: Number of atoms in the specified molecule or filetype for extraction
+      :type num_atoms: integer, string, optional
+      :param auto_dens: Density in :math:`\frac{\text{kg}}{\text{m}^3}`
+      :type auto_dens: float, None, optional
+      :param mass: molecular mass (:math:`\frac{\text{g}}{\text{mol}}`) of the molecule to get an estimate of how many molecules you need to put in the box as the initial value for auto_dens.
+      :type mass: float, None, optional
+      :param section: 'Both' the molecules in the pore and in the reservoir can be set.
+                      If you want the molecules only in the pore, choose 'pore'. If you want them only in the reservoir, choose 'res'.
+                      For a slit pore you can use wall to put the molecules as a layer on the SiO2 surface.
+                      Chose "box" for a box system.
+      :type section: string, "both", optional
+      :param area: To set up a 2-phase box system without a pore, specify the areas of the section [a,b] where the molecules should be inserted using Gromacs.
+      :type area: list, [], optional
+      :param box: To set up a 2-phase system, specify the dimensions [x, y, z] of the simulation box.
+      :type box: list, [], optional
+      :param kwargs_gmx: dictonary to set up options for the gromacs "insert-molecules" command (adjust for example -try and -scale)
+      :type kwargs_gmx: dictonary, {}, optional
+
+
+
+   .. py:method:: add_struct(ident, link)
+
+      Add file link to the structure dictionary.
+
+      :param ident: File identifier
+      :type ident: string
+      :param link: File link
+      :type link: string
+
+
+
+   .. py:method:: add_topol(link, top_type='itp')
+
+      Add simulation topology files to simulation dictionary. For topology
+      files, three different types exist with different handlings
+
+      * **master** - Master topology file will be named topol.top with an additional backup
+      * **top** - Topology file will be copied
+      * **itp** - Topology file will be filtered for an itp file
+
+      :param link: Link or a list of those containing a topology file link
+      :type link: string, list
+      :param top_type: Topology type
+      :type top_type: string
+
+
+
+   .. py:method:: add_charge_si(charge)
+
+      Add silicon charge for grid-atoms
+
+      :param charge: Silicon charge for pore grid molecules
+      :type charge: float
+
+
+
+   .. py:method:: set_sim_dict(sim_dict)
+
+      Set the simulation dictionary.
+
+      :param sim_dict: Simulation dictionary
+      :type sim_dict: dictionary
+
+
+
+   .. py:method:: set_name(name)
+
+      Set the simulation box name.
+
+      :param name: Simulation box name
+      :type name: string
+
+
+
+   .. py:method:: set_label(label)
+
+      Set the simulation box label, for job identification.
+
+      :param label: Label name
+      :type label: string
+
+
+
+   .. py:method:: set_job(job)
+
+      Set the dictionary containing all simulation information.
+
+      :param job: Information dictionary
+      :type job: dictionary
+
+      .. rubric:: Examples
+
+      Following dictionary structure may be used as an input
+
+      .. code-block:: python
+
+          {"min": {"file": "data/simulation/forhlr.sh", "nodes": 2, "np": 20, "wall": "24:00:00"},
+           "nvt": {"file": "data/simulation/forhlr.sh", "nodes": 4, "np": 20, "wall": "24:00:00"},
+           "run": {"file": "data/simulation/forhlr.sh", "maxh": 24, "nodes": 11, "np": 20, "runs": 15, "wall": "24:00:00"}}
+
+
+
+   .. py:method:: set_param(param)
+
+      Set the dictionary containing all systems parameters.
+
+      :param param: Information dictionary
+      :type param: dictionary
+
+      .. rubric:: Examples
+
+      Following dictionary structure may be used as an input
+
+      .. code-block:: python
+
+          {"min": {"file": "data/simulation/pore_min.mdp"},
+           "nvt": {"file": "data/simulation/pore_nvt.mdp", "param": {"NUMBEROFSTEPS": 2000000, "TEMPERATURE_VAL": 298}},
+           "run": {"file": "data/simulation/pore_run.mdp", "param": {"NUMBEROFSTEPS": 20000000, "TEMPERATURE_VAL": 298}}}
+
+
+
+   .. py:method:: get_sim_dict()
+
+      Return the simulation dictionary.
+
+      :returns: **sim_dict** -- Simulation dictionary
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_name()
+
+      Return the simulation box name.
+
+      :returns: **name** -- Simulation box name
+      :rtype: string
+
+
+
+   .. py:method:: get_label()
+
+      Return the simulation label.
+
+      :returns: **label** -- Simulation label
+      :rtype: string
+
+
+
+   .. py:method:: get_job()
+
+      Return the dictionary containing all simulation information.
+
+      :returns: **job** -- Simulation dictionary
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_param()
+
+      Return the dictionary containing all systems parameters.
+
+      :returns: **param** -- Parameter dictionary
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_mols()
+
+      Return list of molecule numbers to be filled in the box.
+
+      :returns: **mols** -- List of molecules
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_struct()
+
+      Return list of structure files.
+
+      :returns: **struct** -- Molecule structure file links
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_topol()
+
+      Return list of topology files.
+
+      :returns: **topol** -- List of topology file links
+      :rtype: list
+
+
+

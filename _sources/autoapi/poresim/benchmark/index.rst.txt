@@ -1,0 +1,56 @@
+poresim.benchmark
+=================
+
+.. py:module:: poresim.benchmark
+
+.. autoapi-nested-parse::
+
+   All necessary function for running the simulation.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   poresim.benchmark.Benchmark
+
+
+Module Contents
+---------------
+
+.. py:class:: Benchmark(box, np, nodes, link='./benchmark', iterator='nodes')
+
+   Bases: :py:obj:`poresim.simulate.Simulate`
+
+
+   This class extends the simulate class
+   :class:`poresim.simulate.Simulate` for benchmarking. It creates a
+   benchmark in order to figure out the best possible number of node and
+   processor combination to simulate with.
+
+   Depending on the iterator, different aspects will be benchmarked. Currently
+   following inputs are possible
+
+   * **nodes** - varying number of nodes at constant CPU number
+   * **np** - varying number of CPUs at constant node number
+
+   :param box: Simulation box object
+   :type box: Box
+   :param np: Number of processors to try
+   :type np: integer, list
+   :param nodes: Number of nodes to try
+   :type nodes: integer, list
+   :param link: Simulation folder link
+   :type link: string, optional
+   :param iterator: Aspect to be benchmarked
+   :type iterator: string, optional
+
+
+   .. py:method:: generate()
+
+      Generate simulation folder.
+
+
+

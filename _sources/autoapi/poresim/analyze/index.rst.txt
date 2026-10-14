@@ -1,0 +1,43 @@
+poresim.analyze
+===============
+
+.. py:module:: poresim.analyze
+
+.. autoapi-nested-parse::
+
+   All necessary function for creating analysis shells.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   poresim.analyze.Analyze
+
+
+Module Contents
+---------------
+
+.. py:class:: Analyze(sim_link, box_link, cluster)
+
+   This class creates shell-files for generating shell file for analysing
+   a simulation.
+
+   :param sim_link: Simulation master folder link
+   :type sim_link: string
+   :param box_link: Simulation box folder link
+   :type box_link: string
+
+
+   .. py:method:: extract_mol(step)
+
+      This function extracts molecules of a type from a trajectory for
+      further analysis using MolDyn.
+
+      :param step: Step to analyze (**nvt**, **npt**, **run**)
+      :type step: string
+
+
+

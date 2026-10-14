@@ -1,0 +1,43 @@
+poresim.construct
+=================
+
+.. py:module:: poresim.construct
+
+.. autoapi-nested-parse::
+
+   All necessary function for creating the finished simulation box.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   poresim.construct.Construct
+
+
+Module Contents
+---------------
+
+.. py:class:: Construct(sim_link, box_link, mols, struct)
+
+   This class creates shell-files for generating and filling the simulation
+   box using GROMACS.
+
+   :param sim_link: Simulation master folder link
+   :type sim_link: string
+   :param box_link: Simulation box folder link
+   :type box_link: string
+   :param mols: Molecules dictionary
+   :type mols: dictionary
+   :param struct: Structure dictionary
+   :type struct: dictionary
+
+
+   .. py:method:: generate_files()
+
+      Generate structure files and shells.
+
+
+

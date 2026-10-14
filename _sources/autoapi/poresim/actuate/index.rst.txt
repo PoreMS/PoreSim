@@ -1,0 +1,47 @@
+poresim.actuate
+===============
+
+.. py:module:: poresim.actuate
+
+.. autoapi-nested-parse::
+
+   All necessary function for running the simulation.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   poresim.actuate.Actuate
+
+
+Module Contents
+---------------
+
+.. py:class:: Actuate(sim_link, box_link, cluster, job, label, structure)
+
+   This class creates needed shell files for running the simulation using
+   GROMACS.
+
+   :param sim_link: Simulation master folder link
+   :type sim_link: string
+   :param box_link: Simulation box folder link
+   :type box_link: string
+   :param cluster: Cluster information dictionary
+   :type cluster: dictionary
+   :param job: Job dictionary
+   :type job: dictionary
+   :param label: Box label
+   :type label: string
+   :param structure: Box structure dictionary
+   :type structure: dictionary
+
+
+   .. py:method:: generate_files()
+
+      Generate structure files and shells.
+
+
+

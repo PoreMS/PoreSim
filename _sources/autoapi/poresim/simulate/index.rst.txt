@@ -1,0 +1,142 @@
+poresim.simulate
+================
+
+.. py:module:: poresim.simulate
+
+.. autoapi-nested-parse::
+
+   Create simulation boxes with all necessary files.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   poresim.simulate.Simulate
+
+
+Module Contents
+---------------
+
+.. py:class:: Simulate(link='./simulation/', box=None)
+
+   This class generates the simulation folder for a series of simulations.
+
+   The output of this class can then be uploaded to a computing cluster.
+
+   :param link: Simulation folder link
+   :type link: string, optional
+   :param box: Simulation box object, a series of those
+   :type box: Box, list, optional
+
+
+   .. py:method:: add_box(box)
+
+      Add simulation box to simulation dictionary.
+
+      :param box: Simulation box or a list of those
+      :type box: Box, list
+
+
+
+   .. py:method:: generate()
+
+      Generate simulation folder.
+
+
+
+   .. py:method:: set_sim_dict(sim_dict)
+
+      Set the simulation dictionary.
+
+      :param sim_dict: Simulation dictionary
+      :type sim_dict: dictionary
+
+
+
+   .. py:method:: set_box(box)
+
+      Set the simulation box.
+
+      :param box: Simulation box object or a series of those
+      :type box: Box, list
+
+
+
+   .. py:method:: set_job(job)
+
+      Set the dictionary containing all simulation information.
+
+      :param job: Information dictionary
+      :type job: dictionary
+
+      .. rubric:: Examples
+
+      Following dictionary structure may be used as an input
+
+      .. code-block:: python
+
+          {"min": {"file": "data/simulation/forhlr.sh", "nodes": 2, "np": 20, "wall": "24:00:00"},
+           "nvt": {"file": "data/simulation/forhlr.sh", "nodes": 4, "np": 20, "wall": "24:00:00"},
+           "run": {"file": "data/simulation/forhlr.sh", "maxh": 24, "nodes": 11, "np": 20, "runs": 15, "wall": "24:00:00"}}
+
+
+
+   .. py:method:: set_param(param)
+
+      Set the dictionary containing all systems parameters.
+
+      :param param: Information dictionary
+      :type param: dictionary
+
+      .. rubric:: Examples
+
+      Following dictionary structure may be used as an input
+
+      .. code-block:: python
+
+          {"min": {"file": "data/simulation/pore_min.mdp"},
+           "nvt": {"file": "data/simulation/pore_nvt.mdp", "param": {"NUMBEROFSTEPS": 2000000, "TEMPERATURE_VAL": 298}},
+           "run": {"file": "data/simulation/pore_run.mdp", "param": {"NUMBEROFSTEPS": 20000000, "TEMPERATURE_VAL": 298}}}
+
+
+
+   .. py:method:: set_cluster(cluster)
+
+      Set the dictionary containing all cluster preferences.
+
+      :param cluster: Information dictionary
+      :type cluster: dictionary
+
+      .. rubric:: Examples
+
+      Following dictionary structure may be used as an input
+
+      .. code-block:: python
+
+          {"address": "user_name@cluster",
+           "directory": "/home/pores/simulation/",
+           "queuing": {"add_np": False, "mpi": "$DO_PARALLEL", "shell": "forhlr.sh", "submit": "sbatch --partition multinode"}}
+
+
+
+   .. py:method:: get_sim_dict()
+
+      Return the simulation dictionary.
+
+      :returns: **sim_dict** -- Simulation dictionary
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_box()
+
+      Return the simulation box dictionary.
+
+      :returns: **box** -- Simulation box dictionary
+      :rtype: dictionary
+
+
+

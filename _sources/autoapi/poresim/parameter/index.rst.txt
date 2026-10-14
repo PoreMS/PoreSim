@@ -1,0 +1,48 @@
+poresim.parameter
+=================
+
+.. py:module:: poresim.parameter
+
+.. autoapi-nested-parse::
+
+   Process parameter files.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   poresim.parameter.Parameter
+
+
+Module Contents
+---------------
+
+.. py:class:: Parameter(link, param)
+
+   This class generates parameter files by replacing the given parameter in
+   prepared files.
+
+   :param link: Simulation box link
+   :type link: string
+   :param param: Parameter dictionary
+   :type param: dictionary
+
+
+   .. py:method:: generate_files()
+
+      Create a parameter file for simulation based on the given parameter
+      dictionary of the simulation box.
+
+      The information for each simulation step should contain a file link, and
+      optionally a list of parameters, to be replaced in the file. Parameter
+      have the syntax of replacing string followed by the value.
+
+      .. rubric:: Examples
+
+      >>> TEMPERATURE_VAL: 298
+
+
+
