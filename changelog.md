@@ -1,3 +1,6 @@
+# v0.3.1
+* Add VACF sampling to the Python analysis script
+
 # v0.3.0
 * New version due to a change of GitHub organisation.
 
