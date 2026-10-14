@@ -5,7 +5,6 @@
 
 ################################################################################
 
-
 import poresim.utils as utils
 
 
@@ -68,7 +67,7 @@ class Topology:
                 elif len(dat) > 0 and dat[0] == "[":
                     block = dat[1]
 
-                    if not dat[1] in data.keys():
+                    if dat[1] not in data.keys():
                         is_new = True
                         data[block] = []
 
@@ -98,7 +97,7 @@ class Topology:
         # Create itp
         with open(itp_link, "w") as file_out:
             for param in data:
-                if not param in dont:
+                if param not in dont:
                     file_out.write("[ " + param + " ]\n")
                     for line in data[param]:
                         file_out.write(line)

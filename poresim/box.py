@@ -60,9 +60,9 @@ class Box:
         auto_dens=None,
         mass=None,
         section="both",
-        area=[],
-        box=[],
-        kwargs_gmx={},
+        area=None,
+        box=None,
+        kwargs_gmx=None,
     ):
         """Add a molecule to the simulation box. A unique short name and a
         structure-file link have to be given.
@@ -101,12 +101,19 @@ class Box:
         kwargs_gmx : dictonary, {}, optional
             dictonary to set up options for the gromacs "insert-molecules" command (adjust for example -try and -scale)
         """
+        if area is None:
+            area = []
+        if box is None:
+            box = []
+        if kwargs_gmx is None:
+            kwargs_gmx = {}
+
         # Process input
         if not isinstance(inp, int) and not isinstance(inp, str):
             print("Wrong input for the molecule number ...")
             return
 
-        if not isinstance(num_atoms, int) and not num_atoms in ["gro"]:
+        if not isinstance(num_atoms, int) and num_atoms not in ["gro"]:
             print("Wrong input for the number of atoms ...")
             return
 
@@ -303,7 +310,7 @@ class Box:
         job : dictionary
             Simulation dictionary
         """
-        return self._sim_dict["job"] if "job" in self._sim_dict.keys() else None
+        return self._sim_dict.get("job")
 
     def get_param(self):
         """Return the dictionary containing all systems parameters.
@@ -313,7 +320,7 @@ class Box:
         param : dictionary
             Parameter dictionary
         """
-        return self._sim_dict["param"] if "param" in self._sim_dict.keys() else None
+        return self._sim_dict.get("param")
 
     def get_mols(self):
         """Return list of molecule numbers to be filled in the box.

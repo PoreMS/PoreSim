@@ -2,11 +2,6 @@ import sys
 
 
 if __name__ == "__main__":
-    ### Anion ###
-    # Set name of ions for ionic liquid simulations
-    # an_ion = ""   # Set name "Im"
-    # kat_ion = ""  # Set name "FAP"
-
     # Get user input
     link = sys.argv[1]
     link = link+"/" if not link[-1] == "/" else link
@@ -51,20 +46,6 @@ if __name__ == "__main__":
         # Add atom
         mols[atom[1]][-1].append(atom)
         last_atom = atom[0]
-
-    ### Anion ###
-    # Same amount of Kat-Ion and An-Ion for ionic liquid simulations
-    # if an_ion is not None and kat_ion is not None:
-    #     for mol_name in mol_names:
-    #         if an_ion in mol_name:
-    #             an_ion = mol_name
-    #         if kat_ion in mol_name:
-    #             kat_ion = mol_name
-    #
-    #     max_num_ions = min(len(mols[an_ion]), len(mols[kat_ion]))
-    #
-    #     mols[an_ion] = mols[an_ion][:max_num_ions]
-    #     mols[kat_ion] = mols[kat_ion][:max_num_ions]
 
     # Create new gro file
     with open(link+"box.gro", "w") as file_out:

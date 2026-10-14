@@ -5,14 +5,6 @@ import poreana as pa
 
 
 if __name__ == "__main__":
-    # Todo
-    print("Finish fill scripts ...")
-    print("Finish ana.sh file ...")
-    print("Add following script to running shell")
-    # cd ../ana
-    # sh ana.sh
-    # python ana.py
-
     # Load molecule
     mol_dict = {}
     {% for mol in mols -%}

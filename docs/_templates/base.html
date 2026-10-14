@@ -1,0 +1,9 @@
+{% extends "!base.html" %}
+{% block extrahead %}
+    {{ super() }}
+    <script>
+        if (!localStorage.getItem("theme")) {
+            localStorage.setItem("theme", "light");
+        }
+    </script>
+{% endblock %}

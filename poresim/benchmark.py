@@ -5,14 +5,12 @@
 
 ################################################################################
 
-
 import poresim.utils as utils
-
-from poresim.simulate import Simulate
-from poresim.parameter import Parameter
-from poresim.topology import Topology
-from poresim.construct import Construct
 from poresim.actuate import Actuate
+from poresim.construct import Construct
+from poresim.parameter import Parameter
+from poresim.simulate import Simulate
+from poresim.topology import Topology
 
 
 class Benchmark(Simulate):
@@ -43,7 +41,7 @@ class Benchmark(Simulate):
 
     def __init__(self, box, np, nodes, link="./benchmark", iterator="nodes"):
         # Call super class
-        super(Benchmark, self).__init__(link, box)
+        super().__init__(link, box)
 
         # Initialize
         self._box = box
