@@ -10,13 +10,19 @@ jobs:
   pip-audit:
     name: pip-audit
     runs-on: ubuntu-latest
-
+  
     steps:
       - uses: actions/checkout@v4
+    
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
+    
+      - name: Create virtual environment
+        run: uv venv
+    
       - name: Install dependencies
-        run: uv pip install --system pip-audit .
+        run: uv pip install pip-audit .
+    
       - name: Audit dependencies
-        run: pip-audit
+        run: uv run pip-audit
