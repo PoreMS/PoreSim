@@ -3,7 +3,7 @@
 
 SPHINXOPTS    =
 ifdef OS
-   SPHINXBUILD   = python -msphinx
+   SPHINXBUILD   = python3 -msphinx
 else
    SPHINXBUILD   = python3 -msphinx
 endif

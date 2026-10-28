@@ -17,6 +17,13 @@ if __name__ == "__main__":
         print("Set box dimension to run ana.py")
         exit()
 
+    # Inputs for VACF Sampling
+    len_corr   = 15e-12   # correlation time of the molecule in seconds
+    new_time_o = 1e-13    # new time origin in seconds
+    sample_st  = 20       # sample rate (every N frames)
+    len_fr     = 1e-15    # time between two frames in seconds
+
+
     # Set analysis
     ana_list = {}
     {% for mol in mols -%}
@@ -41,7 +48,7 @@ if __name__ == "__main__":
 
         if ana_props["vacf"]:
             sample = pa.Sample(box, ana_props["traj_trr"], ana_props["mol"], ana_props["atoms"],[1 for x in ana_props["atoms"]] )
-            sample.init_diffusion_vacf("diff_vacf.obj", direction="z", len_correration=len_corr, new_time_origin=new_time_o, sample_step=sample_st, len_frame=len_fr, bin_num=128)
+            sample.init_diffusion_vacf("diff_vacf.obj", direction=2, len_correration=len_corr, new_time_origin=new_time_o, sample_step=sample_st, len_frame=len_fr, bin_num=128)
             sample.sample(is_parallel=True)
     
     {% if fill %}
