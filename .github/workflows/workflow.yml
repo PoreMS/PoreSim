@@ -24,8 +24,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: uv pip install ".[dev]"
-        run: uv pip install pytest pytest-cov 
+        run: uv pip install pytest pytest-cov ".[dev]"
       - name: Run unit tests
         run: uv run pytest tests/test_unit.py --cov=poresim --cov-report=xml -q
       - name: Upload coverage
@@ -46,8 +45,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: uv pip install ".[dev]"
-        run: uv pip install pytest pytest-cov 
+        run: uv pip install pytest pytest-cov  ".[dev]"
       - name: Run integration tests
         run: uv run pytest tests/test_integration.py --cov=poresim --cov-report=xml -q
       - name: Upload integration coverage
@@ -68,8 +66,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: uv pip install ".[dev]"
-        run: uv pip install pytest pytest-cov 
+        run: uv pip install pytest pytest-cov ".[dev]"
       - name: Run simple tests
         run: uv run pytest tests/test_simple.py tests/test_simple.py --cov=poresim --cov-report=xml -q
       - name: Upload simple coverage
