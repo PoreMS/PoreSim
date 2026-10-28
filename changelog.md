@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# v0.3.1
-* Add VACF sampling to the Python analysis script
-=======
 # v1.0.0
 
 ### Code quality
@@ -12,6 +8,7 @@
 * `simulate.py` — Jinja2 template rendering for analysis scripts (`auto_dens.py` / `auto_dens_box.py`) refactored: molecule metadata collected into a single `jinja2_dict` loop; `has_fill` flag derived once instead of re-evaluated; template selection unified in a single branch
 * Template scripts `auto_dens.py` and `auto_dens_box.py` trimmed; `sort.py` template removed (dead code)
 * `tests/data/forhlr.sh` — GROMACS module updated from 2016.5 to 2024.3; `#SBATCH --gres` line added for GPU node support
+* Add `VACF sampling` to the Python analysis script
 
 ### Tests
 * Converted `tests/test_simple.py` from unittest to pytest
@@ -33,8 +30,6 @@
 ### Administrative
 * `pyproject.toml`: version 1.0.0, `requires-python = ">=3.12"`, author email updated, jinja2 unpinned; `[project.optional-dependencies]` dev group added (`pytest`, `pytest-cov`)
 * README: updated image paths, Python version, PyPI badge, testing and installation instructions
-
->>>>>>> optimization
 
 # v0.3.0
 * New version due to a change of GitHub organisation.
