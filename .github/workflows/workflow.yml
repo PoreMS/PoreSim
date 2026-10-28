@@ -26,12 +26,13 @@ jobs:
       - name: Install dependencies
         run: uv pip install ".[dev]"
       - name: Run unit tests
-        run: uv run pytest tests/test_unit.py --cov=poresim -q
+        run: uv run pytest tests/test_unit.py --cov=poresim --cov-report=xml -q
       - name: Upload coverage
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: PoreMS/PoreSim
+          files: ./coverage.xml
 
   test-integration:
     name: Integration tests
@@ -46,7 +47,13 @@ jobs:
       - name: Install dependencies
         run: uv pip install pytest .
       - name: Run integration tests
-        run: uv run pytest tests/test_integration.py -q
+        run: uv run pytest tests/test_integration.py tests/test_simple.py --cov=poresim --cov-report=xml -q
+      - name: Upload integration coverage
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: PoreMS/PoreSim
+          files: ./coverage.xml
 
   docs:
     runs-on: ubuntu-latest
