@@ -9,65 +9,76 @@ on:
 permissions:
   contents: write
 
-
 jobs:
-  test:
-    name: "${{ matrix.test_file }} (Python ${{ matrix.python-version }})"
+  test-unit:
+    name: Unit tests (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - test_file: tests/test_unit.py
-            python-version: "3.12"
-            main_only: false
-
-          - test_file: tests/test_unit.py
-            python-version: "3.13"
-            main_only: false
-
-          - test_file: tests/test_simple.py
-            python-version: "3.12"
-            main_only: false
-
-          - test_file: tests/test_simple.py
-            python-version: "3.13"
-            main_only: false
-
-          - test_file: tests/test_integration.py
-            python-version: "3.12"
-            main_only: true
-
-    if: ${{ matrix.main_only == false || github.ref == 'refs/heads/main' }}
+        python-version: ["3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Install dependencies
         run: uv pip install ".[dev]"
-
-      - name: Run tests with coverage
-        run: |
-          uv run pytest "${{ matrix.test_file }}" \
-            --cov=poresim \
-            --cov-report=xml:coverage.xml \
-            -q
-
+        run: uv pip install pytest pytest-cov 
+      - name: Run unit tests
+        run: uv run pytest tests/test_unit.py --cov=poresim --cov-report=xml -q
       - name: Upload coverage
-        if: always()
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: PoreMS/PoreSim
           files: ./coverage.xml
-          flags: ${{ matrix.test_file }}-py${{ matrix.python-version }}
-          name: "${{ matrix.test_file }} Python ${{ matrix.python-version }}"
-          
+
+  test-integration:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: uv pip install ".[dev]"
+        run: uv pip install pytest pytest-cov 
+      - name: Run integration tests
+        run: uv run pytest tests/test_integration.py --cov=poresim --cov-report=xml -q
+      - name: Upload integration coverage
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: PoreMS/PoreSim
+          files: ./coverage.xml
+
+  test-simple:
+    name: simple tests
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: uv pip install ".[dev]"
+        run: uv pip install pytest pytest-cov 
+      - name: Run simple tests
+        run: uv run pytest tests/test_simple.py tests/test_simple.py --cov=poresim --cov-report=xml -q
+      - name: Upload simple coverage
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: PoreMS/PoreSim
+          files: ./coverage.xml
+
   docs:
     runs-on: ubuntu-latest
     steps:
