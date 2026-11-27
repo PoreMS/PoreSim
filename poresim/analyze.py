@@ -64,7 +64,6 @@ class Analyze:
 
             file_out.write("mols[]=\n\n")
 
-
             file_out.write('for key in "${!mols[@]}"; do\n')
 
             out_string = "gmx_mpi trjconv "

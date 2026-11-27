@@ -27,7 +27,14 @@ def job():
     return {
         "min": {"file": "data/forhlr.sh", "nodes": 2, "np": 20, "wall": "24:00:00"},
         "nvt": {"file": "data/forhlr.sh", "nodes": 4, "np": 20, "wall": "24:00:00"},
-        "run": {"file": "data/forhlr.sh", "maxh": 24, "nodes": 11, "np": 20, "runs": 15, "wall": "24:00:00"},
+        "run": {
+            "file": "data/forhlr.sh",
+            "maxh": 24,
+            "nodes": 11,
+            "np": 20,
+            "runs": 15,
+            "wall": "24:00:00",
+        },
     }
 
 
@@ -35,8 +42,14 @@ def job():
 def param():
     return {
         "min": {"file": "data/pore_min.mdp"},
-        "nvt": {"file": "data/pore_nvt.mdp", "param": {"NUMBEROFSTEPS": 2000000, "TEMPERATURE_VAL": 298}},
-        "run": {"file": "data/pore_run.mdp", "param": {"NUMBEROFSTEPS": 20000000, "TEMPERATURE_VAL": 298}},
+        "nvt": {
+            "file": "data/pore_nvt.mdp",
+            "param": {"NUMBEROFSTEPS": 2000000, "TEMPERATURE_VAL": 298},
+        },
+        "run": {
+            "file": "data/pore_run.mdp",
+            "param": {"NUMBEROFSTEPS": 20000000, "TEMPERATURE_VAL": 298},
+        },
     }
 
 
@@ -60,7 +73,7 @@ def test_utils_file_io():
         f.write("TEST")
     ps.utils.copy(file_link, file_link + "t")
     ps.utils.replace(file_link + "t", "TEST", "DOTA")
-    with open(file_link + "t", "r") as f:
+    with open(file_link + "t") as f:
         for line in f:
             assert line == "DOTA\n"
 
@@ -161,7 +174,11 @@ def test_sim(job, param):
 
     # Job shells for each step exist and contain GROMACS commands
     for step in ("min", "nvt", "run", "run0"):
-        path = f"{base}/{step.replace('0', '')}/{step}.job" if step != "run0" else f"{base}/run/run0.job"
+        path = (
+            f"{base}/{step.replace('0', '')}/{step}.job"
+            if step != "run0"
+            else f"{base}/run/run0.job"
+        )
         assert os.path.isfile(path), f"Missing job file: {path}"
         with open(path) as f:
             content = f.read()
@@ -192,9 +209,17 @@ def test_sim(job, param):
 
 def test_bench(job, param):
     npt_job = dict(job)
-    npt_job["npt"] = {"file": "data/forhlr.sh", "nodes": 4, "np": 20, "wall": "24:00:00"}
+    npt_job["npt"] = {
+        "file": "data/forhlr.sh",
+        "nodes": 4,
+        "np": 20,
+        "wall": "24:00:00",
+    }
     npt_param = dict(param)
-    npt_param["npt"] = {"file": "data/pore_nvt.mdp", "param": {"NUMBEROFSTEPS": 2000000, "TEMPERATURE_VAL": 298}}
+    npt_param["npt"] = {
+        "file": "data/pore_nvt.mdp",
+        "param": {"NUMBEROFSTEPS": 2000000, "TEMPERATURE_VAL": 298},
+    }
 
     box = ps.Box("box")
     box.add_box("data/pore.gro")
@@ -234,8 +259,43 @@ def test_2phase(job, param):
     pores = ps.Box("353_2phase")
     pores.set_label("353_2phase")
     pores.add_box("data/box_2phase.gro")
-    pores.add_mol("CAT", "data/2phase/catalyst.gro", inp=10, area=[[0, 5], [15, 20]], box=[8, 8, 20], kwargs_gmx={"-try": 1000, "-scale": 0.47})
-    pores.add_mol("EDC", "data/2phase/reactant.gro", inp=10, area=[[5, 15]], box=[8, 8, 20], kwargs_gmx={"-try": 1000, "-scale": 0.47})
-    pores.add_mol("IM", "data/2phase/bmi.gro", inp=1600, area=[[0, 5], [15, 20]], box=[8, 8, 20], kwargs_gmx={"-try": 1000, "-scale": 0.47})
-    pores.add_mol("BF4", "data/2phase/bf4.gro", inp=1620, area=[[0, 5], [15, 20]], box=[8, 8, 20], kwargs_gmx={"-try": 1000, "-scale": 0.47})
-    pores.add_mol("HEP", "data/2phase/1-heptane.gro", inp=2420, area=[[5, 15]], box=[8, 8, 20], kwargs_gmx={"-try": 1000, "-scale": 0.47})
+    pores.add_mol(
+        "CAT",
+        "data/2phase/catalyst.gro",
+        inp=10,
+        area=[[0, 5], [15, 20]],
+        box=[8, 8, 20],
+        kwargs_gmx={"-try": 1000, "-scale": 0.47},
+    )
+    pores.add_mol(
+        "EDC",
+        "data/2phase/reactant.gro",
+        inp=10,
+        area=[[5, 15]],
+        box=[8, 8, 20],
+        kwargs_gmx={"-try": 1000, "-scale": 0.47},
+    )
+    pores.add_mol(
+        "IM",
+        "data/2phase/bmi.gro",
+        inp=1600,
+        area=[[0, 5], [15, 20]],
+        box=[8, 8, 20],
+        kwargs_gmx={"-try": 1000, "-scale": 0.47},
+    )
+    pores.add_mol(
+        "BF4",
+        "data/2phase/bf4.gro",
+        inp=1620,
+        area=[[0, 5], [15, 20]],
+        box=[8, 8, 20],
+        kwargs_gmx={"-try": 1000, "-scale": 0.47},
+    )
+    pores.add_mol(
+        "HEP",
+        "data/2phase/1-heptane.gro",
+        inp=2420,
+        area=[[5, 15]],
+        box=[8, 8, 20],
+        kwargs_gmx={"-try": 1000, "-scale": 0.47},
+    )

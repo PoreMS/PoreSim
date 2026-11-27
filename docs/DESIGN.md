@@ -24,9 +24,9 @@ following the same structural logic as PoreMS (blue) and PoreAna (red).
 
 | File | Usage |
 |---|---|
-| `docs/pics/logo.svg` | Square icon (favicon source, app icon) |
-| `docs/pics/logo_text.svg` | Horizontal logo with "PoreSim" wordmark |
-| `docs/pics/logo_text_sub.svg` | Logo with wordmark + subtitle line |
+| `docs/source/_static/logo.svg` | Square icon (favicon source, app icon) |
+| `docs/source/_static/logo_text.svg` | Horizontal logo with "PoreSim" wordmark |
+| `docs/source/_static/logo_text_sub.svg` | Logo with wordmark + subtitle line |
 
 ## Typography
 

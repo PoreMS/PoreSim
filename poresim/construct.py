@@ -196,7 +196,8 @@ class Construct:
 
             # Pore system: fixed number of molecules
             elif not is_fill and not area and not box_dim and "PORE" in self._struct:
-                j = sum(1 for pid in self._pore_props if pid[:5] == "shape")
+                shape_ids = [pid for pid in self._pore_props if pid[:5] == "shape"]
+                j = len(shape_ids)
 
                 if section == "both":
                     num = [inp // (j + 2)] * (j + 2)
@@ -211,9 +212,7 @@ class Construct:
                     num[-1] += abs(inp - sum(num))
 
                 if section in ("pore", "both"):
-                    for pore_id, j in zip(self._pore_props, range(j)):
-                        if pore_id[:5] != "shape":
-                            continue
+                    for j, pore_id in enumerate(shape_ids):
                         if self._pore_props[pore_id]["parameter"]["central"] != [
                             0,
                             0,
@@ -241,9 +240,7 @@ class Construct:
                     )
 
                 elif section == "wall":
-                    for pore_id, j in zip(self._pore_props, range(j)):
-                        if pore_id[:5] != "shape":
-                            continue
+                    for pore_id in shape_ids:
                         p = self._pore_props[pore_id]["parameter"]
                         res = self._pore_props["system"]["reservoir"]
                         cx, cy = p["centroid"][0], p["centroid"][1]
@@ -520,13 +517,10 @@ class Construct:
         file_t_b = "topolBackup.top"
         file_ndx = "index.ndx"
 
-        has_auto_dens = not all(self._mols[mol][2] is None for mol in self._mols)
-
         with open(self._box_path + "_fill/fill.sh", "w", encoding="utf-8") as file_out:
             file_out.write("# Create Todos\n")
             file_out.write('echo "Load gromacs ..."; exit;\n')
-            if has_auto_dens:
-                file_out.write('echo "Load gromacs in Backup..."; exit;\n')
+            file_out.write('echo "Load gromacs in Backup..."; exit;\n')
             file_out.write(
                 'echo "Set ions names in sort script if necessary ..."; exit;\n\n'
             )
@@ -556,18 +550,17 @@ class Construct:
                 f'echo "System {self._box_link} - Backed up equilibration ..."\n\n'
             )
 
-            if has_auto_dens:
-                file_out.write("# Backup Analysis\n")
-                file_out.write(f"mv {folder_ana} {folder_fill}$fill_num\n")
-                file_out.write(f"mkdir {folder_ana}\n")
-                file_out.write(f"cp {folder_fill}$fill_num/ana/ana.* {folder_ana}\n")
-                file_out.write(
-                    f'echo "System {self._box_link} - Backed up analysis ..."\n\n'
-                )
+            file_out.write("# Backup Analysis\n")
+            file_out.write(f"mv {folder_ana} {folder_fill}$fill_num\n")
+            file_out.write(f"mkdir {folder_ana}\n")
+            file_out.write(f"cp {folder_fill}$fill_num/ana/ana.* {folder_ana}\n")
+            file_out.write(
+                f'echo "System {self._box_link} - Backed up analysis ..."\n\n'
+            )
 
             file_out.write("# Refill Box\n")
             for mol in self._mols:
-                inp, _, auto_dens, mass, section, area, box_dim, _ = self._mols[mol]
+                inp, _, _, _, _, area, box_dim, _ = self._mols[mol]
                 if inp != "fill":
                     continue
 
@@ -582,7 +575,7 @@ class Construct:
 
                 if area:
                     for i, seg in enumerate(area):
-                        nmol = "10000" if auto_dens is None else f"FILLDENS_{mol}"
+                        nmol = f"FILLDENS_{mol}"
                         dr = [box_dim[0] / 2, box_dim[1] / 2, (seg[1] - seg[0]) / 2]
                         file_out.write(
                             gmx_prefix + f"-dr {dr[0]} {dr[1]} {dr[2]} "
@@ -590,7 +583,7 @@ class Construct:
                             f"-nmol {nmol} >> logging.log 2>&1\n"
                         )
                 else:
-                    nmol = "0" if auto_dens is None else f"FILLDENS_{mol}"
+                    nmol = f"FILLDENS_{mol}"
                     if "PORE" in self._struct:
                         dims = self._pore_props["system"]["dimensions"]
                         res = self._pore_props["system"]["reservoir"]
@@ -617,10 +610,9 @@ class Construct:
             file_out.write(
                 'sed -i "s/fill_num=$fill_num/fill_num=$((fill_num+1))/" temp.sh\n'
             )
-            if has_auto_dens:
-                file_out.write(
-                    'sed -i "s/fill_num=$fill_num/fill_num=$((fill_num+1))/" fillBackup.sh\n'
-                )
+            file_out.write(
+                'sed -i "s/fill_num=$fill_num/fill_num=$((fill_num+1))/" fillBackup.sh\n'
+            )
             file_out.write("mv temp.sh fill.sh\n")
 
     ##################
@@ -659,11 +651,10 @@ class Construct:
 
             self._pos_dat()
             self._fill()
-            if not all(self._mols[mol][2] is None for mol in self._mols):
-                utils.copy(
-                    self._box_path + "_fill/fill.sh",
-                    self._box_path + "_fill/fillBackup.sh",
-                )
+            utils.copy(
+                self._box_path + "_fill/fill.sh",
+                self._box_path + "_fill/fillBackup.sh",
+            )
             utils.copy(
                 os.path.split(__file__)[0] + "/templates/sort.py",
                 self._box_path + "_fill/sort.py",

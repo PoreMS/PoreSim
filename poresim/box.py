@@ -86,7 +86,8 @@ class Box:
         num_atoms : integer, string, optional
             Number of atoms in the specified molecule or filetype for extraction
         auto_dens : float, None, optional
-            Density in :math:`\\frac{\\text{kg}}{\\text{m}^3}`
+            Target density in :math:`\\frac{\\text{kg}}{\\text{m}^3}` to fill
+            up to; required for **fill**
         mass : float, None, optional
             molecular mass (:math:`\\frac{\\text{g}}{\\text{mol}}`) of the molecule to get an estimate of how many molecules you need to put in the box as the initial value for auto_dens.
         section : string, "both", optional
@@ -126,7 +127,7 @@ class Box:
         # Extract atom number
         if num_atoms == "gro":
             counter = 1
-            with open(link, "r") as file_in:
+            with open(link) as file_in:
                 for line in file_in:
                     if counter == 2:
                         num_atoms = int(line)
@@ -134,7 +135,11 @@ class Box:
                     else:
                         counter += 1
 
-        # If Fill
+        # A fill needs the target density and the molar mass to estimate the
+        # number of molecules
+        if inp == "fill" and auto_dens is None:
+            print("If you use fill you have to specify the target density auto_dens")
+            return
         if inp == "fill" and not mass:
             print(
                 "If you use auto_dens you have to specifiy the molar mass of the molecule"

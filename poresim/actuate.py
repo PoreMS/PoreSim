@@ -50,7 +50,6 @@ class Actuate:
         self._file_top = "topol.top"
         self._file_ndx = "index.ndx"
 
-
     ###################
     # Private methods #
     ###################
@@ -330,8 +329,8 @@ class Actuate:
     def _analyze(self):
         """Create analyse job files for poreana."""
         # Get simulation properties
-        np = str(int(20))
-        nodes = str(int(1))
+        np = str(20)
+        nodes = str(1)
         wall = "10:00:00"
 
         # Create shell
@@ -343,10 +342,8 @@ class Actuate:
         utils.replace(link_shell, "SIMULATIONNODES", nodes)
         utils.replace(link_shell, "SIMULATIONPROCS", np)
         utils.replace(link_shell, "SIMULATIONTIME", wall)
-        utils.replace(link_shell, "SIMULATIONLABEL", self._label + "_" + str("ana"))
-        utils.replace(
-            link_shell, "COMMANDCHANGEDIR", "cd " + self._clr_link + str("ana")
-        )
+        utils.replace(link_shell, "SIMULATIONLABEL", self._label + "_" + "ana")
+        utils.replace(link_shell, "COMMANDCHANGEDIR", "cd " + self._clr_link + "ana")
 
         # Insert into file
         utils.replace(link_shell, "COMMANDGROMACS", "python ana.py")

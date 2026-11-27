@@ -52,7 +52,7 @@ class Simulate:
             shutil.copy(file_in, file_out)
 
         # Load simulation config file
-        with open(self._config, "r") as stream:
+        with open(self._config) as stream:
             self._sim_dict = yaml.load(stream, Loader=yaml.FullLoader)
 
             # Create box objects
@@ -130,7 +130,7 @@ class Simulate:
             )
             construct.generate_files()
 
-            # Create simulation shellsboxes[sim_name].add_struct("GENERATE", "data/generate.sh")
+            # Create simulation shells
             job = self._sim_dict["job"] if box.get_job() is None else box.get_job()
             actuate = Actuate(
                 self._link,

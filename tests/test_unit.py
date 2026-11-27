@@ -6,6 +6,7 @@ import pytest
 
 import poresim as ps
 from poresim.construct import Construct
+from poresim.topology import Topology
 
 
 def test_utils():
@@ -33,7 +34,15 @@ def test_box_api():
     box.set_label("newlabel")
     assert box.get_label() == "newlabel"
 
-    job = {"run": {"file": "data/forhlr.sh", "nodes": 1, "np": 4, "wall": "1:00:00", "runs": 2}}
+    job = {
+        "run": {
+            "file": "data/forhlr.sh",
+            "nodes": 1,
+            "np": 4,
+            "wall": "1:00:00",
+            "runs": 2,
+        }
+    }
     box.set_job(job)
     assert box.get_job() == job
 
@@ -60,6 +69,9 @@ def test_box_add_mol_validation():
     assert box.add_mol("X", "data/benzene.gro", 10, auto_dens="heavy") is None
     # fill without mass
     assert box.add_mol("X", "data/benzene.gro", "fill", auto_dens=500) is None
+    # fill without target density
+    assert box.add_mol("X", "data/benzene.gro", "fill", mass=78.11) is None
+    assert box.get_mols() == {}
 
 
 def test_box_topol():
@@ -127,8 +139,9 @@ def test_construct_gmx_insert_cmd():
     assert "-ip pos.dat" in cmd_ip
 
     # With both
-    cmd_both = c._gmx_insert_cmd("../_gro/", "box.gro", "MOL", 50,
-                                  dr=[0.5, 0.5, 5.0], pos_file="pos.dat")
+    cmd_both = c._gmx_insert_cmd(
+        "../_gro/", "box.gro", "MOL", 50, dr=[0.5, 0.5, 5.0], pos_file="pos.dat"
+    )
     assert "-dr 0.5 0.5 5.0" in cmd_both
     assert "-ip pos.dat" in cmd_both
 
@@ -139,3 +152,130 @@ def test_construct_gmx_insert_cmd():
     cmd_kw = c2._gmx_insert_cmd("../_gro/", "box.gro", "MOL", 10)
     assert "-try 500" in cmd_kw
     assert "-scale 0.5" in cmd_kw
+
+
+def test_box_add_mol_with_given_atom_number():
+    box = ps.Box()
+    box.add_mol("X", "data/benzene.gro", 10, num_atoms=12)
+    assert box.get_mols()["X"][1] == 12
+
+
+def _write(path, text):
+    with open(path, "w") as f:
+        f.write(text)
+    return str(path)
+
+
+def test_topology_itp_without_charge(tmp_path):
+    """Without a silicon charge the CHARGESI placeholder stays in the itp."""
+    top = _write(
+        tmp_path / "mol.top",
+        "[ defaults ]\n1 2 yes 0.5 0.8333\n\n"
+        "[ moleculetype ]\nMOL 3\n\n"
+        "[ atoms ]\n1 SI 1 MOL SI1 1 CHARGESI 28.0855\n\n"
+        "[ system ]\nMOL\n",
+    )
+    Topology(str(tmp_path) + "/", {"itp": [top]}).generate_files()
+    itp = (tmp_path / "_top" / "mol.itp").read_text()
+    assert "[ defaults ]" not in itp
+    assert "[ system ]" not in itp
+    assert "[ moleculetype ]" in itp
+    assert "CHARGESI" in itp
+
+
+def test_topology_itp_with_charge(tmp_path):
+    top = _write(
+        tmp_path / "grid.top", "[ atoms ]\n1 SI 1 MOL SI1 1 CHARGESI 28.0855\n\n"
+    )
+    Topology(str(tmp_path) + "/", {"itp": [top], "charge": 1.28}).generate_files()
+    assert "1.280000" in (tmp_path / "_top" / "grid.itp").read_text()
+
+
+def test_topology_keeps_repeated_sections(tmp_path):
+    top = _write(
+        tmp_path / "mol.top",
+        "[ dihedrals ] ; propers\n1 2 3 4 9\n\n"
+        "[ dihedrals ] ; impropers\n1 2 3 5 4\n\n",
+    )
+    Topology(str(tmp_path) + "/", {"itp": [top]}).generate_files()
+    itp = (tmp_path / "_top" / "mol.itp").read_text()
+    # GROMACS accepts mixed function types in one section, so both blocks are
+    # written below a single header
+    assert itp.count("[ dihedrals ]") == 1
+    assert "1 2 3 4 9" in itp
+    assert "1 2 3 5 4" in itp
+
+
+def test_benchmark_without_npt(tmp_path):
+    """Without an npt step the benchmark only adjusts min and nvt."""
+    shell = "data/forhlr.sh"
+    step = {"file": shell, "nodes": 1, "np": 4, "wall": "1:00:00"}
+    job = {"min": dict(step), "nvt": dict(step), "run": {**step, "maxh": 1, "runs": 2}}
+    param = {
+        "min": {"file": "data/pore_min.mdp"},
+        "nvt": {
+            "file": "data/pore_nvt.mdp",
+            "param": {"NUMBEROFSTEPS": 10, "TEMPERATURE_VAL": 298},
+        },
+        "run": {
+            "file": "data/pore_run.mdp",
+            "param": {"NUMBEROFSTEPS": 10, "TEMPERATURE_VAL": 298},
+        },
+    }
+    box = ps.Box("box")
+    box.add_box("data/box.gro")
+    box.add_mol("BEN", "data/benzene.gro", 5, box=[3, 3, 3])
+    box.add_topol("data/benzene.top", "master")
+    box.set_job(job)
+    box.set_param(param)
+
+    link = str(tmp_path / "bench")
+    bench = ps.Benchmark(box, [4], [1, 2], link)
+    bench.set_job(job)
+    bench.set_param(param)
+    bench.generate()
+
+    shell_text = (tmp_path / "bench" / "benchmark.sh").read_text()
+    assert "cp -r X/_gro 01/_gro" in shell_text
+    assert "cp -r X/_gro 02/_gro" in shell_text
+    assert not (tmp_path / "bench" / "01" / "npt").exists()
+
+
+def test_benchmark_rejects_an_unknown_iterator(tmp_path):
+    link = tmp_path / "bench"
+    with pytest.raises(ValueError, match="'nodes' or 'np'"):
+        ps.Benchmark(ps.Box(), [4], [1], str(link), iterator="cores")
+    # Nothing is written before the input is checked
+    assert not link.exists()
+
+
+@pytest.mark.parametrize(
+    ("iterator", "expected"),
+    [("nodes", [(4, 1), (4, 2)]), ("np", [(1, 1), (2, 1)])],
+)
+def test_benchmark_varies_only_the_iterator(tmp_path, iterator, expected):
+    """With equal np and nodes lists only the chosen one may vary."""
+    shell = "data/forhlr.sh"
+    step = {"file": shell, "nodes": 1, "np": 4, "wall": "1:00:00"}
+    job = {"min": dict(step), "nvt": dict(step), "run": {**step, "maxh": 1, "runs": 2}}
+    nvt = {"NUMBEROFSTEPS": 10, "TEMPERATURE_VAL": 298}
+    param = {
+        "min": {"file": "data/pore_min.mdp"},
+        "nvt": {"file": "data/pore_nvt.mdp", "param": dict(nvt)},
+        "run": {"file": "data/pore_run.mdp", "param": dict(nvt)},
+    }
+    box = ps.Box("box")
+    box.add_box("data/box.gro")
+    box.add_mol("BEN", "data/benzene.gro", 5, box=[3, 3, 3])
+    box.add_topol("data/benzene.top", "master")
+
+    values = [1, 2] if iterator == "np" else [4]
+    bench = ps.Benchmark(box, values, [1, 2], str(tmp_path / "b"), iterator=iterator)
+    bench.set_job(job)
+    bench.set_param(param)
+    bench.generate()
+
+    for folder, (np_, nodes) in zip(("01", "02"), expected, strict=True):
+        text = (tmp_path / "b" / folder / "nvt" / "nvt.job").read_text()
+        assert f"--nodes={nodes}" in text
+        assert f"--ntasks-per-node={np_}" in text
