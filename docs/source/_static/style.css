@@ -1,0 +1,20 @@
+/* Amber brand colour for links (see docs/DESIGN.md) */
+a.reference,
+a.reference:visited,
+footer a {
+    color: #c8860a;
+}
+
+/* The figures are drawn with black text and lines on a transparent
+   background, which is unreadable on the dark page background. Give the
+   content images a white plate.
+
+   The selector is scoped to <article> because the only <img> outside it is
+   the sidebar logo, which is drawn for both themes and must keep its
+   transparency. The padding is set in both themes so that toggling the theme
+   does not reflow the page; in light mode the plate itself is invisible. */
+article img {
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 2px;
+}

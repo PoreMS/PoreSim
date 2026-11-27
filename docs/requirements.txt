@@ -1,4 +1,0 @@
-sphinx>=7.4
-furo
-myst-parser
-sphinx-autoapi

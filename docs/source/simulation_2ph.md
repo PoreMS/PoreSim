@@ -168,7 +168,7 @@ sim.generate()
 Inside view of the pore after running construct.sh and energy minimization.
 Colour code: catalyst, red; ionic anion, orange; ionic kation, blue; rectant, grey; heptane, pink.
 
-:::{figure} /pics/2phase_il.svg
+:::{figure} /images/2phase_il.svg
 :align: center
 :width: 50%
 :::

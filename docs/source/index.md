@@ -11,16 +11,19 @@ To see the code or report a bug, please visit the
 - [Complex Pore Simulation](simulation_complex.md) — multi-molecule setups
 - [Two-Phase Simulation](simulation_2ph.md) — two-phase liquid systems
 
-## API Reference
-
-Full API documentation is auto-generated from source: [API Reference](autoapi/index)
+The [API reference](api.rst) documents every module in full.
 
 :::{toctree}
 :hidden:
-:maxdepth: 2
 
 simulation
 simulation_complex
 simulation_2ph
-autoapi/index
+:::
+
+:::{toctree}
+:hidden:
+:caption: API
+
+api
 :::

@@ -1,4 +1,4 @@
-<img src="https://github.com/PoreMS/PoreSim/blob/main/docs/pics/logo_text_sub.svg" width="60%">
+<img src="https://github.com/PoreMS/PoreSim/blob/main/docs/source/_static/logo_text_sub.svg" width="60%">
 
 --------------------------------------
 
@@ -12,7 +12,7 @@
 
 Online documentation is available at [porems.github.io/PoreSim](https://porems.github.io/PoreSim/).
 
-The docs include an example for creating [simulation boxes](https://porems.github.io/PoreSim/simulation.html) and an [API reference](https://porems.github.io/PoreSim/autoapi/index.html).
+The docs include an example for creating [simulation boxes](https://porems.github.io/PoreSim/simulation.html) and an [API reference](https://porems.github.io/PoreSim/api.html).
 
 
 ## Dependencies
