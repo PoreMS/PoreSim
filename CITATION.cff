@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use PoreSim in your research, please cite it as below, with the Zenodo DOI of the version you used."
+title: "PoreSim"
+type: software
+version: 0.3.0
+date-released: 2025-10-20
+license: GPL-3.0-or-later
+repository-code: "https://github.com/PoreMS/PoreSim"
+url: "https://porems.github.io/PoreSim/"
+doi: "10.5281/zenodo.17395962"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.17395961"
+    description: "Concept DOI, resolves to the latest version"
+abstract: "Pore system simulation generator: creates simulation folders, topologies and GROMACS run scripts for pore systems built with PoreMS."
+keywords:
+  - pore
+  - nanopore
+  - molecular dynamics
+  - simulation
+  - simulation setup
+  - GROMACS
+authors:
+  - family-names: Kraus
+    given-names: Hamzeh
+    email: kraus@itt.uni-stuttgart.de
+    affiliation: "University of Stuttgart"
+    orcid: "https://orcid.org/0000-0001-9643-4839"
+  - family-names: Högler
+    given-names: Marc
+    email: hoegler@itt.uni-stuttgart.de
+    affiliation: "University of Stuttgart"
+    orcid: "https://orcid.org/0000-0002-8325-7789"
+  - family-names: Hansen
+    given-names: Niels
+    email: hansen@itt.uni-stuttgart.de
+    affiliation: "University of Stuttgart"
+    orcid: "https://orcid.org/0000-0003-4366-6120"
