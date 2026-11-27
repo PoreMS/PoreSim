@@ -65,6 +65,9 @@ Issues = "https://github.com/PoreMS/PoreSim/issues"
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ["tests"]
+# the suite writes into tests/output, and pytest would otherwise collect files
+# such as output/test/test.txt there as doctests
+norecursedirs = ["output", "data"]
 addopts = "-ra -q"
 
 [tool.coverage.run]
