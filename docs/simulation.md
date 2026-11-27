@@ -8,17 +8,41 @@ import poresim as ps
 ## Set job, parameter, and cluster dictionaries
 
 ```python
-job = {"min": {"file": "data/horeka.sh", "nodes": 1, "np":  1, "wall": "00:30:00"},
-       "nvt": {"file": "data/horeka.sh", "nodes": 2, "np": 75, "wall": "72:00:00"},
-       "run": {"file": "data/horeka.sh", "maxh": 72, "nodes": 4, "np": 75, "runs": 5, "wall": "72:00:00"}}
+job = {
+    "min": {"file": "data/horeka.sh", "nodes": 1, "np": 1, "wall": "00:30:00"},
+    "nvt": {"file": "data/horeka.sh", "nodes": 2, "np": 75, "wall": "72:00:00"},
+    "run": {
+        "file": "data/horeka.sh",
+        "maxh": 72,
+        "nodes": 4,
+        "np": 75,
+        "runs": 5,
+        "wall": "72:00:00",
+    },
+}
 
-param = {"min": {"file": "data/mdp/pore_min.mdp"},
-         "nvt": {"file": "data/mdp/pore_nvt.mdp", "param": {"NUMBEROFSTEPS":     20000, "TEMPERATURE_VAL": 295}},
-         "run": {"file": "data/mdp/pore_run.mdp", "param": {"NUMBEROFSTEPS": 200000000, "TEMPERATURE_VAL": 295}}}
+param = {
+    "min": {"file": "data/mdp/pore_min.mdp"},
+    "nvt": {
+        "file": "data/mdp/pore_nvt.mdp",
+        "param": {"NUMBEROFSTEPS": 20000, "TEMPERATURE_VAL": 295},
+    },
+    "run": {
+        "file": "data/mdp/pore_run.mdp",
+        "param": {"NUMBEROFSTEPS": 200000000, "TEMPERATURE_VAL": 295},
+    },
+}
 
-cluster = {"address": "xx_xxxxxxxx@horeka.scc.kit.edu",
-           "directory": "/link/to/simulation/folder/",
-           "queuing": {"add_np": False, "mpi": "$DO_PARALLEL", "shell": "horeka.sh", "submit": "sbatch --partition cpuonly"}}
+cluster = {
+    "address": "xx_xxxxxxxx@horeka.scc.kit.edu",
+    "directory": "/link/to/simulation/folder/",
+    "queuing": {
+        "add_np": False,
+        "mpi": "$DO_PARALLEL",
+        "shell": "horeka.sh",
+        "submit": "sbatch --partition cpuonly",
+    },
+}
 ```
 
 
@@ -33,7 +57,7 @@ dens = {}  # kg/m^3
 dens["1OL"] = 788.009
 dens["2OL"] = 792.485
 
- # Define molar mass
+# Define molar mass
 mass = {}  # g/mol
 mass["1OL"] = 32.04
 mass["2OL"] = 46.068
@@ -46,14 +70,26 @@ for mol, short in mols.items():
     sim_label = short
     boxes[sim_label] = ps.Box(sim_name)
     boxes[sim_label].set_label(sim_label)
-    boxes[sim_label].add_box(pore_link+"pore.gro")
-    boxes[sim_label].add_pore(pore_link+"pore.yml")
-    boxes[sim_label].add_struct("mol_list", pore_link+"pore.obj")
+    boxes[sim_label].add_box(pore_link + "pore.gro")
+    boxes[sim_label].add_pore(pore_link + "pore.yml")
+    boxes[sim_label].add_struct("mol_list", pore_link + "pore.obj")
     boxes[sim_label].add_struct("SURFACE", "data/surface/tms/tms.gro")
-    boxes[sim_label].add_mol(short, "data/mols/"+mol+"/"+mol+".gro", "fill", mass = mass[short], auto_dens=dens[short])
-    boxes[sim_label].add_topol(pore_link+"pore.top", "master")
-    boxes[sim_label].add_topol(pore_link+"grid.itp", "top")
-    boxes[sim_label].add_topol(["data/surface/tms/tms.top", "data/surface/tms/tmsg.itp", "data/mols/"+mol+"/"+mol+".top"])
+    boxes[sim_label].add_mol(
+        short,
+        "data/mols/" + mol + "/" + mol + ".gro",
+        "fill",
+        mass=mass[short],
+        auto_dens=dens[short],
+    )
+    boxes[sim_label].add_topol(pore_link + "pore.top", "master")
+    boxes[sim_label].add_topol(pore_link + "grid.itp", "top")
+    boxes[sim_label].add_topol(
+        [
+            "data/surface/tms/tms.top",
+            "data/surface/tms/tmsg.itp",
+            "data/mols/" + mol + "/" + mol + ".top",
+        ]
+    )
     boxes[sim_label].set_job(job)
     boxes[sim_label].set_param(param)
     boxes[sim_label].add_charge_si(1.28)
@@ -84,6 +120,6 @@ sim_single.generate()
 ## Create benchmark
 
 ```python
-bench = ps.Benchmark(box["1OL"], 75, list(range(1,20+1)), "output/bench")
+bench = ps.Benchmark(box["1OL"], 75, list(range(1, 20 + 1)), "output/bench")
 bench.generate()
 ```

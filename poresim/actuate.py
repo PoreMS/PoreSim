@@ -50,7 +50,6 @@ class Actuate:
         self._file_top = "topol.top"
         self._file_ndx = "index.ndx"
 
-
     ###################
     # Private methods #
     ###################

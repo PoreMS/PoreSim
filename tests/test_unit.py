@@ -33,7 +33,15 @@ def test_box_api():
     box.set_label("newlabel")
     assert box.get_label() == "newlabel"
 
-    job = {"run": {"file": "data/forhlr.sh", "nodes": 1, "np": 4, "wall": "1:00:00", "runs": 2}}
+    job = {
+        "run": {
+            "file": "data/forhlr.sh",
+            "nodes": 1,
+            "np": 4,
+            "wall": "1:00:00",
+            "runs": 2,
+        }
+    }
     box.set_job(job)
     assert box.get_job() == job
 
@@ -127,8 +135,9 @@ def test_construct_gmx_insert_cmd():
     assert "-ip pos.dat" in cmd_ip
 
     # With both
-    cmd_both = c._gmx_insert_cmd("../_gro/", "box.gro", "MOL", 50,
-                                  dr=[0.5, 0.5, 5.0], pos_file="pos.dat")
+    cmd_both = c._gmx_insert_cmd(
+        "../_gro/", "box.gro", "MOL", 50, dr=[0.5, 0.5, 5.0], pos_file="pos.dat"
+    )
     assert "-dr 0.5 0.5 5.0" in cmd_both
     assert "-ip pos.dat" in cmd_both
 
