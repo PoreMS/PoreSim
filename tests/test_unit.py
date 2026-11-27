@@ -191,14 +191,6 @@ def test_topology_itp_with_charge(tmp_path):
     assert "1.280000" in (tmp_path / "_top" / "grid.itp").read_text()
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "Open: Topology._read keeps only the first block of a section that "
-        "occurs twice, so e.g. the improper dihedrals that acpype writes as a "
-        "second [ dihedrals ] block are dropped from the itp"
-    ),
-)
 def test_topology_keeps_repeated_sections(tmp_path):
     top = _write(
         tmp_path / "mol.top",
@@ -207,6 +199,9 @@ def test_topology_keeps_repeated_sections(tmp_path):
     )
     Topology(str(tmp_path) + "/", {"itp": [top]}).generate_files()
     itp = (tmp_path / "_top" / "mol.itp").read_text()
+    # GROMACS accepts mixed function types in one section, so both blocks are
+    # written below a single header
+    assert itp.count("[ dihedrals ]") == 1
     assert "1 2 3 4 9" in itp
     assert "1 2 3 5 4" in itp
 

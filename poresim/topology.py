@@ -65,11 +65,12 @@ class Topology:
                         is_new = False
 
                 elif len(dat) > 0 and dat[0] == "[":
+                    # A section can appear more than once, e.g. a second
+                    # [ dihedrals ] block for the impropers; append its lines
+                    # to the first one instead of dropping them
                     block = dat[1]
-
-                    if dat[1] not in data.keys():
-                        is_new = True
-                        data[block] = []
+                    is_new = True
+                    data.setdefault(block, [])
 
         return data
 
