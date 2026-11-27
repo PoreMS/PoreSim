@@ -196,7 +196,8 @@ class Construct:
 
             # Pore system: fixed number of molecules
             elif not is_fill and not area and not box_dim and "PORE" in self._struct:
-                j = sum(1 for pid in self._pore_props if pid[:5] == "shape")
+                shape_ids = [pid for pid in self._pore_props if pid[:5] == "shape"]
+                j = len(shape_ids)
 
                 if section == "both":
                     num = [inp // (j + 2)] * (j + 2)
@@ -211,9 +212,7 @@ class Construct:
                     num[-1] += abs(inp - sum(num))
 
                 if section in ("pore", "both"):
-                    for pore_id, j in zip(self._pore_props, range(j)):
-                        if pore_id[:5] != "shape":
-                            continue
+                    for j, pore_id in enumerate(shape_ids):
                         if self._pore_props[pore_id]["parameter"]["central"] != [
                             0,
                             0,
@@ -241,9 +240,7 @@ class Construct:
                     )
 
                 elif section == "wall":
-                    for pore_id, j in zip(self._pore_props, range(j)):
-                        if pore_id[:5] != "shape":
-                            continue
+                    for pore_id in shape_ids:
                         p = self._pore_props[pore_id]["parameter"]
                         res = self._pore_props["system"]["reservoir"]
                         cx, cy = p["centroid"][0], p["centroid"][1]
@@ -567,7 +564,7 @@ class Construct:
 
             file_out.write("# Refill Box\n")
             for mol in self._mols:
-                inp, _, auto_dens, mass, section, area, box_dim, _ = self._mols[mol]
+                inp, _, auto_dens, _, _, area, box_dim, _ = self._mols[mol]
                 if inp != "fill":
                     continue
 
