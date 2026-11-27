@@ -64,6 +64,11 @@ Planned as 1.0.0.
 - `Benchmark` calls `super().__init__()` without arguments.
 - `analyze.py` and `construct.py` open their text files with
   `encoding="utf-8"`.
+- `Box.add_mol` rejects `inp="fill"` without `auto_dens`; a fill always needs
+  the target density and the molar mass. The branches of the generated
+  `fill.sh` for a fill without a density are gone.
+- `Benchmark` raises a `ValueError` for an iterator other than `"nodes"` or
+  `"np"`, before anything is written.
 - `tests/data/forhlr.sh` loads GROMACS 2024.3 instead of 2016.5 and requests
   GPU nodes with `#SBATCH --gres`.
 - Packaging moved from `setup.py`, `MANIFEST.in` and `requirements.txt` to a
@@ -100,6 +105,15 @@ Planned as 1.0.0.
 
 - `Box.add_mol` used mutable default arguments for `area`, `box` and
   `kwargs_gmx`, so values set for one molecule could leak into the next.
+- A fill without `auto_dens` was accepted by `Box.add_mol` and then made the
+  box construction fail with a `TypeError`.
+- `Topology` kept only the first block of a section that appears twice in a
+  topology, so a second `[ dihedrals ]` block, as acpype writes for the
+  impropers, was missing from the generated itp file.
+- `Benchmark` with an unknown iterator failed only after the first files were
+  written, with an `UnboundLocalError`.
+- `Benchmark` varied the nodes together with the processors when `np` and
+  `nodes` were given as equal lists.
 - A wrong import, `from re import A`, in `actuate.py`.
 - A line of code that had been pasted into a comment in `simulate.py`.
 
@@ -114,17 +128,6 @@ Planned as 1.0.0.
   and `tests/venv.txt`.
 - The workflows `workflow.yml` and `lint.yml`, replaced by `ci.yml` and
   `docs.yml`.
-
-### Known issues
-
-- A molecule added with `inp="fill"` and a mass but without `auto_dens` makes
-  the box construction fail with a `TypeError`, in pore and in box systems,
-  although `Box.add_mol` accepts it and `fill.sh` handles it.
-- `Topology` keeps only the first block of a section that appears twice in a
-  topology, so a second `[ dihedrals ]` block, as acpype writes for the
-  impropers, is missing from the generated itp file.
-- `Benchmark` with an iterator other than `"nodes"` or `"np"` fails only after
-  the first files are written, with an `UnboundLocalError`.
 
 ## [0.3.0] - 2025-10-17
 
