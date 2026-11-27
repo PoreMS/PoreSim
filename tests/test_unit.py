@@ -69,6 +69,9 @@ def test_box_add_mol_validation():
     assert box.add_mol("X", "data/benzene.gro", 10, auto_dens="heavy") is None
     # fill without mass
     assert box.add_mol("X", "data/benzene.gro", "fill", auto_dens=500) is None
+    # fill without target density
+    assert box.add_mol("X", "data/benzene.gro", "fill", mass=78.11) is None
+    assert box.get_mols() == {}
 
 
 def test_box_topol():

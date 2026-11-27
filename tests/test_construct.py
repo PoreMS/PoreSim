@@ -228,30 +228,6 @@ def test_pore_fill_in_slit(tmp_path):
     assert f"-dr {0.9 * dims[0] / 2} {0.9 * slit['diameter'] / 2}" in construct
 
 
-FILL_WITHOUT_DENSITY = pytest.mark.xfail(
-    raises=TypeError,
-    strict=True,
-    reason=(
-        "Open: Box.add_mol accepts a fill with a mass but without auto_dens, and "
-        "fill.sh handles auto_dens=None, but Construct divides auto_dens by the "
-        "mass to estimate the first fill and fails with a TypeError"
-    ),
-)
-
-
-@FILL_WITHOUT_DENSITY
-def test_pore_fill_without_density_refills_a_fixed_count(tmp_path):
-    pore, _ = _pore_yml(tmp_path)
-    link, _ = _construct(
-        tmp_path, {"MOL": _mol("fill", mass=78.11, section="res")}, pore=pore
-    )
-    fill = _read(link + "_fill/fill.sh")
-    assert "-nmol 0 " in fill
-    # Without a target density there is no analysis to back up
-    assert "# Backup Analysis" not in fill
-    assert not os.path.isfile(link + "_fill/fillBackup.sh")
-
-
 ################
 # Box systems  #
 ################
@@ -337,15 +313,6 @@ def test_box_fill_by_density_in_areas(tmp_path):
 
     fill = _read(link + "_fill/fill.sh")
     assert fill.count("-nmol FILLDENS_MOL") == 2
-
-
-@FILL_WITHOUT_DENSITY
-def test_box_fill_in_areas_without_density(tmp_path):
-    link, _ = _construct(
-        tmp_path,
-        {"MOL": _mol("fill", mass=78.11, area=[[0, 3]], box=[4, 4, 10])},
-    )
-    assert "-nmol 10000" in _read(link + "_fill/fill.sh")
 
 
 def test_gmx_kwargs_are_appended(tmp_path):
