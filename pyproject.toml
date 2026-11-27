@@ -94,7 +94,14 @@ select = [
     "C4",  # flake8-comprehensions
     "RUF", # ruff-specific rules
 ]
-ignore = []
+ignore = [
+    # ruff format keeps the code within line-length; what is left over are
+    # docstrings with LaTeX formulas and usage examples that read worse wrapped
+    "E501",
+    # the fixed-width GRO/PDB/LAMMPS records are written with printf-style
+    # specifiers like "%5i", which also accept floats where "{:5d}" raises
+    "UP031",
+]
 
 [tool.ruff.format]
 quote-style = "double"

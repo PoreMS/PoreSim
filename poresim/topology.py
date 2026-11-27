@@ -36,7 +36,7 @@ class Topology:
     ###################
     def _read(self, link):
         """This function reads a topology file and saves all information and
-        data in a dictionary, accessible with the section’s header.
+        data in a dictionary, accessible with the section's header.
 
         Parameters
         ----------

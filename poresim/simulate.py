@@ -130,7 +130,7 @@ class Simulate:
             )
             construct.generate_files()
 
-            # Create simulation shellsboxes[sim_name].add_struct("GENERATE", "data/generate.sh")
+            # Create simulation shells
             job = self._sim_dict["job"] if box.get_job() is None else box.get_job()
             actuate = Actuate(
                 self._link,
