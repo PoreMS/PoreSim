@@ -52,7 +52,7 @@ class Simulate:
             shutil.copy(file_in, file_out)
 
         # Load simulation config file
-        with open(self._config, "r") as stream:
+        with open(self._config) as stream:
             self._sim_dict = yaml.load(stream, Loader=yaml.FullLoader)
 
             # Create box objects

@@ -54,7 +54,7 @@ class Topology:
         # Read data
         is_new = False
         block = ""
-        with open(link, "r") as file_in:
+        with open(link) as file_in:
             for line in file_in:
                 dat = line.split()
 

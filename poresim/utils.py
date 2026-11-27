@@ -13,7 +13,7 @@ import yaml
 
 
 def load(link):
-    with open(link, "r") as file_in:
+    with open(link) as file_in:
         return yaml.load(file_in, Loader=yaml.SafeLoader)
 
 

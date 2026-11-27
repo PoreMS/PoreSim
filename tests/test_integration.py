@@ -73,7 +73,7 @@ def test_utils_file_io():
         f.write("TEST")
     ps.utils.copy(file_link, file_link + "t")
     ps.utils.replace(file_link + "t", "TEST", "DOTA")
-    with open(file_link + "t", "r") as f:
+    with open(file_link + "t") as f:
         for line in f:
             assert line == "DOTA\n"
 

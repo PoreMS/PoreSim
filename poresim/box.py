@@ -126,7 +126,7 @@ class Box:
         # Extract atom number
         if num_atoms == "gro":
             counter = 1
-            with open(link, "r") as file_in:
+            with open(link) as file_in:
                 for line in file_in:
                     if counter == 2:
                         num_atoms = int(line)
