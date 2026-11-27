@@ -239,3 +239,43 @@ def test_benchmark_without_npt(tmp_path):
     assert "cp -r X/_gro 01/_gro" in shell_text
     assert "cp -r X/_gro 02/_gro" in shell_text
     assert not (tmp_path / "bench" / "01" / "npt").exists()
+
+
+def test_benchmark_rejects_an_unknown_iterator(tmp_path):
+    link = tmp_path / "bench"
+    with pytest.raises(ValueError, match="'nodes' or 'np'"):
+        ps.Benchmark(ps.Box(), [4], [1], str(link), iterator="cores")
+    # Nothing is written before the input is checked
+    assert not link.exists()
+
+
+@pytest.mark.parametrize(
+    ("iterator", "expected"),
+    [("nodes", [(4, 1), (4, 2)]), ("np", [(1, 1), (2, 1)])],
+)
+def test_benchmark_varies_only_the_iterator(tmp_path, iterator, expected):
+    """With equal np and nodes lists only the chosen one may vary."""
+    shell = "data/forhlr.sh"
+    step = {"file": shell, "nodes": 1, "np": 4, "wall": "1:00:00"}
+    job = {"min": dict(step), "nvt": dict(step), "run": {**step, "maxh": 1, "runs": 2}}
+    nvt = {"NUMBEROFSTEPS": 10, "TEMPERATURE_VAL": 298}
+    param = {
+        "min": {"file": "data/pore_min.mdp"},
+        "nvt": {"file": "data/pore_nvt.mdp", "param": dict(nvt)},
+        "run": {"file": "data/pore_run.mdp", "param": dict(nvt)},
+    }
+    box = ps.Box("box")
+    box.add_box("data/box.gro")
+    box.add_mol("BEN", "data/benzene.gro", 5, box=[3, 3, 3])
+    box.add_topol("data/benzene.top", "master")
+
+    values = [1, 2] if iterator == "np" else [4]
+    bench = ps.Benchmark(box, values, [1, 2], str(tmp_path / "b"), iterator=iterator)
+    bench.set_job(job)
+    bench.set_param(param)
+    bench.generate()
+
+    for folder, (np_, nodes) in zip(("01", "02"), expected, strict=True):
+        text = (tmp_path / "b" / folder / "nvt" / "nvt.job").read_text()
+        assert f"--nodes={nodes}" in text
+        assert f"--ntasks-per-node={np_}" in text

@@ -36,10 +36,21 @@ class Benchmark(Simulate):
     link : string, optional
         Simulation folder link
     iterator : string, optional
-        Aspect to be benchmarked
+        Aspect to be benchmarked, **nodes** or **np**
+
+    Raises
+    ------
+    ValueError
+        If the iterator is neither **nodes** nor **np**
     """
 
     def __init__(self, box, np, nodes, link="./benchmark", iterator="nodes"):
+        # Check the iterator before anything is written
+        if iterator not in ("nodes", "np"):
+            raise ValueError(
+                f"Benchmark iterator must be 'nodes' or 'np', not {iterator!r}"
+            )
+
         # Call super class
         super().__init__(link, box)
 
@@ -103,10 +114,8 @@ class Benchmark(Simulate):
         actuate.generate_files()
 
         # Process iterator input
-        if self._iterator == "nodes":
-            iterator = self._nodes
-        elif self._iterator == "np":
-            iterator = self._np
+        is_nodes = self._iterator == "nodes"
+        iterator = self._nodes if is_nodes else self._np
 
         # Create copy shell after minimization
         with open(self._link + "benchmark.sh", "a") as file_out:
@@ -114,8 +123,8 @@ class Benchmark(Simulate):
             job = self._sim_dict["job"]
             for it in iterator:
                 # Set nodes and np
-                n = it if iterator == self._np else self._np[0]
-                node = it if iterator == self._nodes else self._nodes[0]
+                n = self._np[0] if is_nodes else it
+                node = it if is_nodes else self._nodes[0]
 
                 # Set job dictionary
                 job["min"]["np"] = n
